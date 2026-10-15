@@ -2,7 +2,7 @@ import { el, group } from './svg.js';
 import { box, person, rack, robot } from './figures.js';
 import { lanes } from './belts.js';
 import {
-  ASSEMBLY, CABLE_ENDS, CLOUD, DOCK, FLOOR, OUTPUT, SCAFFOLD, USERS,
+  ASSEMBLY, CABLE_ENDS, CLOUD, DOCK, FLOOR, GAPS, LANES, OUTPUT, SCAFFOLD, USERS,
 } from './layout.js';
 
 // state: { gaps: { A2: 'gate', ... }, gateLights: { A2: 'stop' }, wallBuilt: 0..1 }
@@ -10,17 +10,17 @@ export function world(state, time, palette) {
   return group([
     el('rect', { x: -2000, y: -2000, width: 6000, height: 5000, fill: palette.background }),
     floor(state, time, palette),
-    cables(palette),
+    cables(state, palette),
     cloud(time, palette),
     lanes(state, time, palette),
     assembly(time, palette),
     users(time, palette),
-    person(1215, 315, palette.infrastructure),
+    person(1215, 315, palette.infrastructure, { seed: 3 }),
   ]);
 }
 
 function floor(state, time, palette) {
-  const wallEnd = FLOOR.x + FLOOR.width * (state.wallBuilt ?? 0.6);
+  const wallEnd = FLOOR.x + FLOOR.width * state.wallBuilt;
   const right = FLOOR.x + FLOOR.width;
   const bottom = FLOOR.y + FLOOR.height;
   const wall = { stroke: palette.wall, 'stroke-width': 8, fill: 'none', 'stroke-linecap': 'round' };
@@ -43,8 +43,8 @@ function scaffold(wallEnd, time, palette) {
   return group([
     ...poles,
     el('line', { x1: start, y1: SCAFFOLD.y - 20, x2: SCAFFOLD.end - 20, y2: SCAFFOLD.y - 20, stroke: palette.roller, 'stroke-width': 3 }),
-    person(start + 60, SCAFFOLD.y - 34 + bob, palette.builder, { hardHat: true }),
-    person(start + 200, SCAFFOLD.y - 34 - bob, palette.builder, { hardHat: true }),
+    person(start + 60, SCAFFOLD.y - 34 + bob, palette.builder, { seed: 1, hardHat: true }),
+    person(start + 200, SCAFFOLD.y - 34 - bob, palette.builder, { seed: 2, hardHat: true }),
   ]);
 }
 
@@ -64,15 +64,26 @@ function cloud(time, palette) {
   ]);
 }
 
-function cables(palette) {
-  return group(CABLE_ENDS.map((end, index) => {
-    const startX = CLOUD.x - 160 + index * 80;
+function cables(state, palette) {
+  const ends = [...CABLE_ENDS, ...gateTops(state)];
+  return group(ends.map((end, index) => {
+    const startX = CLOUD.x - 160 + (index % CABLE_ENDS.length) * 80;
     const startY = CLOUD.y + 50;
     return el('path', {
       d: `M ${startX} ${startY} C ${startX} ${startY + 120}, ${end.x} ${end.y - 140}, ${end.x} ${end.y}`,
       fill: 'none', stroke: palette.cable, 'stroke-width': 3,
     });
   }));
+}
+
+// Every gate is wired to the cloud, so it keeps its cable in every later scene.
+function gateTops(state) {
+  return Object.entries(state.gaps)
+    .filter(([, kind]) => kind === 'gate')
+    .map(([key]) => {
+      const { start, end } = GAPS[key[0]];
+      return { x: (start + end) / 2, y: LANES[Number(key[1]) - 1] - 50 };
+    });
 }
 
 function assembly(time, palette) {
@@ -89,7 +100,7 @@ function assembly(time, palette) {
 function users(time, palette) {
   const reach = Math.sin(time * 2) * 3;
   return group([
-    ...USERS.map(({ x, y }) => person(x, y, palette.user)),
+    ...USERS.map(({ x, y }, index) => person(x, y, palette.user, { seed: index })),
     box(USERS[0].x - 22, USERS[0].y + 6 + reach, palette, { scale: 1.6 }),
   ]);
 }

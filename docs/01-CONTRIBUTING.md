@@ -29,7 +29,7 @@ Run them locally before you push:
 ```sh
 scripts/check-text-only.sh   # no binary files (ADR 0003)
 scripts/check-english.sh     # no untranslated Swedish text (ADR 0001)
-scripts/check-file-size.sh   # no code file over 250 lines (AGENTS.md)
+scripts/check-file-size.sh   # no code file over the hard limit (AGENTS.md)
 npm test                     # unit tests, with Node's built-in test runner
 npx markdownlint-cli2@0.23.3 "**/*.md"
 ```

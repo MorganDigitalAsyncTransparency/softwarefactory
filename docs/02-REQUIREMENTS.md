@@ -6,8 +6,10 @@ is built is in [03-ARCHITECTURE.md](03-ARCHITECTURE.md).
 ## The film animation
 
 The animation plays the film in a browser, drawn in code. It is a flat 2D rendition of
-the [script](../film/script/script.md); the AI-video style in
-[visual-descriptions.md](../film/script/visual-descriptions.md) is not its target.
+the [script](../film/script/script.md). From
+[visual-descriptions.md](../film/script/visual-descriptions.md) it takes the roles,
+their colors, the intertitle cards and the continuity, but not the isometric style
+meant for AI video.
 
 ### R1: The script is the only source of scenes and intertitles
 
@@ -27,8 +29,8 @@ the [script](../film/script/script.md); the AI-video style in
 
 - **Given** an intertitle,
 - **when** it is shown,
-- **then** its text is white on black, centered, wrapped onto several lines when long, at
-  about 7 % of the frame height, and fades in and out.
+- **then** it follows the [intertitle cards](../film/script/visual-descriptions.md#intertitle-cards)
+  rules, with long text wrapped onto balanced lines.
 
 ### R4: The viewer controls playback
 

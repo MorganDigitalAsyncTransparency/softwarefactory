@@ -1,6 +1,6 @@
 // The script's scene tables are the only source of scene times and intertitle text
 // (docs/02-REQUIREMENTS.md R1, ADR 0004).
-const SCENE_ROW = /^\|\s*(S\d+)\s*\|\s*(\d+:\d{2})\s*[–-]\s*(\d+:\d{2})\s*\|\s*(Scene|Intertitle)\s*\|(.*)\|\s*$/;
+const SCENE_ROW = /^\|\s*(S\d+)\s*\|\s*(\d+:\d{2})\s*–\s*(\d+:\d{2})\s*\|\s*(Scene|Intertitle)\s*\|(.*)\|\s*$/;
 
 export function parseScript(markdown) {
   const scenes = markdown.split('\n').map(parseRow).filter(Boolean);

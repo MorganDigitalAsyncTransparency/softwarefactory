@@ -22,7 +22,7 @@ async function start() {
   progressBar.max = duration(playback.scenes);
   wireControls();
   const startTime = startTimeFrom(window.location.search);
-  seek(startTime ?? 0);
+  seek(Math.min(Math.max(startTime ?? 0, 0), duration(playback.scenes)));
   if (startTime === null) play();
 }
 

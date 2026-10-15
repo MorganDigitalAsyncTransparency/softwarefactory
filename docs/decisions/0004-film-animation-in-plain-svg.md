@@ -40,5 +40,7 @@ text, and every frame is a pure function of time, so it can be opened with `?t=`
 * Bad, because the page must be served over HTTP: browsers block `fetch` from `file://`.
 * Bad, because the script's table format becomes an interface; changing its columns
   means changing the parser in the same change.
+* Bad, because drawings are keyed by scene ID; renumbering scenes means renumbering
+  the drawings in the same change.
 * Neutral, because the animation is a flat 2D rendition, not the isometric AI-video
   style the visual descriptions target.

@@ -1,5 +1,5 @@
 import { el, group, DIGITAL, PHYSICAL } from './svg.js';
-import { person } from './figures.js';
+import { box, person } from './figures.js';
 import { gate } from './belts.js';
 import { world } from './world.js';
 import { mismatchPanels } from './panels.js';
@@ -42,8 +42,12 @@ function factory(state, { time, progress }, [from, to], extras = []) {
 }
 
 function between(from, to, progress) {
-  const eased = progress * progress * (3 - 2 * progress);
+  const eased = ease(progress);
   return from.map((value, index) => value + (to[index] - value) * eased);
+}
+
+function ease(progress) {
+  return progress * progress * (3 - 2 * progress);
 }
 
 function gateInstalled(frame) {
@@ -54,21 +58,13 @@ function gateInstalled(frame) {
   const testing = progress > 0.5 && progress < 0.75;
   const state = installed ? { ...GATED, gateLights: { A2: testing ? 'stop' : 'ok' } } : START;
   const extras = [
-    person(gateX - 40, laneY - 50, PHYSICAL.builder, { hardHat: true }),
-    person(gateX + 40, laneY - 50, PHYSICAL.builder, { hardHat: true }),
-    person(gateX + 95, laneY - 70, PHYSICAL.infrastructure),
-    el('line', { x1: gateX, y1: 345, x2: gateX, y2: laneY - 50, stroke: PHYSICAL.cable, 'stroke-width': 3, opacity: installed ? 1 : 0 }),
+    person(gateX - 40, laneY - 50, PHYSICAL.builder, { seed: 2, hardHat: true }),
+    person(gateX + 40, laneY - 50, PHYSICAL.builder, { seed: 0, hardHat: true }),
+    person(gateX + 95, laneY - 70, PHYSICAL.infrastructure, { seed: 1 }),
   ];
   if (!installed) extras.push(group([gate('A', { laneIndex: 1, y: laneY, state: START, palette: PHYSICAL })], { opacity: progress / 0.35 }));
-  if (testing) extras.push(rejectedBox(GAPS.A.start - 16, laneY));
+  if (testing) extras.push(box(GAPS.A.start - 16, laneY, PHYSICAL, { dented: true, scale: 1.2 }));
   return factory(state, frame, [[520, 330, 480, 270], [580, 365, 400, 225]], extras);
-}
-
-function rejectedBox(x, y) {
-  return el('rect', {
-    x: x - 12, y: y - 12, width: 24, height: 24, rx: 3,
-    fill: PHYSICAL.dent, stroke: PHYSICAL.stop, 'stroke-width': 3,
-  });
 }
 
 function stepsAutomated(frame) {
@@ -89,11 +85,11 @@ function growingBelt({ start, end }, y, share) {
 }
 
 function newBuilder({ end }, y, share) {
-  return person(end + 20 + share * 90, y + 50 - share * 40, PHYSICAL.builder, { hardHat: true });
+  return person(end + 20 + share * 90, y + 50 - share * 40, PHYSICAL.builder, { seed: 3, hardHat: true });
 }
 
 function turnsDigital({ time, progress }) {
-  const eased = progress * progress * (3 - 2 * progress);
+  const eased = ease(progress);
   return {
     camera: MIDDLE,
     picture: group([

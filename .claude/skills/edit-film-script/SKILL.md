@@ -11,7 +11,8 @@ Read `film/README.md` first: the brief decides audience, length, tone and langua
 
 - Each row has a scene ID (`S01`, `S02`, …), a time range, a type (Scene or
   Intertitle) and its content. IDs stay in film order; renumber all of them when a
-  scene is inserted, and update `visual-descriptions.md` in the same change.
+  scene is inserted, and update `visual-descriptions.md` and the drawing keys in
+  `film/animation/scenes.js` in the same change.
 - Time ranges follow each other with no gap or overlap, and the last one ends within
   the length in the brief.
 - An intertitle is short, plain English that a non-technical viewer understands, and is

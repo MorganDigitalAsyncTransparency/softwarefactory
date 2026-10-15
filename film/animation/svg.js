@@ -1,6 +1,6 @@
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
-export function el(tag, attributes = {}, children = []) {
+export function el(tag, attributes, children = []) {
   const node = document.createElementNS(SVG_NAMESPACE, tag);
   Object.entries(attributes).forEach(([name, value]) => node.setAttribute(name, value));
   node.append(...children);
@@ -34,6 +34,7 @@ export const PHYSICAL = {
   cloudEdge: '#C9D6DD',
   rack: '#6F7C85',
   cable: '#5F6B73',
+  gate: '#8C857B',
   robot: '#FAFAFA',
   robotEdge: '#9AA5AE',
   light: '#5AA9E6',
@@ -55,4 +56,5 @@ export const DIGITAL = {
   cloudEdge: '#4CC9F0',
   rack: '#4CC9F0',
   cable: '#4CC9F0',
+  gate: '#4CC9F0',
 };

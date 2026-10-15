@@ -26,6 +26,10 @@ function kindOf(gap, { laneIndex, state }) {
   return state.gaps[gapKey(gap, laneIndex)] ?? 'open';
 }
 
+function isStopped(gap, { laneIndex, state }) {
+  return state.gateLights?.[gapKey(gap, laneIndex)] === 'stop';
+}
+
 function beltPieces(context) {
   const pieces = [[BELT_START, GAPS.A.start], [GAPS.A.end, GAPS.B.start], [GAPS.B.end, BELT_END]];
   const bridges = Object.entries(GAPS)
@@ -51,7 +55,7 @@ function stretches(context) {
   let irregular = false;
   Object.entries(GAPS).forEach(([gap, bounds]) => {
     const kind = kindOf(gap, context);
-    if (CONNECTED.includes(kind)) return;
+    if (CONNECTED.includes(kind) && !isStopped(gap, context)) return;
     result.push({ start, end: bounds.start, irregular });
     start = bounds.end;
     irregular = kind === 'open';
@@ -82,28 +86,28 @@ function defectOf(seed) {
 
 function gapActor(gap, context) {
   const kind = kindOf(gap, context);
-  if (kind === 'open') return carried(gap, context, carrierFigure);
-  if (kind === 'robot') return carried(gap, context, robotFigure);
+  if (kind === 'open') return carried(gap, context, { figure: carrierFigure, period: 2, unevenness: 1.6 });
+  if (kind === 'robot') return carried(gap, context, { figure: robotFigure, period: 1.6, unevenness: 0 });
   if (kind === 'gate') return gate(gap, context);
   return group([]);
 }
 
-function carried(gap, { laneIndex, y, time, palette }, figure) {
+function carried(gap, { laneIndex, y, time, palette }, { figure, period: basePeriod, unevenness }) {
   const { start, end } = GAPS[gap];
   const seed = laneIndex * 7 + (gap === 'A' ? 0 : 3);
-  const period = figure === robotFigure ? 1.6 : 2 + noise(seed) * 1.6;
+  const period = basePeriod + noise(seed) * unevenness;
   const phase = time / period + noise(seed + 1);
   const x = start + (end - start) * pingPong(phase);
   const forward = phase - Math.floor(phase) < 0.5;
   const load = forward ? box(x, y - 4, palette, { scale: 0.8 }) : null;
-  return group([pile(start, y, palette), figure(x, y + 6, palette, load)]);
+  return group([pile(start, y, palette), figure(x, y + 6, palette, { load, seed })]);
 }
 
-function carrierFigure(x, y, palette, load) {
-  return person(x, y, palette.carrier, { carrying: load });
+function carrierFigure(x, y, palette, { load, seed }) {
+  return person(x, y, palette.carrier, { carrying: load, seed });
 }
 
-function robotFigure(x, y, palette, load) {
+function robotFigure(x, y, palette, { load }) {
   return group([robot(x, y, palette), ...(load ? [load] : [])]);
 }
 
@@ -113,11 +117,11 @@ function pile(gapStart, y, palette) {
 
 export function gate(gap, { laneIndex, y, state, palette }) {
   const x = (GAPS[gap].start + GAPS[gap].end) / 2;
-  const light = state.gateLights?.[gapKey(gap, laneIndex)] === 'stop' ? palette.stop : palette.ok;
-  const post = (postX) => el('rect', { x: postX - 4, y: y - 32, width: 8, height: 52, fill: palette.wall });
+  const light = isStopped(gap, { laneIndex, state }) ? palette.stop : palette.ok;
+  const post = (postX) => el('rect', { x: postX - 4, y: y - 32, width: 8, height: 52, fill: palette.gate });
   return group([
     post(x - 26), post(x + 26),
-    el('rect', { x: x - 30, y: y - 36, width: 60, height: 8, rx: 3, fill: palette.wall }),
+    el('rect', { x: x - 30, y: y - 36, width: 60, height: 8, rx: 3, fill: palette.gate }),
     el('circle', { cx: x, cy: y - 44, r: 7, fill: light }),
   ]);
 }

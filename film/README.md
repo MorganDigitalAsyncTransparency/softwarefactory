@@ -46,7 +46,7 @@ We are building gates at every step and automating the manual steps away.
 - The software layer is revealed late, after the factory story, so the factory image
   carries the film.
 - *Shift left* gets its own intertitle.
-- The film is first built as an animation in code, with no sound and no recording to
-  a video file.
+- The first version is an animation in code, silent for now: the music in the form
+  above comes later, and so does any recording to a video file.
 - Users, Builders and IT infrastructure are three separate roles, always shown apart
   (see [roles](script/script.md#roles)).

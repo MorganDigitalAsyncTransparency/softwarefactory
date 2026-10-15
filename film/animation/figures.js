@@ -1,6 +1,8 @@
 import { el, group } from './svg.js';
 
-export const BOX_SIZE = 24;
+const BOX_SIZE = 24;
+// The style block asks for diverse people; each figure picks one tone by its seed.
+const SKIN_TONES = ['#F1D7BF', '#D9A77C', '#A86F48', '#6E4529'];
 
 export function box(x, y, palette, { dented = false, scale = 1 } = {}) {
   const size = BOX_SIZE * scale;
@@ -21,10 +23,10 @@ function dent(cornerX, cornerY, palette) {
   });
 }
 
-export function person(x, y, color, { hardHat = false, carrying = null } = {}) {
+export function person(x, y, color, { seed = 0, hardHat = false, carrying = null } = {}) {
   const parts = [
     el('rect', { x: x - 10, y: y - 14, width: 20, height: 28, rx: 8, fill: color }),
-    el('circle', { cx: x, cy: y - 24, r: 9, fill: '#E9D3BC' }),
+    el('circle', { cx: x, cy: y - 24, r: 9, fill: SKIN_TONES[seed % SKIN_TONES.length] }),
   ];
   if (hardHat) parts.push(hat(x, y, color));
   if (carrying) parts.push(carrying);

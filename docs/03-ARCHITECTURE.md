@@ -7,26 +7,33 @@ How the code in this repository is built. What it must do is in
 ## The film animation
 
 A static page, `film/index.html`, loads plain ES modules from `film/animation/` and
-draws into one SVG with a fixed 1600 × 900 frame (ADR 0004). There is no framework, no
-build step and no dependency.
+draws into one SVG with a fixed 1600 × 900 frame. There is no framework, no build step
+and no dependency (ADR 0004).
 
 ```text
-film/script/script.md ──fetch──▶ script-parser ──▶ timeline ──▶ player ──▶ SVG
-                                                                 │
-                                         scenes ◀── world, figures, intertitle
+film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player ─▶ SVG
+                                                              │
+                              intertitle ◀────────────────────┤
+                              scenes ◀────────────────────────┘
+                                │
+                                ├─▶ world ─▶ belts
+                                └─▶ panels
+             (world, belts, panels and scenes draw with figures, layout and svg)
 ```
 
-| Module             | Responsibility                                                                   |
-| ------------------ | -------------------------------------------------------------------------------- |
-| `script-parser.js` | Pure: turns the script's scene tables into a list of scenes (R1)                 |
-| `timeline.js`      | Pure: finds the scene and its progress at a time, and parses `?t=` (R5)          |
-| `player.js`        | Loads the script, runs the clock, wires the controls and draws each frame (R4)   |
-| `scenes.js`        | Maps each scene ID to a drawing; throws on an ID with no drawing (R2)            |
-| `world.js`         | The factory floor, belts, gaps, gates, cloud and cables, from a state object     |
-| `figures.js`       | People by role, robots and boxes                                                 |
-| `intertitle.js`    | The intertitle card: wrapping and fade (R3)                                      |
-| `panels.js`        | The three-panel detail scene, where factory, IT and product do not fit           |
-| `svg.js`           | Creating SVG elements, and the palette                                           |
+| Module             | Responsibility                                                                     |
+| ------------------ | ---------------------------------------------------------------------------------- |
+| `script-parser.js` | Pure: turns the script's scene tables into a list of scenes (R1)                   |
+| `timeline.js`      | Pure: finds the scene and its progress at a time, and parses `?t=` (R5)            |
+| `player.js`        | Loads the script, runs the clock, wires the controls and draws each frame (R4)     |
+| `intertitle.js`    | The intertitle card: balanced line wrapping and fade (R3)                          |
+| `scenes.js`        | Maps each scene ID to a camera, a world state and extras; throws on a missing ID (R2) |
+| `world.js`         | The floor, walls, scaffolding, cloud, cables, assembly, dock and users             |
+| `belts.js`         | The lanes: belts, gaps, flowing boxes, carriers, robots, gates and scanners        |
+| `panels.js`        | The three-panel detail scene, where factory, IT and product do not fit             |
+| `figures.js`       | People by role, robots, boxes and server racks                                     |
+| `layout.js`        | The positions shared by every scene, and repeatable pseudo-random motion           |
+| `svg.js`           | Creating SVG elements, and the physical and digital palettes                       |
 
 ### The world and the camera
 
@@ -41,5 +48,6 @@ stored, so seeking to any time draws the same frame.
 
 ### Tests
 
-`script-parser.js` and `timeline.js` are pure and tested with Node's built-in test
-runner (`tests/`). The drawings are checked by eye: open a frame with `?t=` per scene.
+Node's built-in test runner runs `tests/`: the parser, the timeline, intertitle
+wrapping, that every scene has a drawing, and that the script itself keeps its timing
+rules. The drawings are checked by eye: open a frame with `?t=` per scene.

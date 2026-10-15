@@ -30,4 +30,5 @@ test('reads a start time from ?t=', () => {
 test('has no start time without a valid ?t=', () => {
   assert.equal(startTimeFrom(''), null);
   assert.equal(startTimeFrom('?t=soon'), null);
+  assert.equal(startTimeFrom('?t=Infinity'), null);
 });

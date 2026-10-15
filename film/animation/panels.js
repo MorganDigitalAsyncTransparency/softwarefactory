@@ -5,7 +5,6 @@ import { FRAME } from './layout.js';
 const PANEL_WIDTH = FRAME.width / 3;
 const WARNING_FROM = 0.7;
 
-// The detail scene: factory, IT and product side by side, none of them fitting together.
 export function mismatchPanels(progress, palette) {
   const drawings = [beltsAtTwoHeights, cableTooShort, partsThatDoNotFit];
   return group([

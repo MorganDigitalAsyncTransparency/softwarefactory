@@ -11,5 +11,5 @@ export function frameAt(scenes, time) {
 export function startTimeFrom(search) {
   const value = new URLSearchParams(search).get('t');
   const time = Number(value);
-  return value === null || Number.isNaN(time) ? null : time;
+  return value === null || !Number.isFinite(time) ? null : time;
 }
