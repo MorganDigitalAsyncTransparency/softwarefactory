@@ -21,5 +21,5 @@ description: Phases 7–8 in softwarefactory. Use when phase 5 and the review ar
 - Review comments are answered on their thread: small asks are fixed and pushed, larger
   ones get a proposal and wait for the author.
 - New work found along the way becomes a new issue, not a bigger pull request.
-- A human merges, with a merge commit.
+- Wait for a human to merge.
 - After the merge: switch to `main`, pull, and delete the local branch.

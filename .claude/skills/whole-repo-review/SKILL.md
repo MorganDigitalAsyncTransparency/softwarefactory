@@ -1,6 +1,6 @@
 ---
 name: whole-repo-review
-description: Review the whole of softwarefactory's main for drift that no single pull request shows - documents against each other, the rules in AGENTS.md, clean code across files and issue hygiene - and report with an issue per real finding. Use only when the project owner writes "granska" or "review the repo"; never on a schedule.
+description: Review the whole of softwarefactory's main for drift that no single pull request shows - documents against each other, the rules in AGENTS.md, clean code across files and issue hygiene - and report with an issue per real finding. Use only when the project owner asks for a review of the whole repository; never on a schedule.
 ---
 
 # Whole-repo review

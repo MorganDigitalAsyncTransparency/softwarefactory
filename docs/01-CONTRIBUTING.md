@@ -16,7 +16,7 @@ Run them locally before you push:
 ```sh
 scripts/check-text-only.sh   # no binary files (ADR 0003)
 scripts/check-english.sh     # no untranslated Swedish text (ADR 0001)
-npx markdownlint-cli2 "**/*.md"
+npx markdownlint-cli2@0.23.3 "**/*.md"
 ```
 
 The Markdown lint rules are in `.markdownlint-cli2.jsonc`. Editor settings are in
@@ -26,7 +26,7 @@ The Markdown lint rules are in `.markdownlint-cli2.jsonc`. Editor settings are i
 
 - Work on a branch; never push to `main`.
 - One coherent change per pull request, small enough to read in one sitting.
-- Fill in `.github/pull_request_template.md`. A human merges, with a merge commit.
+- Fill in `.github/pull_request_template.md`.
 
 ## Decisions
 

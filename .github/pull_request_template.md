@@ -8,9 +8,7 @@ After:
 
 ## How it was checked
 
-- [ ] `scripts/check-text-only.sh`
-- [ ] `scripts/check-english.sh`
-- [ ] `npx markdownlint-cli2 "**/*.md"`
+- [ ] All checks in `docs/01-CONTRIBUTING.md` pass
 - [ ] `docs-sync` skill run; owners updated in the same change
 
 ## Consequences and review

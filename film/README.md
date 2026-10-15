@@ -38,13 +38,10 @@ We are building gates at every step and automating the manual steps away.
 | The large box at the loading dock         | A release                                       |
 | The factory being built around the belts  | The software factory built while it runs        |
 
-## Roles in the film
-
-Users, Builders and IT infrastructure are three separate roles and are always shown
-apart. Carriers are the people doing manual steps in the middle; as steps are
-automated, they become Builders.
-
 ## Decisions
 
-- The software layer is revealed late (S17), so the factory image carries the film.
-- *Shift left* gets its own intertitle (S05).
+- The software layer is revealed late, after the factory story, so the factory image
+  carries the film.
+- *Shift left* gets its own intertitle.
+- Users, Builders and IT infrastructure are three separate roles, always shown apart
+  (see [roles](script/script.md#roles)).

@@ -17,13 +17,14 @@ Read `film/README.md` first: the brief decides audience, length, tone and langua
 - An intertitle is short, plain English that a non-technical viewer understands, and is
   shown long enough to read: about one second per three words plus two seconds.
 - Matter-of-fact tone: describe how it is. No humor, no selling, no brand.
-- The flow on screen always runs left to right, and the roles keep their colors.
+- Decisions in the brief describe the film without scene IDs, so renumbering never
+  breaks them.
 
 ## Rules for the visual descriptions (`film/script/visual-descriptions.md`)
 
 - Every scene of type Scene has a prompt under its ID; intertitles do not.
-- Prompts are in English, do not repeat the style block and never ask for text in the
-  picture.
+- Prompts are in English, do not repeat the style block (role colors included) and
+  never ask for text, symbols or glyphs in the picture.
 - A change to the style block or continuity applies to the whole film: read every
   prompt again and fix those it contradicts.
 

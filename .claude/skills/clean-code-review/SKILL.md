@@ -12,7 +12,7 @@ same change when the fix is small.
 
 ## How to run it
 
-1. Get the diff against `main`: `git diff origin/main...HEAD`.
+1. Get the diff against `main`: `git fetch origin main && git diff origin/main...HEAD`.
 2. Read every changed function in full, not only the changed lines, and walk the
    checklist below.
 3. Fix what you can in the change. For anything left, write one line per finding:

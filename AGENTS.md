@@ -104,7 +104,7 @@ Other skills:
 | Changing the film's script or visual descriptions | `.claude/skills/edit-film-script/SKILL.md`     |
 | Reviewing a diff for clean code                   | `.claude/skills/clean-code-review/SKILL.md`    |
 | Keeping documents true after a change             | `.claude/skills/docs-sync/SKILL.md`            |
-| The project owner writes "granska" or "review the repo" | `.claude/skills/whole-repo-review/SKILL.md` |
+| The project owner asks for a review of the whole repository | `.claude/skills/whole-repo-review/SKILL.md` |
 
 ## Agent files
 

@@ -31,7 +31,6 @@ hanging down to stations in the factory. Flow always goes left to right.
 - Black background with centered white text in a clean sans-serif.
 - Text large enough to read in a small browser window: about 6–8 % of the frame height.
 - Fade in and out over about 0.3 seconds. No decoration.
-- Reading time is about one second per three words plus two seconds.
 
 ## Continuity
 
@@ -58,14 +57,14 @@ with long thin cables down to stations. Calm, steady, wide establishing shot.
 ```text
 Camera glides in to the left section of the factory. Many small boxes arrive at an
 even rhythm on several automated conveyor belts. At each belt a small white robot
-scans each box and a small green check light glows. Smooth, orderly, rhythmic motion.
+scans each box and a small green light glows. Smooth, orderly, rhythmic motion.
 ```
 
 ### S06
 
 ```text
 Camera pans right to the loading dock. One large neat box rolls out of the dock and is
-received by a few users in warm orange. Calm, satisfying, orderly.
+received by a few Users. Calm, satisfying, orderly.
 ```
 
 ### S09
@@ -94,9 +93,9 @@ do not fit. End each panel with a soft red warning light.
 ### S13
 
 ```text
-Builders in yellow install a gate between two conveyor belts. A dented box arrives and
+Builders install a gate between two conveyor belts. A dented box arrives and
 the gate stops it with a red light; an intact box arrives and passes through with a
-green light. An IT worker in blue connects a long cable from the cloud into the gate.
+green light. An IT infrastructure worker connects a long cable from the cloud into the gate.
 Clear, deliberate, satisfying.
 ```
 
@@ -114,10 +113,10 @@ Positive, matter-of-fact.
 Keep the composition of S13 and S15 so the viewer sees that it is the same factory.
 
 ```text
-Same composition as the factory section. Everything smoothly morphs into a digital
-version: boxes become glowing code blocks, conveyor belts become luminous pipeline
-lanes, gates become checkpoints with check symbols, cables from the cloud become
-glowing integration lines, the large box becomes a release package icon.
+Same composition as the gate scene. Everything smoothly morphs into a digital
+version: boxes become plain glowing cubes without any marks, conveyor belts become
+luminous pipeline lanes, gates become checkpoints with a green light, cables from the
+cloud become glowing integration lines, the large box becomes one larger glowing cube.
 Keep layout identical, only the material changes.
 ```
 

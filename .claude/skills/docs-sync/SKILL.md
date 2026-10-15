@@ -12,15 +12,15 @@ second time.
 
 ## How to run it
 
-1. Get the diff against `main`: `git diff origin/main...HEAD`.
+1. Get the diff against `main`: `git fetch origin main && git diff origin/main...HEAD`.
 2. Answer each question below with yes, no or not affected.
 3. Fix every gap in the same change. Report what you changed in one line per document,
    and anything you could not decide as a question for the project owner.
 
 ## The questions
 
-- **Film brief** (`film/README.md`): does the change alter the audience, form, tone,
-  core message, analogies or a recorded decision?
+- **Film brief** (`film/README.md`): does the change alter anything the brief owns
+  (see the owner table in `AGENTS.md`)?
 - **Script and visuals** (`film/script/`): does every scene ID in `script.md` that is a
   scene have a prompt in `visual-descriptions.md`, and no prompt an orphan ID? Do the
   timings still run without gaps or overlaps, and does the total stay within the

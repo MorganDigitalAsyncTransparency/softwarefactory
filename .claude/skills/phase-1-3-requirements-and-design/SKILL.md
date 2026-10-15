@@ -5,7 +5,7 @@ description: Phases 1–3 in softwarefactory. Use after a confirmed phase 0 to w
 
 # Phases 1–3: Requirements, design and validation
 
-Create a branch before anything is written. Commit after every phase.
+Create a branch before anything is written.
 
 ## Phase 1: Requirements
 

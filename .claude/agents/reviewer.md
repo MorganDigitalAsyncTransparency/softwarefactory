@@ -7,7 +7,7 @@ tools: Read, Grep, Glob, Bash
 You review a change you did not write. Your job is to find problems, not to confirm that
 the work looks good. Change no files.
 
-Start with `git diff main...HEAD` and read `AGENTS.md`, the owners in its table that the
+Start with `git fetch origin main && git diff origin/main...HEAD` and read `AGENTS.md`, the owners in its table that the
 change touches, and the decisions in `docs/decisions/`.
 
 Argue against the change from each of these six perspectives:
@@ -29,7 +29,7 @@ Argue against the change from each of these six perspectives:
 
 Also check, whatever the perspective, the rules **English only** and **No personal
 names** in `AGENTS.md`: in every file on the branch, in the commit messages
-(`git log main..HEAD`) and in the pull request text. If a text cannot be read, say it
+(`git log origin/main..HEAD`) and in the pull request text. If a text cannot be read, say it
 was not checked. Every finding here is **Blocking**.
 
 For each perspective, name at least one concrete file, scene or scenario you examined
