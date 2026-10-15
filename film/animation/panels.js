@@ -4,6 +4,7 @@ import { light } from './materials.js';
 import { belt } from './machines.js';
 import { box } from './figures.js';
 import { between } from './flow.js';
+import { share } from './timeline.js';
 
 const WARNING_AT = 0.7;
 
@@ -19,8 +20,8 @@ export function panels(progress, time) {
 }
 
 function belts(progress) {
-  const travel = Math.min(1, progress / 0.45);
-  const stuck = Math.max(0, Math.min(1, (progress - 0.45) / 0.15));
+  const travel = share(progress, 0, 0.45);
+  const stuck = share(progress, 0.45, 0.6);
   const part = group([box()], { position: [between(-3.5, -0.75, travel), 1, 0] });
   part.rotation.z = -0.5 * stuck;
   return group([belt(-5, -0.2, 0), group([belt(0, 5, 0)], { position: [0, 0.55, 0] }), part]);
@@ -40,7 +41,7 @@ function shortCable(time) {
 function parts(progress) {
   const left = slab([-2.2, -0.8], [-0.4, 0.8], [0, 1.6], 'box');
   const right = slab([0, -0.6], [1.3, 0.6], [0, 2.3], 'box');
-  return group([left, group([right], { position: [between(3, 0.35, Math.min(1, progress / 0.6)), 0, 0] })]);
+  return group([left, group([right], { position: [between(3, 0.35, share(progress, 0, 0.6)), 0, 0] })]);
 }
 
 function lamp(on, time) {

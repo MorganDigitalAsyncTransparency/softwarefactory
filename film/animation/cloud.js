@@ -10,16 +10,20 @@ const PUFFS = Array.from({ length: 18 }, (_, index) => ({
 const RACKS = [-7.5, -4.5, -1.5, 1.5, 4.5, 7.5];
 const TOP = 2.2;
 
-// IT infrastructure: the cloud, with server racks and AI agents on it.
-export function cloud(time) {
+// IT infrastructure: the cloud, with server racks on it.
+export function cloud() {
   const puffs = PUFFS.map(({ position, radius }) => sphere(radius, 'cloud', position));
   puffs.forEach((puff) => { puff.scale.y = 0.5; puff.castShadow = false; });
   return group([
     ...puffs,
     slab([-9.5, -2.2], [9.5, 2.2], [TOP - 0.3, TOP], 'rack'),
     ...RACKS.map((x) => rack(x)),
-    ...[-3, 3, 6].map((x, index) => walker(x, time, index)),
   ], { position: [CLOUD.x, CLOUD.y, CLOUD.z] });
+}
+
+// The AI agents walking between the racks, relative to the cloud.
+export function agents(time) {
+  return group([-3, 3, 6].map((x, index) => walker(x, time, index)));
 }
 
 function rack(x) {
@@ -29,8 +33,8 @@ function rack(x) {
 
 function walker(x, time, index) {
   const reach = Math.sin(time * 0.6 + index * 2);
-  const agent = group([robot({ bob: Math.abs(Math.sin(time * 3 + index)) * 0.05 })], {
-    position: [x + reach * 0.9, TOP, 1.6 - index * 0.3], turn: reach > 0 ? 0 : Math.PI,
+  const agent = group([robot({ time: time + index })], {
+    position: [CLOUD.x + x + reach * 0.9, CLOUD.y + TOP, CLOUD.z + 1.6 - index * 0.3], turn: reach > 0 ? 0 : Math.PI,
   });
   agent.scale.setScalar(0.8);
   return agent;
@@ -49,5 +53,5 @@ export function cable({ x, y, z }, connected = 1) {
 }
 
 export function connect(wire, share) {
-  wire.geometry.setDrawRange(0, Math.floor((wire.geometry.index.count * Math.min(1, share)) / 3) * 3);
+  wire.geometry.setDrawRange(0, Math.floor((wire.geometry.index.count * share) / 3) * 3);
 }

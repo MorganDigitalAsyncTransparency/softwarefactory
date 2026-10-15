@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 
-// Each surface has a physical look and a digital look (S17). The four layers the viewer
-// must tell apart keep one look each: the building is warm off-white, the machines dark
-// steel, the product cardboard and IT blue.
+// Each surface has a physical look and a digital look (S17). The colors follow the style
+// block in film/script/visual-descriptions.md, which keeps the four layers apart.
 const LOOKS = {
   ground: { physical: '#B9C2B0', digital: '#06121F' },
   floor: { physical: '#C3C5C6', digital: '#0B1C2E' },
@@ -10,13 +9,13 @@ const LOOKS = {
   wall: { physical: '#E6D3B3', digital: '#0B1C2E', fade: true },
   glass: { physical: '#A9BBC4', digital: '#0B1C2E', fade: true },
   steel: { physical: '#50565E', digital: '#16304A', fade: true, metal: true },
-  scaffold: { physical: '#E2B93B', digital: '#0B1C2E', fade: true, metal: true },
+  scaffold: { physical: '#9AA1A8', digital: '#0B1C2E', fade: true, metal: true },
   belt: { physical: '#2E3236', digital: '#0F4A66', glow: 0.5 },
   beltFrame: { physical: '#9EA6AE', digital: '#1E7FA8', metal: true },
   machine: { physical: '#7C858E', digital: '#123A55', metal: true },
   hatch: { physical: '#1F2328', digital: '#03080F' },
-  box: { physical: '#C99A64', digital: '#3BD6FF', glow: 0.9 },
-  tape: { physical: '#EEDDB5', digital: '#C6F4FF', glow: 0.9 },
+  box: { physical: '#C99A64', digital: '#FFD58A', glow: 0.9 },
+  tape: { physical: '#EEDDB5', digital: '#FFF1D1', glow: 0.9 },
   dented: { physical: '#8F6A45', digital: '#FF6B5E', glow: 0.9 },
   cloud: { physical: '#FAFBFC', digital: '#1A3B5C' },
   rack: { physical: '#1D3A5C', digital: '#0E2C49' },

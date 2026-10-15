@@ -43,6 +43,7 @@ function wireControls() {
 }
 
 function play() {
+  if (playback.playing) return;
   if (playback.time >= duration(playback.scenes)) seek(0);
   playback.playing = true;
   playback.lastTick = null;

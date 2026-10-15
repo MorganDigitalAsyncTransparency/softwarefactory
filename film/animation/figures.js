@@ -3,6 +3,13 @@ import { material } from './materials.js';
 
 const BOX = 0.6;
 const SKIN_TONES = ['skin0', 'skin1', 'skin2', 'skin3'];
+const STRIDE = 1.4;
+const TURNS = { 1: 0, 0: -Math.PI / 2, '-1': Math.PI };
+
+// How far to turn a figure that faces +x (1), the camera (0) or -x (-1).
+export function facingTurn(facing) {
+  return TURNS[facing];
+}
 
 // The product. A dented box is darker and squashed; a box of the wrong size is larger.
 export function box(look = 'good', { scale = 1 } = {}) {
@@ -21,8 +28,8 @@ export function box(look = 'good', { scale = 1 } = {}) {
 
 // A person in the color of their role. A Carrier who is promoted turns into a Builder:
 // the vest turns yellow and a hard hat appears.
-export function person(role, { seed = 0, carrying = false, step = 0, promoted = 0 } = {}) {
-  const swing = Math.sin(step * Math.PI * 2) * 0.45;
+export function person(role, { seed = 0, carrying = false, walked = 0, promoted = 0 } = {}) {
+  const swing = Math.sin((walked / STRIDE) * Math.PI * 2) * 0.45;
   const builder = role === 'builder' || promoted > 0;
   const torso = role === 'carrier' && promoted > 0 ? vest(promoted) : role;
   return group([
@@ -57,8 +64,8 @@ function hardHat(size) {
   ], { position: [0, 1.7, 0], scale: size });
 }
 
-// An AI agent: a small rounded white robot with one soft blue light.
-export function robot({ carrying = false, bob = 0 } = {}) {
+export function robot({ carrying = false, time = 0 } = {}) {
+  const bob = Math.abs(Math.sin(time * 6)) * 0.04;
   return group([
     capsule([0.32, 0.5], 'robot', [0, 0.75 + bob, 0]),
     sphere(0.26, 'robot', [0, 1.45 + bob, 0]),

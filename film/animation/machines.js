@@ -5,7 +5,6 @@ import { ASSEMBLY, BELT, DOCK, HALL, LANES, OUTPUT } from './layout.js';
 
 const LEG_EVERY = 2.5;
 
-// A conveyor belt from start to end along x, standing on legs.
 export function belt(start, end, z, width = BELT.width) {
   const legs = [];
   for (let x = start + 0.4; x < end; x += LEG_EVERY) legs.push(...[-1, 1].map((side) => leg(x, z + side * (width / 2 - 0.1))));

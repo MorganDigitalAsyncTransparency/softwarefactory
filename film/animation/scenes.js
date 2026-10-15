@@ -1,25 +1,37 @@
 import { between } from './flow.js';
-import { GAPS, LANES, middleOf } from './layout.js';
+import { DOCK, GAPS, LANES, OUTPUT, middleOf } from './layout.js';
+import { share } from './timeline.js';
 
 // Cameras are [position, target] in metres.
-const OVERVIEW = [[4, 46, 60], [3, 7, -3]];
+const OVERVIEW = [[4, 47, 62], [3, 8.5, -3]];
 const HIGH = [[-34, 80, 118], [3, 12, -3]];
 const LEFT = [[-17, 13, 17], [-21, 1, -1.5]];
 const MIDDLE = [[1, 12, 17], [1, 1, -1.5]];
+const DOOR_VIEW = [[DOCK.start - 10, 12, 21], [DOCK.start - 6, 1.5, OUTPUT.z]];
+const DOCK_VIEW = [[DOCK.end - 2, 8, 17], [DOCK.end - 1, 1.5, OUTPUT.z]];
 const GATE = { x: middleOf(GAPS.B), z: LANES[1] };
 const GATE_TARGET = [GATE.x - 0.5, 1.3, GATE.z];
 const START = { gaps: {}, built: 0.55, reveal: 1, digital: 0, crew: [] };
 const GATED = { ...START, gaps: { B2: 'gate' } };
 const AUTOMATED = { ...START, gaps: { ...GATED.gaps, A2: 'closed', A3: 'robot' } };
-const TODAY = { ...START, built: 0.8, gaps: { ...AUTOMATED.gaps, B1: 'gate', A4: 'closed', B4: 'gate' } };
+const TODAY = {
+  ...START,
+  built: 0.8,
+  gaps: { ...AUTOMATED.gaps, B1: 'gate', A4: 'closed', B4: 'gate' },
+  crew: [
+    { role: 'builder', x: middleOf(GAPS.B) - 1, z: LANES[2] + 1.4, facing: 1 },
+    { role: 'builder', x: middleOf(GAPS.B) + 1, z: LANES[2] + 1.4, facing: -1 },
+    { role: 'infrastructure', x: middleOf(GAPS.B), z: LANES[2] - 1.6, facing: 0 },
+  ],
+};
 
 // Each drawing returns the shot for one frame: a camera move and the world's state.
 const DRAWINGS = {
   S02: ({ progress }) => shot([HIGH, OVERVIEW], progress, { ...START, reveal: progress / 0.85 }),
   S04: ({ progress }) => shot([OVERVIEW, LEFT], progress, START),
-  S06: ({ progress }) => shot([[[22, 12, 21], [26, 1.5, -1]], [[36, 8, 17], [37, 1.5, -1]]], progress, START),
+  S06: ({ progress }) => shot([DOOR_VIEW, DOCK_VIEW], progress, START),
   S09: ({ progress }) => shot([OVERVIEW, MIDDLE], progress, START),
-  S11: ({ progress }) => ({ panels: progress }),
+  S11: ({ progress }) => ({ split: true, progress }),
   S13: gateInstalled,
   S15: stepsAutomated,
   S17: ({ progress }) => shot([MIDDLE, [[1, 16, 21], [1, 1, -2]]], progress, {
@@ -43,10 +55,6 @@ export function draw(frame) {
 function shot([from, to], progress, state) {
   const camera = from.map((point, index) => point.map((value, axis) => between(value, to[index][axis], progress)));
   return { camera, state };
-}
-
-function share(progress, from, to) {
-  return Math.min(1, Math.max(0, (progress - from) / (to - from)));
 }
 
 function gateInstalled({ progress }) {

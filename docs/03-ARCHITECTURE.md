@@ -22,7 +22,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
                                        │             ├─ cloud
                                        │             └─ figures
                                        └─▶ panels
-              (every 3D module draws with shapes and materials; flow and scenes are pure)
+  (who calls whom, not every import: the 3D modules also share figures, shapes and materials)
 ```
 
 | Module             | Responsibility                                                                      |

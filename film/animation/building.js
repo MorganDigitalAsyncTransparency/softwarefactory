@@ -14,11 +14,11 @@ export function building(built) {
   return group([
     slab([HALL.left, HALL.back], [HALL.right, HALL.front], [-0.1, 0], 'floor'),
     ...floorLines(),
-    ...backWall(built),
+    ...backWall(built * BAYS),
     ...sideWall(HALL.left, [[HALL.back, HALL.front]]),
     ...sideWall(HALL.right, [[HALL.back, OUTPUT.z - DOOR_HALF]]),
     ...hatches(),
-    ...roof(built),
+    ...roof(Math.floor(built * BAYS)),
   ]);
 }
 
@@ -29,11 +29,10 @@ function floorLines() {
   )));
 }
 
-function backWall(built) {
-  const standing = Math.floor(built * BAYS);
-  const bays = Array.from({ length: standing }, (_, index) => bay(index));
-  const rising = built * BAYS - standing;
-  return [...bays, risingBay(standing, rising), scaffold(standing)];
+function backWall(bays) {
+  const standing = Math.floor(bays);
+  const rising = bays - standing;
+  return [...Array.from({ length: standing }, (_, index) => bay(index)), risingBay(standing, rising), scaffold(standing)];
 }
 
 function bay(index) {
@@ -84,8 +83,7 @@ function skeleton(x) {
 
 // The roof over the back of the hall: closed over the bays that stand, bare steel beams
 // over the rest.
-function roof(built) {
-  const standing = Math.floor(built * BAYS);
+function roof(standing) {
   return Array.from({ length: BAYS }, (_, index) => {
     const [x1, x2] = [HALL.left + index * BAY, HALL.left + (index + 1) * BAY];
     if (index >= standing) return skeleton(x1);

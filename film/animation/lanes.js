@@ -1,7 +1,7 @@
 import { belt, gate, scanner } from './machines.js';
-import { box, person, robot } from './figures.js';
+import { box, facingTurn, person, robot } from './figures.js';
 import { group } from './shapes.js';
-import { boxesOn, carrierAt, gapMode, gateStops, stretches } from './flow.js';
+import { CARRIED, boxesOn, carrierAt, gapMode, gateStops, stretches } from './flow.js';
 import { BELT, GAPS, LANES, SCANNER_X, gapKey, middleOf } from './layout.js';
 
 const BRIDGED = ['closed', 'gate'];
@@ -28,8 +28,8 @@ function pile({ start }, z) {
 // Everything on a lane that moves: boxes, carriers, and the lights of scanners and gates.
 export function laneMotion(state, time, laneIndex) {
   const z = LANES[laneIndex];
-  const flows = stretches(state, laneIndex).map((stretch, index) => (
-    { stretch, boxes: boxesOn(stretch, time, { seed: laneIndex * 100 + index * 10 }) }
+  const flows = stretches(state, laneIndex).map((stretch) => (
+    { stretch, boxes: boxesOn(stretch, time, { seed: laneIndex * 1000, origin: BELT.start }) }
   ));
   return group([
     ...flows.flatMap(({ boxes }) => boxes.map((item) => placedBox(item, z))),
@@ -49,12 +49,10 @@ function carrier(state, time, { gap, laneIndex }) {
   const mode = gapMode(state, gap, laneIndex);
   const key = gapKey(gap, laneIndex);
   const building = [state.installing, state.growing].some((work) => work && gapKey(work.gap, work.lane) === key);
-  if (!['open', 'robot'].includes(mode) || building) return null;
+  if (!CARRIED.includes(mode) || building) return null;
   const { x, carrying, facing } = carrierAt(GAPS[gap], time, { seed: laneIndex * 7 + (gap === 'B' ? 3 : 0), robot: mode === 'robot' });
-  const figure = mode === 'robot'
-    ? robot({ carrying, bob: Math.abs(Math.sin(time * 6)) * 0.04 })
-    : person('carrier', { seed: laneIndex, carrying, step: x / 1.4 });
-  return group([figure], { position: [x, 0, LANES[laneIndex]], turn: facing > 0 ? 0 : Math.PI });
+  const figure = mode === 'robot' ? robot({ carrying, time }) : person('carrier', { seed: laneIndex, carrying, walked: x });
+  return group([figure], { position: [x, 0, LANES[laneIndex]], turn: facingTurn(facing) });
 }
 
 // A gate rising and a belt growing across a gap, while Builders work on it.

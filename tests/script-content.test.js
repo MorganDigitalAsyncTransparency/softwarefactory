@@ -11,6 +11,10 @@ test('scene times follow each other with no gap or overlap', () => {
   scenes.slice(1).forEach((scene, index) => assert.equal(scene.start, scenes[index].end, scene.id));
 });
 
+test('every scene lasts some time', () => {
+  scenes.forEach((scene) => assert.ok(scene.end > scene.start, scene.id));
+});
+
 test('the film ends within the 120 seconds the brief allows', () => {
   assert.ok(scenes.at(-1).end <= 120);
 });

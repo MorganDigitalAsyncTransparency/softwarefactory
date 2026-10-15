@@ -17,5 +17,10 @@ export function startTimeFrom(search) {
 // How visible something that fades in and out over `edge` seconds is, `seconds` into a
 // scene of `length` seconds.
 export function fade(seconds, length, edge) {
-  return Math.max(0, Math.min(1, seconds / edge, (length - seconds) / edge));
+  return Math.min(share(seconds, 0, edge), share(length - seconds, 0, edge));
+}
+
+// How far `value` has come from `from` to `to`, held within 0 and 1.
+export function share(value, from, to) {
+  return Math.min(1, Math.max(0, (value - from) / (to - from)));
 }

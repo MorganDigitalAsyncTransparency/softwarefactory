@@ -3,7 +3,7 @@ import { BELT, GAPS, SPEED, gapKey, middleOf, noise } from './layout.js';
 // Pure motion: every position is computed from the clock, never stored, so any time can
 // be drawn directly (R5).
 export const SPACING = 2.4;
-const CARRIED = ['open', 'robot'];
+export const CARRIED = ['open', 'robot'];
 const REJECTED_FOR = 4;
 
 export function gapMode(state, gap, laneIndex) {
@@ -25,22 +25,24 @@ export function stretches(state, laneIndex) {
   return [...result, { ...current, end: BELT.end }];
 }
 
-// Boxes on a stretch. An uneven stretch has random gaps, timing and quality; a gate
-// pushes every box that is not good off the belt.
-export function boxesOn(stretch, time, { seed = 0, spacing = SPACING, speed = SPEED } = {}) {
-  const period = spacing / speed;
-  const first = Math.floor((time - (stretch.end - stretch.start) / speed) / period) - 1;
+// Boxes on a stretch. Each box is counted from where the lane starts (`origin`), so a
+// box keeps its place when a gap closes. An uneven stretch has random gaps, timing and
+// quality; a gate pushes every box that is not good off the belt.
+export function boxesOn(stretch, time, { seed = 0, spacing = SPACING, speed = SPEED, origin = stretch.start } = {}) {
+  const motion = { stretch, time, speed, origin, period: spacing / speed };
+  const first = Math.floor((time - (stretch.end - origin) / speed) / motion.period) - 1;
+  const last = Math.floor((time - (stretch.start - origin) / speed) / motion.period);
   const boxes = [];
-  for (let index = first; index <= Math.floor(time / period); index += 1) {
-    const box = boxAt({ stretch, time, speed, period }, index, seed + index);
+  for (let index = first; index <= last; index += 1) {
+    const box = boxAt(motion, index, seed + index);
     if (box) boxes.push(box);
   }
   return boxes;
 }
 
-function boxAt({ stretch, time, speed, period }, index, seed) {
+function boxAt({ stretch, time, speed, origin, period }, index, seed) {
   const late = stretch.uneven ? noise(seed) * period * 0.6 : 0;
-  const x = stretch.start + (time - index * period - late) * speed;
+  const x = origin + (time - index * period - late) * speed;
   if (x < stretch.start || x > stretch.end) return null;
   if (stretch.uneven && noise(seed + 0.5) < 0.25) return null;
   return gated({ x, side: 0, look: lookOf(stretch, seed) }, stretch.gates);

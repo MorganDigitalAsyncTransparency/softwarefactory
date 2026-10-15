@@ -6,6 +6,7 @@ import { slab } from './shapes.js';
 
 const ASPECT = 16 / 9;
 const PANEL_GAP = 0.012;
+const FOG = new THREE.Fog('#000000', 120, 320);
 
 // The 3D stage: one renderer and one camera, drawing either the factory or the three
 // close-up panels of S11.
@@ -18,9 +19,9 @@ export function createStage(canvas) {
   const camera = new THREE.PerspectiveCamera(32, ASPECT, 0.5, 600);
   return {
     render(shot, time) {
-      renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
-      if (shot.panels === undefined) drawFactory({ renderer, camera }, shot, time);
-      else drawPanels({ renderer, camera }, shot.panels, time);
+      fit(renderer, canvas);
+      if (shot.split) drawPanels({ renderer, camera }, shot.progress, time);
+      else drawFactory({ renderer, camera }, shot, time);
     },
   };
 }
@@ -29,7 +30,8 @@ function drawFactory({ renderer, camera }, { camera: [position, target], state }
   setDigital(state.digital);
   const scene = lit(world(state, time), 70);
   scene.background = sky(state.digital);
-  scene.fog = new THREE.Fog(scene.background, 120, 320);
+  FOG.color.copy(scene.background);
+  scene.fog = FOG;
   aim(camera, position, target, ASPECT);
   renderer.setScissorTest(false);
   renderer.setViewport(0, 0, ...size(renderer));
@@ -52,6 +54,11 @@ function drawPanels({ renderer, camera }, progress, time) {
     renderer.setScissor(x, 0, panelWidth, height);
     renderer.render(scene, camera);
   });
+}
+
+function fit(renderer, canvas) {
+  const [width, height] = size(renderer);
+  if (width !== canvas.clientWidth || height !== canvas.clientHeight) renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 }
 
 function size(renderer) {

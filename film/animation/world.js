@@ -1,16 +1,16 @@
 import { building } from './building.js';
 import { assembly, output } from './machines.js';
-import { cable, cloud, connect } from './cloud.js';
-import { box, person, robot } from './figures.js';
+import { agents, cable, cloud, connect } from './cloud.js';
+import { box, facingTurn, person, robot } from './figures.js';
 import { group, slab } from './shapes.js';
 import { boxesOn } from './flow.js';
+import { share } from './timeline.js';
 import { construction, laneBelts, laneMotion } from './lanes.js';
 import { ASSEMBLY, BELT, GAPS, HALL, LANES, OUTPUT, SCANNER_X, USERS, middleOf } from './layout.js';
 
 const RELEASE = { spacing: 7, speed: 1.4 };
 const still = { key: null, parts: null };
-// Facing +x, toward the camera, or -x.
-const TURNS = { 1: 0, 0: -Math.PI / 2, '-1': Math.PI };
+const fixed = {};
 
 // The whole factory at one time. What changes only with the state is built once and kept.
 export function world(state, time) {
@@ -18,25 +18,29 @@ export function world(state, time) {
   const { hall, machines, cables } = stillParts(state);
   hall.scale.y = Math.max(0.01, shown.hall);
   machines.scale.y = Math.max(0.01, shown.machines);
-  cables.children.forEach((wire) => connect(wire, shown.cloud));
+  cables.children.forEach((wire) => connect(wire, shown.cables));
+  fixed.ground ??= ground();
+  fixed.cloud ??= group([cloud()]);
+  fixed.cloud.position.y = (1 - shown.cloud) * 40;
   return group([
-    ground(), hall, machines, cables,
-    group([cloud(time)], { position: [0, (1 - shown.cloud) * 40, 0] }),
+    fixed.ground, hall, machines, cables, fixed.cloud,
+    group([agents(time)], { position: fixed.cloud.position.toArray() }),
     shown.product > 0 && moving(state, time),
   ]);
 }
 
-// The opening scene shows one layer after the other: the building, the machines, the
-// product and then IT, so the viewer learns to tell them apart.
 function ground() {
   const field = slab([-300, -300], [300, 300], [-0.2, -0.1], 'ground');
   field.receiveShadow = false;
   return field;
 }
 
+// The opening scene shows one layer after the other: the building, the machines, the
+// product, IT, and last the cables once the cloud is in place, so the viewer learns to
+// tell the layers apart.
 function layersShown(reveal) {
-  const share = (from) => Math.min(1, Math.max(0, (reveal - from) / 0.25));
-  return { hall: share(0), machines: share(0.25), product: share(0.5), cloud: share(0.75) };
+  const from = (start, length = 0.25) => share(reveal, start, start + length);
+  return { hall: from(0), machines: from(0.2), product: from(0.4), cloud: from(0.6), cables: from(0.85, 0.15) };
 }
 
 function stillParts(state) {
@@ -84,8 +88,6 @@ function releases(time) {
 }
 
 function crewMember({ role, x, z, facing, promoted }, time, index) {
-  const figure = role === 'robot'
-    ? robot({ bob: Math.abs(Math.sin(time * 6)) * 0.04 })
-    : person(role, { seed: index, promoted, step: role === 'carrier' ? x / 1.4 : 0 });
-  return group([figure], { position: [x, 0, z], turn: TURNS[facing] });
+  const figure = role === 'robot' ? robot({ time }) : person(role, { seed: index, promoted, walked: role === 'carrier' ? x : 0 });
+  return group([figure], { position: [x, 0, z], turn: facingTurn(facing) });
 }
