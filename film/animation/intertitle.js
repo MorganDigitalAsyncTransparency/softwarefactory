@@ -1,27 +1,14 @@
-import { el, group } from './svg.js';
-import { FRAME } from './layout.js';
+import { fade } from './timeline.js';
 
-const FONT_SIZE = 64;
-const LINE_HEIGHT = 84;
 const MAX_LINE_CHARACTERS = 30;
 const FADE_SECONDS = 0.3;
 
-export function intertitle(text, seconds, length) {
-  const lines = wrap(text);
-  const firstLineY = FRAME.height / 2 - ((lines.length - 1) * LINE_HEIGHT) / 2;
-  const opacity = Math.max(0, Math.min(1, seconds / FADE_SECONDS, (length - seconds) / FADE_SECONDS));
-  return group([
-    el('rect', { ...FRAME, fill: '#000000' }),
-    group(lines.map((line, index) => el('text', {
-      x: FRAME.width / 2,
-      y: firstLineY + index * LINE_HEIGHT,
-      fill: '#FFFFFF',
-      'font-family': 'Helvetica, Arial, sans-serif',
-      'font-size': FONT_SIZE,
-      'text-anchor': 'middle',
-      'dominant-baseline': 'middle',
-    }, [line])), { opacity }),
-  ]);
+// Shows an intertitle on the black card over the stage: the text fades in and out.
+export function showIntertitle(card, text, seconds, length) {
+  const lines = wrap(text).map((line) => Object.assign(document.createElement('span'), { textContent: line }));
+  card.replaceChildren(...lines);
+  card.style.setProperty('--text-opacity', fade(seconds, length, FADE_SECONDS));
+  card.hidden = false;
 }
 
 // Lines are balanced: the narrowest width that still fits the fewest lines, so a long

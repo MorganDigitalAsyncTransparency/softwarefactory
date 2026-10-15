@@ -5,8 +5,10 @@ says how to run the checks.
 
 ## Setup
 
-Nothing to install: the film material is Markdown and the animation is plain HTML,
-SVG and JavaScript. The checks need `git`, a POSIX shell and Node.js 22 or later.
+Nothing to install: the film material is Markdown and the animation is plain HTML and
+JavaScript. The browser loads the one library, three.js, from a CDN when the page opens
+(ADR 0004), so watching needs network access. The checks need `git`, a POSIX shell and
+Node.js 22 or later.
 
 ## Watching the animation
 
@@ -19,7 +21,7 @@ python3 -m http.server --directory film 8000
 ```
 
 Add `?t=<seconds>` to open a single frame, paused, for example
-`http://localhost:8000/?t=72` for the gate scene. Space plays and pauses.
+`http://localhost:8000/?t=71` for the gate scene. Space plays and pauses.
 
 ## Checks
 

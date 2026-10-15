@@ -1,11 +1,15 @@
 import { parseScript } from './script-parser.js';
-import { duration, frameAt, startTimeFrom } from './timeline.js';
+import { duration, fade, frameAt, startTimeFrom } from './timeline.js';
 import { checkDrawings, draw } from './scenes.js';
-import { intertitle } from './intertitle.js';
-import { FRAME } from './layout.js';
+import { showIntertitle } from './intertitle.js';
+import { createStage } from './stage.js';
 
 const SCRIPT_URL = 'script/script.md';
-const stage = document.getElementById('stage');
+// Scenes fade from and to black, so a cut to an intertitle is never abrupt.
+const FADE_SECONDS = 0.5;
+const canvas = document.getElementById('stage');
+const stage = createStage(canvas);
+const card = document.getElementById('card');
 const playButton = document.getElementById('play');
 const restartButton = document.getElementById('restart');
 const progressBar = document.getElementById('progress');
@@ -30,6 +34,7 @@ function wireControls() {
   playButton.addEventListener('click', () => (playback.playing ? pause() : play()));
   restartButton.addEventListener('click', () => { seek(0); play(); });
   progressBar.addEventListener('input', () => seek(Number(progressBar.value)));
+  window.addEventListener('resize', () => seek(playback.time));
   document.addEventListener('keydown', (event) => {
     if (event.code !== 'Space') return;
     event.preventDefault();
@@ -63,10 +68,7 @@ function tick(timestamp) {
 
 function seek(time) {
   playback.time = time;
-  const frame = frameAt(playback.scenes, time);
-  const { camera, picture } = render(frame);
-  stage.setAttribute('viewBox', camera.join(' '));
-  stage.replaceChildren(picture);
+  render(frameAt(playback.scenes, time));
   progressBar.value = time;
   clock.textContent = `${formatClock(time)} / ${formatClock(duration(playback.scenes))}`;
 }
@@ -74,9 +76,12 @@ function seek(time) {
 function render({ scene, progress }) {
   const length = scene.end - scene.start;
   if (scene.type === 'intertitle') {
-    return { camera: [FRAME.x, FRAME.y, FRAME.width, FRAME.height], picture: intertitle(scene.text, progress * length, length) };
+    showIntertitle(card, scene.text, progress * length, length);
+    return;
   }
-  return draw({ scene, progress, time: playback.time });
+  card.hidden = true;
+  canvas.style.opacity = fade(progress * length, length, FADE_SECONDS);
+  stage.render(draw({ scene, progress }), playback.time);
 }
 
 function formatClock(seconds) {

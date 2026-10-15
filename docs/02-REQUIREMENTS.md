@@ -5,11 +5,10 @@ is built is in [03-ARCHITECTURE.md](03-ARCHITECTURE.md).
 
 ## The film animation
 
-The animation plays the film in a browser, drawn in code. It is a flat 2D rendition of
-the [script](../film/script/script.md). From
-[visual-descriptions.md](../film/script/visual-descriptions.md) it takes the roles,
-their colors, the intertitle cards and the continuity, but not the isometric style
-meant for AI video.
+The animation plays the film in a browser as a 3D scene drawn in code. It plays the
+[script](../film/script/script.md) and looks as
+[visual-descriptions.md](../film/script/visual-descriptions.md) says: the style, the
+roles and their colors, the intertitle cards and the continuity.
 
 ### R1: The script is the only source of scenes and intertitles
 
@@ -45,11 +44,12 @@ meant for AI video.
 - **then** it shows the frame at that time, paused. This is how a reviewer or a test
   checks a single scene.
 
-### R6: It runs without a build or dependencies
+### R6: It runs without an install or a build
 
 - **Given** a clone of the repository,
 - **when** the `film/` folder is served by any static web server,
-- **then** the animation plays in a current browser with no install and no build step.
+- **then** the animation plays in a current browser with no install and no build step;
+  its one library, three.js, is loaded by the page at a pinned version.
 
 ### R7: The pictures carry no text and no brand
 

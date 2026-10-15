@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { duration, frameAt, startTimeFrom } from '../film/animation/timeline.js';
+import { duration, fade, frameAt, startTimeFrom } from '../film/animation/timeline.js';
 
 const scenes = [
   { id: 'S01', start: 0, end: 4 },
@@ -31,4 +31,8 @@ test('has no start time without a valid ?t=', () => {
   assert.equal(startTimeFrom(''), null);
   assert.equal(startTimeFrom('?t=soon'), null);
   assert.equal(startTimeFrom('?t=Infinity'), null);
+});
+
+test('a fade rises at the start, holds, and falls at the end', () => {
+  assert.deepEqual([0, 0.25, 2, 3.75, 4].map((seconds) => fade(seconds, 4, 0.5)), [0, 0.5, 1, 0.5, 0]);
 });

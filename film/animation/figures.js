@@ -1,52 +1,68 @@
-import { el, group } from './svg.js';
+import { block, capsule, cylinder, group, sphere } from './shapes.js';
+import { material } from './materials.js';
 
-const BOX_SIZE = 24;
-// The style block asks for diverse people; each figure picks one tone by its seed.
-const SKIN_TONES = ['#F1D7BF', '#D9A77C', '#A86F48', '#6E4529'];
+const BOX = 0.6;
+const SKIN_TONES = ['skin0', 'skin1', 'skin2', 'skin3'];
 
-export function box(x, y, palette, { dented = false, scale = 1 } = {}) {
-  const size = BOX_SIZE * scale;
-  const shape = [
-    el('rect', {
-      x: x - size / 2, y: y - size / 2, width: size, height: size, rx: 3,
-      fill: palette.box, stroke: palette.boxEdge, 'stroke-width': 2,
-    }),
-  ];
-  if (dented) shape.push(dent(x + size / 2, y - size / 2, palette));
-  return group(shape);
+// The product. A dented box is darker and squashed; a box of the wrong size is larger.
+export function box(look = 'good', { scale = 1 } = {}) {
+  const size = scale * (look === 'wrong' ? 1.45 : 1);
+  const surface = look === 'dented' ? 'dented' : 'box';
+  const shape = group([
+    block([BOX, BOX, BOX], surface, [0, BOX / 2, 0]),
+    block([BOX + 0.01, 0.02, 0.14], 'tape', [0, BOX + 0.005, 0]),
+  ], { scale: size });
+  if (look === 'dented') {
+    shape.scale.y *= 0.72;
+    shape.rotation.set(0.12, 0.35, -0.18);
+  }
+  return shape;
 }
 
-function dent(cornerX, cornerY, palette) {
-  return el('path', {
-    d: `M ${cornerX - 10} ${cornerY} L ${cornerX - 4} ${cornerY + 7} L ${cornerX} ${cornerY + 10}`,
-    fill: 'none', stroke: palette.dent, 'stroke-width': 3,
-  });
-}
-
-export function person(x, y, color, { seed = 0, hardHat = false, carrying = null } = {}) {
-  const parts = [
-    el('rect', { x: x - 10, y: y - 14, width: 20, height: 28, rx: 8, fill: color }),
-    el('circle', { cx: x, cy: y - 24, r: 9, fill: SKIN_TONES[seed % SKIN_TONES.length] }),
-  ];
-  if (hardHat) parts.push(hat(x, y, color));
-  if (carrying) parts.push(carrying);
-  return group(parts);
-}
-
-function hat(x, y, color) {
-  return el('path', { d: `M ${x - 11} ${y - 26} A 11 10 0 0 1 ${x + 11} ${y - 26} Z`, fill: color });
-}
-
-export function robot(x, y, palette, lightColor = palette.light) {
+// A person in the color of their role. A Carrier who is promoted turns into a Builder:
+// the vest turns yellow and a hard hat appears.
+export function person(role, { seed = 0, carrying = false, step = 0, promoted = 0 } = {}) {
+  const swing = Math.sin(step * Math.PI * 2) * 0.45;
+  const builder = role === 'builder' || promoted > 0;
+  const torso = role === 'carrier' && promoted > 0 ? vest(promoted) : role;
   return group([
-    el('rect', {
-      x: x - 13, y: y - 11, width: 26, height: 22, rx: 8,
-      fill: palette.robot, stroke: palette.robotEdge, 'stroke-width': 2,
-    }),
-    el('circle', { cx: x, cy: y - 1, r: 4, fill: lightColor }),
+    leg(-0.13, swing, role),
+    leg(0.13, -swing, role),
+    capsule([0.24, 0.45], torso, [0, 1.12, 0]),
+    sphere(0.18, SKIN_TONES[seed % SKIN_TONES.length], [0, 1.62, 0]),
+    builder && hardHat(role === 'builder' ? 1 : promoted),
+    carrying && group([box()], { position: [0.42, 0.95, 0] }),
   ]);
 }
 
-export function rack(x, y, palette) {
-  return el('rect', { x: x - 9, y: y - 16, width: 18, height: 32, rx: 2, fill: palette.rack });
+let promotion;
+
+function vest(promoted) {
+  promotion ??= material('carrier').clone();
+  promotion.color.copy(material('carrier').color).lerp(material('builder').color, promoted);
+  return promotion;
+}
+
+function leg(z, swing, role) {
+  const trousers = role === 'infrastructure' ? 'infrastructure' : 'trousers';
+  const result = group([capsule([0.1, 0.55], trousers, [0, -0.38, 0])], { position: [0, 0.76, z] });
+  result.rotation.z = swing;
+  return result;
+}
+
+function hardHat(size) {
+  return group([
+    sphere(0.2, 'builder', [0, 0, 0]),
+    cylinder([0.26, 0.03], 'builder', [0, -0.02, 0]),
+  ], { position: [0, 1.7, 0], scale: size });
+}
+
+// An AI agent: a small rounded white robot with one soft blue light.
+export function robot({ carrying = false, bob = 0 } = {}) {
+  return group([
+    capsule([0.32, 0.5], 'robot', [0, 0.75 + bob, 0]),
+    sphere(0.26, 'robot', [0, 1.45 + bob, 0]),
+    sphere(0.09, 'it', [0.22, 1.48 + bob, 0]),
+    carrying && group([box()], { position: [0.45, 0.85 + bob, 0] }),
+  ]);
 }

@@ -15,14 +15,16 @@ and the text of each intertitle are in [script.md](script.md), under the same sc
 ## Style block
 
 ```text
-Clean modern 2D isometric animation, flat shapes with soft shadows, calm muted palette
-(warm greys, off-white, soft teal), no text, no logos, no brand colors, no flags,
-neutral global setting. Smooth, steady camera. Simple stylised characters with
+Clean modern 3D animation, simple solid shapes with soft daylight and shadows, calm
+muted palette, no text, no logos, no brand colors, no flags, neutral global setting.
+Smooth, steady camera. Four layers that never share a color: the building has
+sand-colored walls with windows; the machines are steel grey with black belts; the
+product is plain cardboard boxes; IT is blue. Simple stylised characters with
 minimal facial detail, diverse, gender-neutral silhouettes. Color-coded workwear:
 Builders wear yellow vests and hard hats; IT infrastructure staff wear blue overalls;
 Users wear warm orange; Carriers wear plain grey. AI agents are small identical
 rounded white robots with a single soft blue light. Above the factory floats a
-stylised cloud containing small server racks and AI robots, with long thin cables
+white cloud carrying dark blue server racks and AI robots, with long blue cables
 hanging down to stations in the factory. Flow always goes left to right.
 ```
 
@@ -45,7 +47,9 @@ hanging down to stations in the factory. Flow always goes left to right.
 ### S02
 
 ```text
-Slow descending aerial camera over an isometric factory floor under construction.
+Slow descending aerial camera over a 3D factory hall under construction, open at the
+front. The factory appears one layer at a time: the hall, the belts, the boxes, and last
+the cloud, which sinks into place as its cables reach down.
 Four to five parallel conveyor belts start on the left, carrying many small boxes in.
 A loading dock on the right. In the middle of the floor the belts have visible gaps.
 Scaffolding, one half-built wall, builders in yellow working. A stylised cloud above
@@ -123,7 +127,7 @@ Keep layout identical, only the material changes.
 ### S19
 
 ```text
-Slow zoom out to the same wide isometric view as the opening. Some of the gaps in the
+Slow zoom out to the same wide view as the opening. Some of the gaps in the
 middle are now closed with belts and gates, others still have grey-clad workers
 carrying boxes by hand. Builders and IT staff work in parallel, the cloud above with
 its cables. Boxes keep flowing out to users on the right. Calm, ongoing, unfinished.

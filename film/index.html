@@ -5,10 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The software factory</title>
     <link rel="stylesheet" href="animation/player.css">
+    <script type="importmap">
+      { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }
+    </script>
   </head>
   <body>
     <main>
-      <svg id="stage" viewBox="0 0 1600 900" role="img" aria-label="The software factory, an animated silent film"></svg>
+      <div id="screen">
+        <canvas id="stage" role="img" aria-label="The software factory, an animated silent film"></canvas>
+        <p id="card" hidden></p>
+      </div>
       <div class="controls">
         <button id="play" type="button" aria-label="Play">▶</button>
         <button id="restart" type="button" aria-label="Restart">↺</button>

@@ -13,3 +13,9 @@ export function startTimeFrom(search) {
   const time = Number(value);
   return value === null || !Number.isFinite(time) ? null : time;
 }
+
+// How visible something that fades in and out over `edge` seconds is, `seconds` into a
+// scene of `length` seconds.
+export function fade(seconds, length, edge) {
+  return Math.max(0, Math.min(1, seconds / edge, (length - seconds) / edge));
+}

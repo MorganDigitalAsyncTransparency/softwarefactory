@@ -7,11 +7,13 @@ scene ID. The title, audience, message and other decisions are in the
 
 ## The layout
 
-A factory floor seen from above:
+A factory hall seen from the front and above, open at the front so the viewer can look
+in:
 
 - **Left:** many small boxes arrive on several automated belts.
 - **Right:** a loading dock ships one large, finished box.
 - **Middle:** the belts end, with gaps where people carry boxes by hand.
+- **Back:** a wall and a roof still being built, with scaffolding.
 - **Above:** the cloud, with servers and AI robots, and long cables down to the
   stations.
 
@@ -39,7 +41,7 @@ Each role wears its own color, defined in the
 | ID  | Time      | Type       | Content                                                                                                                                                                                       |
 | --- | --------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | S01 | 0:00–0:04 | Intertitle | **A factory.**                                                                                                                                                                                |
-| S02 | 0:04–0:12 | Scene      | The camera descends over the factory. Belts start on the left, the loading dock sits on the right and the cloud with its cables hangs above. Parts of the factory are still being built, with Builders at work. |
+| S02 | 0:04–0:12 | Scene      | The camera descends over the factory as it appears one layer at a time: the hall, the belts, the boxes, and last the cloud with its cables. Belts start on the left and the loading dock sits on the right. Parts of the factory are still being built, with Builders at work. |
 | S03 | 0:12–0:16 | Intertitle | **Many parts in. One product out.**                                                                                                                                                           |
 
 ## Act 2: The ends work (0:16–0:36), level 2

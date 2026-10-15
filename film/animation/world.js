@@ -1,106 +1,91 @@
-import { el, group } from './svg.js';
-import { box, person, rack, robot } from './figures.js';
-import { lanes } from './belts.js';
-import {
-  ASSEMBLY, CABLE_ENDS, CLOUD, DOCK, FLOOR, GAPS, LANES, OUTPUT, SCAFFOLD, USERS,
-} from './layout.js';
+import { building } from './building.js';
+import { assembly, output } from './machines.js';
+import { cable, cloud, connect } from './cloud.js';
+import { box, person, robot } from './figures.js';
+import { group, slab } from './shapes.js';
+import { boxesOn } from './flow.js';
+import { construction, laneBelts, laneMotion } from './lanes.js';
+import { ASSEMBLY, BELT, GAPS, HALL, LANES, OUTPUT, SCANNER_X, USERS, middleOf } from './layout.js';
 
-// state: { gaps: { A2: 'gate', ... }, gateLights: { A2: 'stop' }, wallBuilt: 0..1 }
-export function world(state, time, palette) {
+const RELEASE = { spacing: 7, speed: 1.4 };
+const still = { key: null, parts: null };
+// Facing +x, toward the camera, or -x.
+const TURNS = { 1: 0, 0: -Math.PI / 2, '-1': Math.PI };
+
+// The whole factory at one time. What changes only with the state is built once and kept.
+export function world(state, time) {
+  const shown = layersShown(state.reveal);
+  const { hall, machines, cables } = stillParts(state);
+  hall.scale.y = Math.max(0.01, shown.hall);
+  machines.scale.y = Math.max(0.01, shown.machines);
+  cables.children.forEach((wire) => connect(wire, shown.cloud));
   return group([
-    el('rect', { x: -2000, y: -2000, width: 6000, height: 5000, fill: palette.background }),
-    floor(state, time, palette),
-    cables(state, palette),
-    cloud(time, palette),
-    lanes(state, time, palette),
-    assembly(time, palette),
-    users(time, palette),
-    person(1215, 315, palette.infrastructure, { seed: 3 }),
+    ground(), hall, machines, cables,
+    group([cloud(time)], { position: [0, (1 - shown.cloud) * 40, 0] }),
+    shown.product > 0 && moving(state, time),
   ]);
 }
 
-function floor(state, time, palette) {
-  const wallEnd = FLOOR.x + FLOOR.width * state.wallBuilt;
-  const right = FLOOR.x + FLOOR.width;
-  const bottom = FLOOR.y + FLOOR.height;
-  const wall = { stroke: palette.wall, 'stroke-width': 8, fill: 'none', 'stroke-linecap': 'round' };
+// The opening scene shows one layer after the other: the building, the machines, the
+// product and then IT, so the viewer learns to tell them apart.
+function ground() {
+  const field = slab([-300, -300], [300, 300], [-0.2, -0.1], 'ground');
+  field.receiveShadow = false;
+  return field;
+}
+
+function layersShown(reveal) {
+  const share = (from) => Math.min(1, Math.max(0, (reveal - from) / 0.25));
+  return { hall: share(0), machines: share(0.25), product: share(0.5), cloud: share(0.75) };
+}
+
+function stillParts(state) {
+  const key = JSON.stringify([state.gaps, state.built]);
+  if (still.key !== key) Object.assign(still, { key, parts: buildStill(state) });
+  return still.parts;
+}
+
+function buildStill(state) {
+  return {
+    hall: building(state.built),
+    machines: group([...LANES.map((_, laneIndex) => laneBelts(state, laneIndex)), assembly(), output()]),
+    cables: group(stations(state).map((station) => cable(station))),
+  };
+}
+
+// Where the cables from the cloud end: every scanner and gate, the assembly and the dock.
+function stations(state) {
+  const gates = Object.entries(state.gaps).filter(([, mode]) => mode === 'gate')
+    .map(([key]) => ({ x: middleOf(GAPS[key[0]]), y: 3.3, z: LANES[Number(key[1]) - 1] }));
+  return [
+    ...LANES.map((z) => ({ x: SCANNER_X, y: 3, z })),
+    ...gates,
+    { x: middleOf(ASSEMBLY), y: 5, z: OUTPUT.z },
+    { x: HALL.right - 0.6, y: 4.6, z: OUTPUT.z - 2.4 },
+  ];
+}
+
+function moving(state, time) {
+  const work = state.installing;
   return group([
-    el('rect', { x: FLOOR.x, y: FLOOR.y, width: FLOOR.width, height: FLOOR.height, fill: palette.floor }),
-    el('path', { ...wall, d: `M ${wallEnd} ${FLOOR.y} L ${FLOOR.x} ${FLOOR.y} L ${FLOOR.x} ${bottom} L ${right} ${bottom} L ${right} ${DOCK.y + DOCK.height}` }),
-    el('line', { ...wall, x1: right, y1: FLOOR.y + 40, x2: right, y2: DOCK.y, 'stroke-dasharray': '4 14' }),
-    el('line', { ...wall, x1: wallEnd, y1: FLOOR.y, x2: right, y2: FLOOR.y, 'stroke-dasharray': '4 14' }),
-    scaffold(wallEnd, time, palette),
+    ...LANES.map((_, laneIndex) => laneMotion(state, time, laneIndex)),
+    construction(state),
+    work && cable({ x: middleOf(GAPS[work.gap]), y: 3.3, z: LANES[work.lane] }, work.share),
+    ...releases(time),
+    ...USERS.map(([x, z], index) => group([person('user', { seed: index + 1 })], { position: [x, 0, z], turn: Math.PI })),
+    group([person('infrastructure', { seed: 2 })], { position: [middleOf(ASSEMBLY) - 4, 0, LANES[0] - 2.6] }),
+    ...state.crew.map((member, index) => crewMember(member, time, index)),
   ]);
 }
 
-function scaffold(wallEnd, time, palette) {
-  const start = Math.max(wallEnd, SCAFFOLD.start);
-  const poles = [];
-  for (let x = start + 20; x < SCAFFOLD.end - 20; x += 70) {
-    poles.push(el('line', { x1: x, y1: SCAFFOLD.y - 46, x2: x, y2: SCAFFOLD.y + 6, stroke: palette.roller, 'stroke-width': 3 }));
-  }
-  const bob = Math.sin(time * 3) * 2;
-  return group([
-    ...poles,
-    el('line', { x1: start, y1: SCAFFOLD.y - 20, x2: SCAFFOLD.end - 20, y2: SCAFFOLD.y - 20, stroke: palette.roller, 'stroke-width': 3 }),
-    person(start + 60, SCAFFOLD.y - 34 + bob, palette.builder, { seed: 1, hardHat: true }),
-    person(start + 200, SCAFFOLD.y - 34 - bob, palette.builder, { seed: 2, hardHat: true }),
-  ]);
+function releases(time) {
+  const stretch = { start: OUTPUT.start + 1, end: OUTPUT.end, uneven: false, gates: [] };
+  return boxesOn(stretch, time, RELEASE).map(({ x }) => group([box('good', { scale: 3 })], { position: [x, BELT.height, OUTPUT.z] }));
 }
 
-function cloud(time, palette) {
-  const shape = [[-120, 20, 110, 45], [120, 20, 110, 45], [0, -5, 150, 65], [0, 30, 190, 35]];
-  // Drawn twice so the outline goes round the whole cloud, not round every puff.
-  const puffs = (outline) => shape.map(([dx, dy, rx, ry]) => el('ellipse', {
-    cx: CLOUD.x + dx, cy: CLOUD.y + dy, rx, ry, fill: palette.cloud, stroke: palette.cloudEdge, 'stroke-width': outline ? 6 : 0,
-  }));
-  const hover = Math.sin(time * 1.5) * 3;
-  return group([
-    ...puffs(true), ...puffs(false),
-    rack(CLOUD.x - 60, CLOUD.y + 5, palette), rack(CLOUD.x - 30, CLOUD.y + 5, palette), rack(CLOUD.x, CLOUD.y + 5, palette),
-    robot(CLOUD.x + 60, CLOUD.y + 12 + hover, palette),
-    robot(CLOUD.x + 110, CLOUD.y + 22 - hover, palette),
-    robot(CLOUD.x - 130, CLOUD.y + 25 + hover, palette),
-  ]);
-}
-
-function cables(state, palette) {
-  const ends = [...CABLE_ENDS, ...gateTops(state)];
-  return group(ends.map((end, index) => {
-    const startX = CLOUD.x - 160 + (index % CABLE_ENDS.length) * 80;
-    const startY = CLOUD.y + 50;
-    return el('path', {
-      d: `M ${startX} ${startY} C ${startX} ${startY + 120}, ${end.x} ${end.y - 140}, ${end.x} ${end.y}`,
-      fill: 'none', stroke: palette.cable, 'stroke-width': 3,
-    });
-  }));
-}
-
-// Every gate is wired to the cloud, so it keeps its cable in every later scene.
-function gateTops(state) {
-  return Object.entries(state.gaps)
-    .filter(([, kind]) => kind === 'gate')
-    .map(([key]) => {
-      const { start, end } = GAPS[key[0]];
-      return { x: (start + end) / 2, y: LANES[Number(key[1]) - 1] - 50 };
-    });
-}
-
-function assembly(time, palette) {
-  const travel = DOCK.x + DOCK.width / 2 - OUTPUT.start;
-  const position = (time * 45) % travel;
-  return group([
-    el('rect', { x: ASSEMBLY.x, y: ASSEMBLY.y, width: ASSEMBLY.width, height: ASSEMBLY.height, rx: 8, fill: palette.wall }),
-    el('rect', { x: OUTPUT.start, y: OUTPUT.y - 20, width: OUTPUT.end - OUTPUT.start, height: 40, fill: palette.belt }),
-    box(OUTPUT.start + position, OUTPUT.y, palette, { scale: 1.9 }),
-    el('rect', { x: DOCK.x, y: DOCK.y, width: DOCK.width, height: DOCK.height, rx: 6, fill: palette.roller }),
-  ]);
-}
-
-function users(time, palette) {
-  const reach = Math.sin(time * 2) * 3;
-  return group([
-    ...USERS.map(({ x, y }, index) => person(x, y, palette.user, { seed: index })),
-    box(USERS[0].x - 22, USERS[0].y + 6 + reach, palette, { scale: 1.6 }),
-  ]);
+function crewMember({ role, x, z, facing, promoted }, time, index) {
+  const figure = role === 'robot'
+    ? robot({ bob: Math.abs(Math.sin(time * 6)) * 0.04 })
+    : person(role, { seed: index, promoted, step: role === 'carrier' ? x / 1.4 : 0 });
+  return group([figure], { position: [x, 0, z], turn: TURNS[facing] });
 }
