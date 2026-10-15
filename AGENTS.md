@@ -27,13 +27,13 @@ solve a real problem.
 | What the film is for: audience, form, decisions | [`film/README.md`](film/README.md)                               |
 | The film's scenes, timing and intertitle text   | [`film/script/script.md`](film/script/script.md)                 |
 | How the film looks: style, prompts, continuity  | [`film/script/visual-descriptions.md`](film/script/visual-descriptions.md) |
+| What the code must do (Given/When/Then)         | [`docs/02-REQUIREMENTS.md`](docs/02-REQUIREMENTS.md)             |
+| How the code is built                           | [`docs/03-ARCHITECTURE.md`](docs/03-ARCHITECTURE.md)             |
 | Why the repository works the way it does        | [`docs/decisions/`](docs/decisions/README.md) (MADR)             |
 | How to set up, check and contribute             | [`docs/01-CONTRIBUTING.md`](docs/01-CONTRIBUTING.md)             |
 
 Never restate another document's facts; link to them. A fact written twice is a bug
-waiting to drift. When code arrives, its requirements go in `docs/02-REQUIREMENTS.md`
-(Given/When/Then) and its structure in `docs/03-ARCHITECTURE.md`; create them with the
-first change that needs them and add them to this table.
+waiting to drift.
 
 ## Non-negotiable rules
 
@@ -53,7 +53,8 @@ first change that needs them and add them to this table.
 
 ## Clean code, strictly
 
-Applies to every line of code and script. Small, simple files and functions:
+Applies to every line of code and script. Small, simple files and functions; CI
+enforces the hard limit on lines per file (`scripts/check-file-size.sh`):
 
 | Measure                 | Target | Hard limit |
 | ----------------------- | ------ | ---------- |

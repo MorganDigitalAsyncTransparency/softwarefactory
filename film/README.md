@@ -4,6 +4,9 @@ A short animated silent film that explains a software factory by comparing it wi
 physical factory. This file is the film brief: who the film is for and the decisions
 that shape it. The scenes themselves are in [script/script.md](script/script.md).
 
+The film plays as an animation drawn in code: [`index.html`](index.html). How to watch
+it is in the [contributing guide](../docs/01-CONTRIBUTING.md#watching-the-animation).
+
 ## Brief
 
 | Question         | Decision                                                                                    |
@@ -43,5 +46,7 @@ We are building gates at every step and automating the manual steps away.
 - The software layer is revealed late, after the factory story, so the factory image
   carries the film.
 - *Shift left* gets its own intertitle.
+- The film is first built as an animation in code, with no sound and no recording to
+  a video file.
 - Users, Builders and IT infrastructure are three separate roles, always shown apart
   (see [roles](script/script.md#roles)).

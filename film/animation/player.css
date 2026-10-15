@@ -1,0 +1,58 @@
+:root {
+  --page: #1A1A1A;
+  --control: #F4F1EC;
+  --control-muted: #9A9A9A;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--page);
+  color: var(--control);
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+main {
+  width: min(100vw - 32px, (100vh - 96px) * 16 / 9);
+}
+
+#stage {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000000;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+}
+
+.controls button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--control-muted);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--control);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#progress {
+  flex: 1;
+  accent-color: var(--control);
+}
+
+#clock {
+  font-variant-numeric: tabular-nums;
+  color: var(--control-muted);
+}
+
+#error:empty {
+  display: none;
+}
