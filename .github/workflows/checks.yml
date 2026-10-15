@@ -1,0 +1,24 @@
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Text-only, English and Markdown lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Text-only repository (ADR 0003)
+        run: scripts/check-text-only.sh
+      - name: English only (ADR 0001)
+        run: scripts/check-english.sh
+      - name: Markdown lint
+        run: |
+          npm install --global markdownlint-cli2@0.23.3
+          markdownlint-cli2 "**/*.md"

@@ -1,0 +1,12 @@
+// Markdown lint (docs/01-CONTRIBUTING.md). Line length and table column
+// alignment are left to the writer: long table cells read better unwrapped.
+// CLAUDE.md, agent files and templates start with an import, front matter or
+// a section, not a title.
+{
+  "config": {
+    "default": true,
+    "MD013": false,
+    "MD041": false,
+    "MD060": false
+  }
+}
