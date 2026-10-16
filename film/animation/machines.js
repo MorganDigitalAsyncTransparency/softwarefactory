@@ -1,18 +1,25 @@
 import { block, cylinder, group, slab, sphere } from './shapes.js';
-import { robot } from './figures.js';
 import { light } from './materials.js';
-import { ASSEMBLY, BELT, DOCK, HALL, LANES, OUTPUT } from './layout.js';
+import { ASSEMBLY, BELT, DOCK, HALL, JOINER, LANES, OUTPUT, PAIR } from './layout.js';
 
 const LEG_EVERY = 2.5;
 
 export function belt(start, end, z, width = BELT.width) {
+  return group([
+    ...beltFrame(start, end, z, width),
+    slab([start, z - width / 2], [end, z + width / 2], [0.94, BELT.height], 'belt'),
+  ]);
+}
+
+// A belt that is still being laid: the frame and legs stand, the belt itself is missing.
+export function bareBelt(start, end, z) {
+  return group(beltFrame(start, end, z, BELT.width));
+}
+
+function beltFrame(start, end, z, width) {
   const legs = [];
   for (let x = start + 0.4; x < end; x += LEG_EVERY) legs.push(...[-1, 1].map((side) => leg(x, z + side * (width / 2 - 0.1))));
-  return group([
-    slab([start, z - width / 2 - 0.08], [end, z + width / 2 + 0.08], [0.72, 0.94], 'beltFrame'),
-    slab([start, z - width / 2], [end, z + width / 2], [0.94, BELT.height], 'belt'),
-    ...legs,
-  ]);
+  return [slab([start, z - width / 2 - 0.08], [end, z + width / 2 + 0.08], [0.72, 0.94], 'beltFrame'), ...legs];
 }
 
 function leg(x, z) {
@@ -26,28 +33,36 @@ export function gate(x, z, signal) {
     ...[-1, 1].map((side) => block([0.22, 2.6, 0.22], 'machine', [x, 1.3, z + side * 1.05])),
     block([0.5, 0.4, 2.4], 'machine', [x, 2.7, z]),
     sphere(0.22, light(signal), [x, 3.1, z]),
-    slab([x - 0.7, z + 1.3], [x + 0.7, z + 2.6], [0, 0.5], 'machine'),
+    slab([x - 0.6, z + 1.05], [x + 0.6, z + 2.05], [0, 0.5], 'machine'),
   ]);
 }
 
-// The automated check at the left: an arch with a scanning head and a light, watched by
-// an AI agent.
-export function scanner(x, z, signal) {
+// A test station: a tunnel over the belt with a screen and a light that turns green as
+// each box is tested. `span` is how wide a stretch of belts it covers, `clear` how high.
+export function tester({ x, z, span, clear = 1.55 }, signal) {
   return group([
-    group([robot()], { position: [x - 1, 0, z + 1.5], turn: Math.PI / 2 }),
-    ...[-1, 1].map((side) => block([0.3, 2.2, 0.3], 'robot', [x, 1.1, z + side * 1.05])),
-    block([0.7, 0.45, 2.4], 'robot', [x, 2.35, z]),
-    block([0.4, 0.12, 0.8], 'it', [x, 2.08, z]),
-    sphere(0.2, light(signal), [x, 2.8, z]),
+    slab([x - 0.6, z - span / 2], [x + 0.6, z + span / 2], [clear, clear + 0.65], 'machine'),
+    ...[-1, 1].map((side) => block([1.2, clear, 0.18], 'machine', [x, clear / 2, z + side * (span / 2 - 0.09)])),
+    block([0.7, 0.45, 0.06], 'it', [x, clear + 0.3, z + span / 2 + 0.04]),
+    sphere(0.16, light(signal), [x, clear + 0.85, z]),
   ]);
 }
 
-// Where the belts end: one machine joins the parts into the finished product.
+// Where each pair of small belts is joined into one belt with larger boxes.
+export function joiner(laneIndex) {
+  const z = LANES[laneIndex];
+  return group([
+    slab([JOINER.start, z - PAIR - 0.8], [JOINER.end, z + PAIR + 0.8], [0, 1.9], 'machine'),
+    slab([JOINER.start + 0.3, z - 0.6], [JOINER.end - 0.3, z + 0.6], [1.9, 2.3], 'steel'),
+  ]);
+}
+
+// Where the five belts end: one machine joins them into the finished product.
 export function assembly() {
   const intakes = LANES.map((z) => slab([ASSEMBLY.start - 0.05, z - 0.9], [ASSEMBLY.start, z + 0.9], [0.8, 1.9], 'hatch'));
   return group([
-    slab([ASSEMBLY.start, LANES[0] - 2.4], [ASSEMBLY.end, LANES.at(-1) + 2.4], [0, 4], 'machine'),
-    slab([ASSEMBLY.start + 0.8, LANES[0] - 1.6], [ASSEMBLY.end - 0.8, LANES.at(-1) + 1.6], [4, 5], 'steel'),
+    slab([ASSEMBLY.start, LANES[0] - 1.6], [ASSEMBLY.end, LANES.at(-1) + 1.6], [0, 4], 'machine'),
+    slab([ASSEMBLY.start + 0.8, LANES[0] - 0.8], [ASSEMBLY.end - 0.8, LANES.at(-1) + 0.8], [4, 5], 'steel'),
     ...intakes,
   ]);
 }

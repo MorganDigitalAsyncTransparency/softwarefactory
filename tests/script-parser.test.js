@@ -5,22 +5,17 @@ import { parseScript } from '../film/animation/script-parser.js';
 const table = `
 ## Act 1
 
-| ID  | Time      | Type       | Content |
-| --- | --------- | ---------- | ------- |
-| S01 | 0:00–0:04 | Intertitle | **A factory.** |
-| S02 | 0:04–1:12 | Scene      | The camera descends. |
+| ID  | Time      | Scene                | Caption     |
+| --- | --------- | -------------------- | ----------- |
+| S01 | 0:00–0:04 | The camera descends. | A factory.  |
+| S02 | 0:04–1:12 | The camera settles.  |             |
 `;
 
-test('reads every scene row with its ID, times in seconds and type', () => {
-  const scenes = parseScript(table);
-  assert.deepEqual(scenes.map(({ id, start, end, type }) => ({ id, start, end, type })), [
-    { id: 'S01', start: 0, end: 4, type: 'intertitle' },
-    { id: 'S02', start: 4, end: 72, type: 'scene' },
+test('reads every scene row with its ID, times in seconds and caption', () => {
+  assert.deepEqual(parseScript(table), [
+    { id: 'S01', start: 0, end: 4, caption: 'A factory.' },
+    { id: 'S02', start: 4, end: 72, caption: '' },
   ]);
-});
-
-test('gives an intertitle its text without Markdown emphasis', () => {
-  assert.equal(parseScript(table)[0].text, 'A factory.');
 });
 
 test('ignores header, divider and prose lines', () => {

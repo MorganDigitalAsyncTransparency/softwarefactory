@@ -9,22 +9,27 @@ test('every scene in the script has a drawing', () => {
 });
 
 test('a scene with no drawing stops the animation with an error naming it', () => {
-  assert.throws(() => checkDrawings([{ id: 'S99', type: 'scene' }]), /S99/);
+  assert.throws(() => checkDrawings([{ id: 'S99' }]), /S99/);
 });
 
-test('intertitles need no drawing', () => {
-  assert.doesNotThrow(() => checkDrawings([{ id: 'S98', type: 'intertitle' }]));
-});
-
-test('every scene gives a shot with a finite camera, or the split panels of S11', () => {
-  const scenes = parseScript(readFileSync('film/script/script.md', 'utf8')).filter(({ type }) => type === 'scene');
+test('every scene gives a shot with a finite camera, or the split panels of S07', () => {
+  const scenes = parseScript(readFileSync('film/script/script.md', 'utf8'));
   scenes.forEach((scene) => [0, 0.5, 1].forEach((progress) => {
     const shot = draw({ scene, progress });
     assert.ok(shot.split || shot.camera.flat().every(Number.isFinite), `${scene.id} at ${progress}`);
   }));
 });
 
-test('the gate built in S13 stays in the factory for the rest of the film', () => {
-  const shot = draw({ scene: { id: 'S19' }, progress: 0 });
+test('one continuous picture: each scene camera starts where the one before it stopped', () => {
+  const scenes = parseScript(readFileSync('film/script/script.md', 'utf8'));
+  scenes.slice(1).forEach((scene, index) => {
+    const [before, after] = [draw({ scene: scenes[index], progress: 1 }), draw({ scene, progress: 0 })];
+    const cut = before.fades?.includes('out') && after.fades?.includes('in');
+    if (!cut) assert.deepEqual(after.camera, before.camera, `${scenes[index].id} to ${scene.id}`);
+  });
+});
+
+test('the gate built in S08 stays in the factory for the rest of the film', () => {
+  const shot = draw({ scene: { id: 'S12' }, progress: 0 });
   assert.equal(shot.state.gaps.B2, 'gate');
 });

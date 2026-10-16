@@ -18,7 +18,7 @@ installed?
 
 ## Decision Drivers
 
-* **One owner per truth.** Scene times and intertitle text live in `script.md` only.
+* **One owner per truth.** Scene times and captions live in `script.md` only.
 * **Text only** (ADR 0003) and standard library first (`AGENTS.md`).
 * **Seekable.** A reviewer must be able to open any frame directly.
 * **Readable in 3D.** Light, shadow and a moving camera are what make the hall, the
@@ -42,7 +42,7 @@ around the factory and has no light. A framework (D) adds a build for no gain.
 
 ### Consequences
 
-* Good, because a change to an intertitle or a timing in `script.md` shows up in the
+* Good, because a change to a caption or a timing in `script.md` shows up in the
   animation with no code change.
 * Good, because the parser, the timeline, the motion and the scene table are pure and
   tested with Node's built-in test runner, without three.js.

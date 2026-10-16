@@ -8,27 +8,27 @@ is built is in [03-ARCHITECTURE.md](03-ARCHITECTURE.md).
 The animation plays the film in a browser as a 3D scene drawn in code. It plays the
 [script](../film/script/script.md) and looks as
 [visual-descriptions.md](../film/script/visual-descriptions.md) says: the style, the
-roles and their colors, the intertitle cards and the continuity.
+roles and their colors, the captions and the continuity.
 
-### R1: The script is the only source of scenes and intertitles
+### R1: The script is the only source of scenes and captions
 
 - **Given** `film/script/script.md`,
 - **when** the animation loads,
-- **then** it reads every scene's ID, time range, type and intertitle text from that file,
-  and no scene time or intertitle text is written anywhere in the code.
+- **then** it reads every scene's ID, time range and caption from that file, and no
+  scene time or caption is written anywhere in the code.
 
 ### R2: Every scene is drawn
 
 - **Given** the script,
-- **when** the animation reaches a scene of type Scene,
+- **when** the animation reaches a scene,
 - **then** it draws that scene, and a scene ID with no drawing stops the animation with
   an error that names the ID.
 
-### R3: Intertitles are readable
+### R3: Captions are readable
 
-- **Given** an intertitle,
+- **Given** a scene with a caption,
 - **when** it is shown,
-- **then** it follows the [intertitle cards](../film/script/visual-descriptions.md#intertitle-cards)
+- **then** it follows the [captions](../film/script/visual-descriptions.md#captions)
   rules, with long text wrapped onto balanced lines.
 
 ### R4: The viewer controls playback
@@ -53,7 +53,14 @@ roles and their colors, the intertitle cards and the continuity.
 
 ### R7: The pictures carry no text and no brand
 
-- **Given** any scene of type Scene,
+- **Given** any scene,
 - **when** it is drawn,
-- **then** it contains no words, symbols of a brand or national markers; only
-  intertitles carry text.
+- **then** the picture contains no words, symbols of a brand or national markers; the
+  caption below it is the only text.
+
+### R8: The film is one continuous picture
+
+- **Given** two scenes that follow each other,
+- **when** the first ends and the second starts,
+- **then** the camera goes on from where it was, with no cut and no title card; only a
+  scene that asks for it fades through black at its edges.

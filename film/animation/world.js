@@ -1,4 +1,4 @@
-import { building } from './building.js';
+import { hall, site, standingBays } from './building.js';
 import { assembly, output } from './machines.js';
 import { agents, cable, cloud, connect } from './cloud.js';
 import { box, facingTurn, person, robot } from './figures.js';
@@ -6,24 +6,32 @@ import { group, slab } from './shapes.js';
 import { boxesOn } from './flow.js';
 import { share } from './timeline.js';
 import { construction, laneBelts, laneMotion } from './lanes.js';
-import { ASSEMBLY, BELT, GAPS, HALL, LANES, OUTPUT, SCANNER_X, USERS, middleOf } from './layout.js';
+import { tester } from './machines.js';
+import {
+  ASSEMBLY, BELT, GAPS, HALL, INTAKE_TESTS, LANES, OUTPUT, OUTPUT_TESTS, TESTS, UNFINISHED_LANE, USERS,
+  beltLaid, hallBuilt, middleOf,
+} from './layout.js';
 
 const RELEASE = { spacing: 7, speed: 1.4 };
 const still = { key: null, parts: null };
 const fixed = {};
 
-// The whole factory at one time. What changes only with the state is built once and kept.
-export function world(state, time) {
+// The whole factory at one time. What changes only with the state is built once and
+// kept. The hall and one belt are built as the film runs, and are never finished.
+export function world(scene, time) {
+  const state = { ...scene, built: hallBuilt(time), ends: { [UNFINISHED_LANE]: beltLaid(time) } };
   const shown = layersShown(state.reveal);
-  const { hall, machines, cables } = stillParts(state);
-  hall.scale.y = Math.max(0.01, shown.hall);
+  const { building, machines, cables } = stillParts(state);
+  building.scale.y = Math.max(0.01, shown.hall);
   machines.scale.y = Math.max(0.01, shown.machines);
   cables.children.forEach((wire) => connect(wire, shown.cables));
   fixed.ground ??= ground();
   fixed.cloud ??= group([cloud()]);
   fixed.cloud.position.y = (1 - shown.cloud) * 40;
+  const work = group([site(state.built, time)]);
+  work.scale.y = Math.max(0.01, shown.hall);
   return group([
-    fixed.ground, hall, machines, cables, fixed.cloud,
+    fixed.ground, building, work, machines, cables, fixed.cloud,
     group([agents(time)], { position: fixed.cloud.position.toArray() }),
     shown.product > 0 && moving(state, time),
   ]);
@@ -44,27 +52,32 @@ function layersShown(reveal) {
 }
 
 function stillParts(state) {
-  const key = JSON.stringify([state.gaps, state.built]);
+  const key = JSON.stringify([state.gaps, standingBays(state.built)]);
   if (still.key !== key) Object.assign(still, { key, parts: buildStill(state) });
   return still.parts;
 }
 
 function buildStill(state) {
   return {
-    hall: building(state.built),
+    building: hall(standingBays(state.built)),
     machines: group([...LANES.map((_, laneIndex) => laneBelts(state, laneIndex)), assembly(), output()]),
     cables: group(stations(state).map((station) => cable(station))),
   };
 }
 
-// Where the cables from the cloud end: every scanner and gate, the assembly and the dock.
+// Where the cables from the cloud end: the first test station on each pair of small
+// belts and on each of the five belts, every gate, the assembly, the first test station
+// on the output and the dock.
 function stations(state) {
   const gates = Object.entries(state.gaps).filter(([, mode]) => mode === 'gate')
     .map(([key]) => ({ x: middleOf(GAPS[key[0]]), y: 3.3, z: LANES[Number(key[1]) - 1] }));
+  const tests = LANES.map((z) => ({ x: TESTS[0], y: 2.6, z }));
   return [
-    ...LANES.map((z) => ({ x: SCANNER_X, y: 3, z })),
+    ...LANES.map((z) => ({ x: INTAKE_TESTS[0], y: 2.6, z })),
+    ...tests,
     ...gates,
     { x: middleOf(ASSEMBLY), y: 5, z: OUTPUT.z },
+    { x: OUTPUT_TESTS[0], y: 4.2, z: OUTPUT.z },
     { x: HALL.right - 0.6, y: 4.6, z: OUTPUT.z - 2.4 },
   ];
 }
@@ -84,7 +97,11 @@ function moving(state, time) {
 
 function releases(time) {
   const stretch = { start: OUTPUT.start + 1, end: OUTPUT.end, uneven: false, gates: [] };
-  return boxesOn(stretch, time, RELEASE).map(({ x }) => group([box('good', { scale: 3 })], { position: [x, BELT.height, OUTPUT.z] }));
+  const boxes = boxesOn(stretch, time, RELEASE);
+  return [
+    ...boxes.map(({ x }) => group([box('good', { scale: 3 })], { position: [x, BELT.height, OUTPUT.z] })),
+    ...OUTPUT_TESTS.map((x) => tester({ x, z: OUTPUT.z, span: 3.8, clear: 3.1 }, boxes.some((item) => Math.abs(item.x - x) < 1) && 'ok')),
+  ];
 }
 
 function crewMember({ role, x, z, facing, promoted }, time, index) {

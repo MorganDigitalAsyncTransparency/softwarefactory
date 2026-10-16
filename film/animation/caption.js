@@ -1,18 +1,14 @@
-import { fade } from './timeline.js';
+const MAX_LINE_CHARACTERS = 44;
 
-const MAX_LINE_CHARACTERS = 30;
-const FADE_SECONDS = 0.3;
-
-// Shows an intertitle on the black card over the stage: the text fades in and out.
-export function showIntertitle(card, text, seconds, length) {
+// Shows a scene's caption at the bottom of the picture.
+export function showCaption(element, text, opacity) {
   const lines = wrap(text).map((line) => Object.assign(document.createElement('span'), { textContent: line }));
-  card.replaceChildren(...lines);
-  card.style.setProperty('--text-opacity', fade(seconds, length, FADE_SECONDS));
-  card.hidden = false;
+  element.replaceChildren(...lines);
+  element.style.opacity = opacity;
 }
 
 // Lines are balanced: the narrowest width that still fits the fewest lines, so a long
-// intertitle does not end with a single orphan word.
+// caption does not end with a single orphan word.
 export function wrap(text) {
   const lineCount = Math.ceil(text.length / MAX_LINE_CHARACTERS);
   for (let limit = Math.ceil(text.length / lineCount); limit < MAX_LINE_CHARACTERS; limit += 1) {

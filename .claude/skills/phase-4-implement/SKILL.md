@@ -13,7 +13,7 @@ description: Phase 4 in softwarefactory. Use when requirements, design and valid
 - The smallest coherent solution that meets the requirements. No unrelated clean-up.
 - Follow "Clean code, strictly" in `AGENTS.md`: the size and complexity limits, and no
   code "just in case". Functions do one thing, at one level of abstraction.
-- Names say what the thing is in the domain (`intertitle`, `scene`), never `data`.
+- Names say what the thing is in the domain (`caption`, `scene`), never `data`.
 - Read your own diff before the phase ends and strike everything no requirement or test
   needs.
 - Commit when the implementation is green.

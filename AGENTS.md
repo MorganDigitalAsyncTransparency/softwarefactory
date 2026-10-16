@@ -25,7 +25,7 @@ solve a real problem.
 | Truth                                           | Owner                                                            |
 | ----------------------------------------------- | ---------------------------------------------------------------- |
 | What the film is for: audience, form, decisions | [`film/README.md`](film/README.md)                               |
-| The film's scenes, timing and intertitle text   | [`film/script/script.md`](film/script/script.md)                 |
+| The film's scenes, timing and caption text      | [`film/script/script.md`](film/script/script.md)                 |
 | How the film looks: style, prompts, continuity  | [`film/script/visual-descriptions.md`](film/script/visual-descriptions.md) |
 | What the code must do (Given/When/Then)         | [`docs/02-REQUIREMENTS.md`](docs/02-REQUIREMENTS.md)             |
 | How the code is built                           | [`docs/03-ARCHITECTURE.md`](docs/03-ARCHITECTURE.md)             |
@@ -93,7 +93,7 @@ Larger work runs in phases. Read a phase's file when the phase starts, not all a
   both wait for a human's confirmation. Between them the phases run without check-ins.
 - **Phase 6 is done by someone other than the author**: the reviewer agent, which
   starts without context. A **blocking** finding sends the work back to phase 5.
-- **Small edits** (a typo, one intertitle, a timing) skip phases 0–3 and go straight to
+- **Small edits** (a typo, one caption, a timing) skip phases 0–3 and go straight to
   a branch, the checks and a pull request.
 - **Commit after every phase** that leaves a stable result.
 - **A branch, never `main`**, without exception. A human merges.

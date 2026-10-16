@@ -23,7 +23,7 @@ same change when the fix is small.
 ### Names
 
 - A name says what the thing is or does, in the vocabulary of the film brief and the
-  script (scene, intertitle, gate, belt). No abbreviations a newcomer would have to
+  script (scene, caption, gate, belt). No abbreviations a newcomer would have to
   decode, no `data`, `info`, `handle`, `tmp`.
 - Booleans read as a question (`isVisible`); functions are verbs, values are nouns.
 - One name per concept: no synonym for something that already has a name.

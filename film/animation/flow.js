@@ -11,7 +11,8 @@ export function gapMode(state, gap, laneIndex) {
 }
 
 // The pieces of a lane that boxes ride without help. A lane is cut where a gap is still
-// carried, by hand or by a robot; boxes after a hand-carried gap come unevenly.
+// carried, by hand or by a robot, and ends early where its belt is not finished; boxes
+// after a hand-carried gap come unevenly.
 export function stretches(state, laneIndex) {
   const result = [];
   let current = { start: BELT.start, uneven: false, gates: [] };
@@ -22,7 +23,7 @@ export function stretches(state, laneIndex) {
     result.push({ ...current, end: span.start });
     current = { start: span.end, uneven: mode === 'open', gates: [] };
   });
-  return [...result, { ...current, end: BELT.end }];
+  return [...result, { ...current, end: state.ends?.[laneIndex] ?? BELT.end }];
 }
 
 // Boxes on a stretch. Each box is counted from where the lane starts (`origin`), so a

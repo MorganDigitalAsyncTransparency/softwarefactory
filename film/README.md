@@ -14,9 +14,9 @@ it is in the [contributing guide](../docs/01-CONTRIBUTING.md#watching-the-animat
 | Audience         | Employees, with a message from senior management. No IT knowledge assumed.                  |
 | Purpose          | Explain the current state, so that viewers understand it.                                   |
 | Length           | 90–120 seconds.                                                                             |
-| Form             | Animated silent film in a modern style. No voices; intertitles and instrumental music only. |
+| Form             | Animated silent film in a modern style. No voices; captions and instrumental music only.    |
 | Tone             | Matter-of-fact: "this is how it is". No humor, no selling.                                  |
-| Language         | English intertitles.                                                                        |
+| Language         | English captions.                                                                           |
 | Where it is seen | On the web, on the viewer's own computer.                                                   |
 | Brand            | None. Neutral and global: no logo, no company colors, no national markers.                  |
 
@@ -45,7 +45,11 @@ We are building gates at every step and automating the manual steps away.
 
 - The software layer is revealed late, after the factory story, so the factory image
   carries the film.
-- *Shift left* gets its own intertitle.
+- *Shift left* gets its own caption.
+- The film is one continuous picture with captions at the bottom, not cut by black title
+  cards, which broke its flow.
+- The factory is never finished: the hall and some belts are still being built when the
+  film ends.
 - The first version is an animation in code, silent for now: the music in the form
   above comes later, and so does any recording to a video file.
 - Users, Builders and IT infrastructure are three separate roles, always shown apart

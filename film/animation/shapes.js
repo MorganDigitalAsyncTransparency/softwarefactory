@@ -17,9 +17,11 @@ function mesh(geometry, look, position = [0, 0, 0]) {
   return result;
 }
 
-export function block([width, height, depth], look, position) {
-  const geometry = shared(`block ${width} ${height} ${depth}`, () => new THREE.BoxGeometry(width, height, depth));
-  return mesh(geometry, look, position);
+// Blocks share one unit cube, scaled, because walls and belts grow to any length.
+export function block(size, look, position) {
+  const result = mesh(shared('block', () => new THREE.BoxGeometry(1, 1, 1)), look, position);
+  result.scale.set(...size);
+  return result;
 }
 
 // A block standing on the floor between two corners, which is how walls and belts are laid out.

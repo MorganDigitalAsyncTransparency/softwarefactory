@@ -1,8 +1,8 @@
 # Visual descriptions
 
-This file owns how the film looks: the style, the intertitle cards, continuity and one
-prompt per scene for an animator or an AI video tool. What happens in each scene, when,
-and the text of each intertitle are in [script.md](script.md), under the same scene ID.
+This file owns how the film looks: the style, the captions, continuity and one prompt
+per scene for an animator or an AI video tool. What happens in each scene, when, and
+the text of each caption are in [script.md](script.md), under the same scene ID.
 
 ## How to use the prompts
 
@@ -10,7 +10,7 @@ and the text of each intertitle are in [script.md](script.md), under the same sc
 - Make the overview frame of S02 first and use it as an image reference for every other
   scene, so the factory looks the same throughout.
 - Scenes longer than 6–8 seconds may need to be generated in two parts.
-- Intertitles are made in the editing tool, not generated: AI tools often distort text.
+- Captions are added in the editing tool, not generated: AI tools often distort text.
 
 ## Style block
 
@@ -23,65 +23,88 @@ product is plain cardboard boxes; IT is blue. Simple stylised characters with
 minimal facial detail, diverse, gender-neutral silhouettes. Color-coded workwear:
 Builders wear yellow vests and hard hats; IT infrastructure staff wear blue overalls;
 Users wear warm orange; Carriers wear plain grey. AI agents are small identical
-rounded white robots with a single soft blue light. Above the factory floats a
+rounded white robots with a single soft blue light. Test stations are grey tunnels
+over the belts with a blue screen and a small light. Above the factory floats a
 white cloud carrying dark blue server racks and AI robots, with long blue cables
-hanging down to stations in the factory. Flow always goes left to right.
+hanging down to stations in the factory. Flow always goes left to right. Behind the
+hall a yellow tower crane lifts wall panels.
 ```
 
-## Intertitle cards
+## Captions
 
-- Black background with centered white text in a clean sans-serif.
-- Text large enough to read in a small browser window: about 6–8 % of the frame height.
-- Fade in and out over about 0.3 seconds. No decoration.
+- White text in a clean sans-serif, centered at the bottom of the picture over a soft
+  dark gradient, never on a black card.
+- Large enough to read in a small browser window: about 4–5 % of the frame height.
+- Fades in and out with its scene, over about half a second. No decoration.
 
 ## Continuity
 
-- The same factory layout in every overview: four or five belts start on the left and
-  the loading dock is on the right.
-- The gaps in the middle are always in the same places, so S19 shows which ones have
+- One continuous picture: each scene's camera starts where the one before stopped. Only
+  the split panels of S07 fade through black.
+- The same layout throughout: ten small belts on the left, joined in pairs into five
+  belts in the middle, joined into one belt out to the loading dock on the right. Every
+  belt passes at least two test stations.
+- The gaps in the middle are always in the same places, so S11 shows which ones have
   been closed.
 - The cables from the cloud always run to the same stations.
+- The factory is never finished. The back wall rises bay by bay all through the film,
+  the crane keeps lifting panels, and the front belt in the middle is still being laid
+  in the last frame.
 
 ## Scene prompts
 
-### S02
+### S01
 
 ```text
 Slow descending aerial camera over a 3D factory hall under construction, open at the
 front. The factory appears one layer at a time: the hall, the belts, the boxes, and last
-the cloud, which sinks into place as its cables reach down.
-Four to five parallel conveyor belts start on the left, carrying many small boxes in.
-A loading dock on the right. In the middle of the floor the belts have visible gaps.
-Scaffolding, one half-built wall, builders in yellow working. A stylised cloud above
-with long thin cables down to stations. Calm, steady, wide establishing shot.
+the cloud, which sinks into place as its cables reach down. Scaffolding at the
+half-built back wall, a crane behind it, builders in yellow working. Calm, steady,
+wide establishing shot.
+```
+
+### S02
+
+```text
+Wide, steady view of the whole factory. Ten narrow belts of small boxes on the left
+are joined in pairs into five belts of larger boxes, which a large machine joins into
+one belt carrying one large box out to the loading dock. The crane lifts a wall panel.
+```
+
+### S03
+
+```text
+Camera glides in to the left section of the factory. Small boxes arrive at an even
+rhythm on ten narrow automated belts. Each pair of belts passes two test stations; at
+the first a small white robot watches, and a small green light glows as each box is
+checked. Smooth, orderly, rhythmic motion.
 ```
 
 ### S04
 
 ```text
-Camera glides in to the left section of the factory. Many small boxes arrive at an
-even rhythm on several automated conveyor belts. At each belt a small white robot
-scans each box and a small green light glows. Smooth, orderly, rhythmic motion.
+Camera pans right along the front of the factory to the loading dock. One large neat
+box passes two test stations, rolls out of the door and is received by a few Users.
+Calm, satisfying, orderly.
+```
+
+### S05
+
+```text
+Camera moves from the dock back to the middle of the factory floor. The five belts
+end abruptly with gaps between them.
 ```
 
 ### S06
 
 ```text
-Camera pans right to the loading dock. One large neat box rolls out of the dock and is
-received by a few Users. Calm, satisfying, orderly.
+Close on the middle of the factory floor. Workers in plain grey carry boxes by hand
+between belts, hurrying. Boxes arrive at irregular times: one too early, one too late.
+One box is dented, one is the wrong size. Small piles build up, one worker stands
+waiting. Uneven, stop-start rhythm, slightly chaotic but not comic.
 ```
 
-### S09
-
-```text
-Camera moves to the middle of the factory floor. Conveyor belts end abruptly with gaps
-between them. Workers in plain grey carry boxes by hand between belts, hurrying.
-Boxes arrive at irregular times: one too early, one too late. One box is dented, one is
-the wrong size. Small piles build up, one worker stands waiting. Uneven, stop-start
-rhythm, slightly chaotic but not comic.
-```
-
-### S11
+### S07
 
 Three vertical panels side by side. Generate each panel on its own and combine them in
 the edit.
@@ -94,7 +117,7 @@ Panel 3: close-up of two box halves that should snap together into a larger box 
 do not fit. End each panel with a soft red warning light.
 ```
 
-### S13
+### S08
 
 ```text
 Builders install a gate between two conveyor belts. A dented box arrives and
@@ -103,7 +126,7 @@ green light. An IT infrastructure worker connects a long cable from the cloud in
 Clear, deliberate, satisfying.
 ```
 
-### S15
+### S09
 
 ```text
 A gap between two conveyor belts is closed with a new belt section. Nearby, a small
@@ -112,29 +135,37 @@ carry them. That worker puts on a yellow vest and walks off to build the next ga
 Positive, matter-of-fact.
 ```
 
-### S17
+### S10
 
-Keep the composition of S13 and S15 so the viewer sees that it is the same factory.
+Keep the composition of S08 and S09 so the viewer sees that it is the same factory.
 
 ```text
-Same composition as the gate scene. Everything smoothly morphs into a digital
-version: boxes become plain glowing cubes without any marks, conveyor belts become
-luminous pipeline lanes, gates become checkpoints with a green light, cables from the
-cloud become glowing integration lines, the large box becomes one larger glowing cube.
-Keep layout identical, only the material changes.
+Same composition as the middle of the factory. Everything smoothly morphs into a
+digital version: boxes become plain glowing warm-white cubes without any marks,
+conveyor belts become luminous pipeline lanes, gates become checkpoints with a green
+light, cables from the cloud become glowing cyan integration lines, the large box
+becomes one larger glowing cube. Keep layout identical, only the material changes.
 ```
 
-### S19
+### S11
 
 ```text
-Slow zoom out to the same wide view as the opening. Some of the gaps in the
-middle are now closed with belts and gates, others still have grey-clad workers
-carrying boxes by hand. Builders and IT staff work in parallel, the cloud above with
-its cables. Boxes keep flowing out to users on the right. Calm, ongoing, unfinished.
+The picture turns physical again as the camera pulls back to the same wide view as
+the opening. Some of the gaps in the middle are now closed with belts and gates,
+others still have grey-clad workers carrying boxes by hand. Builders and IT staff work
+in parallel, the cloud above with its cables. Boxes keep flowing out to users on the
+right. Calm, ongoing, unfinished.
+```
+
+### S12
+
+```text
+The camera rises slowly over the whole factory. The line keeps running, the crane
+lifts another panel and the front belt is still being laid. Fade to black.
 ```
 
 ## Sound
 
-Calm, modern instrumental music, such as piano and light synths, with no vocals. In S09
-the rhythm turns uneven and halting; from S13 on it is steady and forward-moving again.
+Calm, modern instrumental music, such as piano and light synths, with no vocals. In S06
+the rhythm turns uneven and halting; from S08 on it is steady and forward-moving again.
 Use royalty-free music licensed for internal and web use.

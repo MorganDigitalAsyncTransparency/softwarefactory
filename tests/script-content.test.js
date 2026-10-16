@@ -19,11 +19,11 @@ test('the film ends within the 120 seconds the brief allows', () => {
   assert.ok(scenes.at(-1).end <= 120);
 });
 
-test('every intertitle is shown long enough to read', () => {
+test('every caption is shown long enough to read', () => {
   scenes
-    .filter((scene) => scene.type === 'intertitle')
+    .filter((scene) => scene.caption)
     .forEach((scene) => {
-      const words = scene.text.split(/\s+/).length;
+      const words = scene.caption.split(/\s+/).length;
       const needed = words * READING_SECONDS_PER_WORD + READING_BASE_SECONDS;
       assert.ok(scene.end - scene.start >= needed, `${scene.id} needs ${needed.toFixed(1)} s`);
     });

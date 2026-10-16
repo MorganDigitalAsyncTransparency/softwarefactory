@@ -1,15 +1,17 @@
 import { parseScript } from './script-parser.js';
-import { duration, fade, frameAt, startTimeFrom } from './timeline.js';
+import { duration, fade, frameAt, share, startTimeFrom } from './timeline.js';
 import { checkDrawings, draw } from './scenes.js';
-import { showIntertitle } from './intertitle.js';
+import { showCaption } from './caption.js';
 import { createStage } from './stage.js';
 
 const SCRIPT_URL = 'script/script.md';
-// Scenes fade from and to black, so a cut to an intertitle is never abrupt.
-const FADE_SECONDS = 0.5;
+// The picture fades from and to black only where a scene asks for it; captions fade at
+// every scene's edges.
+const FADE_SECONDS = 0.8;
+const CAPTION_FADE_SECONDS = 0.6;
 const canvas = document.getElementById('stage');
 const stage = createStage(canvas);
-const card = document.getElementById('card');
+const caption = document.getElementById('caption');
 const playButton = document.getElementById('play');
 const restartButton = document.getElementById('restart');
 const progressBar = document.getElementById('progress');
@@ -76,13 +78,14 @@ function seek(time) {
 
 function render({ scene, progress }) {
   const length = scene.end - scene.start;
-  if (scene.type === 'intertitle') {
-    showIntertitle(card, scene.text, progress * length, length);
-    return;
-  }
-  card.hidden = true;
-  canvas.style.opacity = fade(progress * length, length, FADE_SECONDS);
-  stage.render(draw({ scene, progress }), playback.time);
+  const seconds = progress * length;
+  const shot = draw({ scene, progress });
+  const fades = shot.fades ?? [];
+  const fadeIn = fades.includes('in') ? share(seconds, 0, FADE_SECONDS) : 1;
+  const fadeOut = fades.includes('out') ? share(length - seconds, 0, FADE_SECONDS) : 1;
+  canvas.style.opacity = Math.min(fadeIn, fadeOut);
+  showCaption(caption, scene.caption, fade(seconds, length, CAPTION_FADE_SECONDS));
+  stage.render(shot, playback.time);
 }
 
 function formatClock(seconds) {
