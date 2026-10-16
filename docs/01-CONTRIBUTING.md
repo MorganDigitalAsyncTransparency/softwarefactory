@@ -12,8 +12,12 @@ Node.js 22 or later.
 
 ## Watching the animation
 
-The page loads the script over HTTP, so serve the `film/` folder with any static
-server and open it in a browser:
+The film on `main` is published at
+<https://morgandigitalasynctransparency.github.io/softwarefactory/> by the
+`Publish the film` workflow after every merge.
+
+To watch a branch, serve it yourself. The page loads the script over HTTP, so serve
+the `film/` folder with any static server and open it in a browser:
 
 ```sh
 python3 -m http.server --directory film 8000
