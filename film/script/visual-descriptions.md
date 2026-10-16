@@ -110,8 +110,9 @@ walk about and work here and there.
 
 ```text
 Camera glides in to the left section of the factory. Small boxes arrive at an even
-rhythm on ten narrow automated belts. Each pair of belts passes two test stations,
-some of them still half-built; a small white robot watches, and a small green light
+rhythm on ten narrow automated belts. Each pair of belts passes two or three test
+stations, some of them still half-built; in front, two new narrow belts are being laid
+from the office; a small white robot watches, and a small green light
 glows as each box is checked. Smooth, orderly, rhythmic motion.
 ```
 
@@ -206,8 +207,8 @@ keep flowing out to users on the right. Calm, ongoing, unfinished.
 
 ```text
 The camera rises slowly over the whole factory and the office. The line keeps running,
-the crane lifts another panel, a rack is rising in the cloud, and two belts and some
-stations are still being built. Fade to black.
+the crane lifts another panel, a rack is rising in the cloud, and two belts, the new
+lane in front and some stations are still being built. Fade to black.
 ```
 
 ## Sound

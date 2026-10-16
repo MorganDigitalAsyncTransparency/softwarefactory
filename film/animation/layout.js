@@ -14,6 +14,7 @@ export const GAPS = { A: { start: -6, end: -2 }, B: { start: 3, end: 7 } };
 export const INTAKE_TESTS = [-26, -19, -22.5];
 export const INTAKE_SPAN = 2 * PAIR + INTAKE.width + 0.4;
 export const TESTS = [-9, 0.5, 9.5];
+export const TEST_SPAN = 2.2;
 export const ASSEMBLY = { start: 12, end: 17 };
 export const OUTPUT = { start: 15, end: 37.5, z: -0.9 };
 export const OUTPUT_TESTS = [21, 24, 27];
@@ -21,8 +22,7 @@ export const DOCK = { start: 32, end: 38 };
 export const USERS = [[38.8, -2.8], [39.6, -0.6], [38.9, 1.4]];
 export const CLOUD = { x: 0, y: 21, z: -9 };
 export const CRANE = { x: 12, z: -23, height: 24, reach: 26 };
-// The server room talks to the cloud and to the stations near it; its port sits on the
-// first rack.
+// The server room talks to the cloud and to the stations near it.
 const ROOM_RACKS = [25.6, 27.6, 29.6];
 export const SERVER_ROOM = {
   start: 24, end: 31.6, back: 5, front: 11, racks: ROOM_RACKS, port: { x: ROOM_RACKS[0], y: 2.9, z: 8.4 },

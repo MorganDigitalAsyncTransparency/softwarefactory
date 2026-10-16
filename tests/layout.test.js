@@ -4,7 +4,7 @@ import {
   ASSEMBLY, BELT, BELT_WORKERS, GAPS, INTAKE, INTAKE_TESTS, LANES, NEW_LANE, OUTPUT, OUTPUT_TESTS, SERVER_ROOM, TESTS,
 } from '../film/animation/layout.js';
 import {
-  beltsLaid, hallBuilt, middleTests, newLaneLaid, racksBuilt, roomRacksBuilt, stationBuilt, unfinishedStations,
+  beltsLaid, hallBuilt, middleTests, newLaneLaid, racksBuilt, roomRacksBuilt, stationBuilt, stationsBuiltDuringFilm,
 } from '../film/animation/schedule.js';
 
 const inside = (x, { start, end }) => x > start && x < end;
@@ -43,8 +43,8 @@ test('the new lane is laid in order, and its stations rise only on laid belt', (
   });
 });
 
-test('the server room port sits on a rack that stands from the first frame', () => {
-  assert.ok(roomRacksBuilt(0) >= 1 && SERVER_ROOM.port.x === SERVER_ROOM.racks[0]);
+test('the server room has a rack from the first frame and room for every rack it installs', () => {
+  assert.ok(roomRacksBuilt(0) >= 1 && roomRacksBuilt(1) < SERVER_ROOM.racks.length);
 });
 
 test('every running belt has two test stations from the first frame, at least one of them working', () => {
@@ -57,7 +57,7 @@ test('every running belt has two test stations from the first frame, at least on
 
 test('every station built during the film is a real one', () => {
   const keys = [...BELTS, ...NEW_BELTS].flatMap(keysOf);
-  unfinishedStations().forEach((key) => assert.ok(keys.includes(key), key));
+  stationsBuiltDuringFilm().forEach((key) => assert.ok(keys.includes(key), key));
 });
 
 test('about half of the test stations are built while the film runs, spread over all of it', () => {
@@ -78,5 +78,5 @@ test('the factory is never finished: the hall, the IT and some belts and station
     assert.ok(end > beltsLaid(0)[laneIndex] && end + WORKERS_REACH < ASSEMBLY.start, `lane ${laneIndex}`);
   });
   assert.ok(newLaneLaid(1).middle < BELT.end);
-  assert.ok(unfinishedStations().some((key) => stationBuilt(key, 1) < 1));
+  assert.ok(stationsBuiltDuringFilm().some((key) => stationBuilt(key, 1) < 1));
 });

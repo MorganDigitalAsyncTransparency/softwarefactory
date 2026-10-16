@@ -3,7 +3,7 @@ import { box, facingTurn, person, robot } from './figures.js';
 import { group } from './shapes.js';
 import { CARRIED, boxesOn, carrierAt, gapMode, gateStops, stretches } from './flow.js';
 import {
-  BELT, BELT_WORKERS, GAPS, INTAKE, INTAKE_SPAN, INTAKE_TESTS, LANES, middleOf, smallLanes,
+  BELT, BELT_WORKERS, GAPS, INTAKE, INTAKE_SPAN, INTAKE_TESTS, LANES, TEST_SPAN, middleOf, smallLanes,
 } from './layout.js';
 import { middleTests, stationBuilt } from './schedule.js';
 
@@ -41,7 +41,7 @@ export function laneMotion(state, time, laneIndex) {
     intake({ state, time, laneIndex }, light),
     ...boxes.map((item) => placedBox(item, z)),
     ...flows.flatMap((flow) => flow.stretch.gates.map((x) => gate(x, z, light(gateStops(flow.boxes, x) ? 'stop' : 'ok')))),
-    ...middleTests(laneIndex).map((x, index) => station({ x, z, span: 2.2, key: `middle ${laneIndex} ${index}` }, state, light(tested(boxes, x)))),
+    ...middleTests(laneIndex).map((x, index) => station({ x, z, span: TEST_SPAN, key: `middle ${laneIndex} ${index}` }, state, light(tested(boxes, x)))),
     ...Object.entries(GAPS).filter(([gap]) => gapMode(state, gap, laneIndex) === 'open' && !underWork(state, gap, laneIndex))
       .map(([, span]) => pile(span.start, z)),
     ...Object.keys(GAPS).map((gap) => carrier(state, time, { gap, laneIndex })),

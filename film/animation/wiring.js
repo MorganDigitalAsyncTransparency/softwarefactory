@@ -4,7 +4,7 @@ import { group } from './shapes.js';
 import {
   ALL_LANES, ASSEMBLY, GAPS, HALL, INTAKE_TESTS, LANES, OUTPUT, OUTPUT_TESTS, SERVER_ROOM, TESTS, middleOf,
 } from './layout.js';
-import { stationBuilt, unfinishedStations } from './schedule.js';
+import { stationBuilt, stationsBuiltDuringFilm } from './schedule.js';
 
 const PLACES = {
   intake: (laneIndex, index) => ({ x: INTAKE_TESTS[index], y: 2.6, z: ALL_LANES[laneIndex] }),
@@ -15,10 +15,10 @@ const PLACES = {
 // Every cable in the factory, built once per state. The server room talks to the cloud,
 // to its own stations (SERVER_ROOM.stations), the assembly and the dock; cables from the
 // cloud run to every gate and to the other stations that are first on their belt or
-// still being built.
+// built during the film.
 export function wiring(state) {
   const room = SERVER_ROOM.port;
-  const stations = new Set([...firstStations(), ...unfinishedStations()]);
+  const stations = new Set([...firstStations(), ...stationsBuiltDuringFilm()]);
   const fromCloud = [...stations].filter((key) => !SERVER_ROOM.stations.includes(key));
   return group([
     ...[...fromCloud, ...gates(state)].map((key) => wire(key, place(key))),

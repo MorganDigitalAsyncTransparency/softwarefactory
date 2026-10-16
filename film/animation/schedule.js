@@ -1,8 +1,7 @@
 import { share } from './timeline.js';
 import { BELT, GAPS, INTAKE, JOINER, NEW_LANE, TESTS } from './layout.js';
 
-// When each part of the factory is built. About half of it is built while the film
-// runs, a piece at a time from the first frame to the last, and it is never finished.
+// When each part of the factory is built, as R10 in docs/02-REQUIREMENTS.md asks.
 // Every value is a share of the building: 0 is the first frame and 1 the last (see
 // `buildShare` in player.js). A start below 0 means the part was begun before the film;
 // an end above 1 means it is still unfinished when the film ends.
@@ -15,9 +14,7 @@ const RACKS_BUILT = [2.6, 7.6];
 const ROOM_RACKS_BUILT = [1, 2.7];
 // The sixth lane is laid in order: its small belts, the joiner, then its belt.
 const NEW_LANE_LAID = { intake: [0, 0.42], joiner: [0.42, 0.5], middle: [0.5, 1.15] };
-// Test stations built during the film, by `kind laneIndex index`: two are half-built at
-// the first frame, and then a new one starts every few seconds, never more than three at
-// once, until the last two are still being built at the end.
+// Test stations built during the film, by `kind laneIndex index`, one after the other.
 const STATIONS_BUILT = {
   'intake 1 1': [-0.1, 0.08], 'middle 0 1': [-0.06, 0.12], 'intake 2 2': [0.02, 0.19],
   'middle 1 2': [0.1, 0.27], 'intake 4 2': [0.18, 0.35], 'output 0 2': [0.26, 0.43],
@@ -56,7 +53,7 @@ export function stationBuilt(key, buildShare) {
   return key in STATIONS_BUILT ? share(buildShare, ...STATIONS_BUILT[key]) : 1;
 }
 
-export function unfinishedStations() {
+export function stationsBuiltDuringFilm() {
   return Object.keys(STATIONS_BUILT);
 }
 
