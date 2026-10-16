@@ -8,7 +8,6 @@ const BAYS = (HALL.right - HALL.left) / BAY;
 const WINDOW = [4.6, 6.6];
 const DOOR_HALF = 2.4;
 const ROOF = 6;
-const LIFT_SECONDS = 10;
 
 // How many bays of the back wall stand when `built` of the hall is built.
 export function standingBays(built) {
@@ -70,14 +69,14 @@ function scaffold(x1) {
 function crane(targetX, time) {
   const [dx, dz] = [targetX - CRANE.x, HALL.back - 1 - CRANE.z];
   const reach = Math.hypot(dx, dz);
-  const lift = (time / LIFT_SECONDS) % 1;
-  const panelY = between(0.5, HALL.height + 1, Math.min(1, lift / 0.8));
+  const lift = (time / CRANE.liftSeconds) % 1;
+  const panelY = between(0.5, HALL.height + 1, Math.min(1, lift / CRANE.setAt));
   const rope = block([0.06, CRANE.height - panelY - 1.5, 0.06], 'steel', [reach, (panelY - CRANE.height + 1.5) / 2, 0]);
   const jib = group([
     slab([-7, -0.5], [CRANE.reach, 0.5], [0, 1], 'factory'),
     block([2.5, 1.5, 1.5], 'machine', [-5.5, -0.8, 0]),
     rope,
-    lift < 0.8 && block([BAY - 1, 1.8, 0.3], 'wall', [reach, panelY - CRANE.height + 0.5, 0]),
+    lift < CRANE.setAt && block([BAY - 1, 1.8, 0.3], 'wall', [reach, panelY - CRANE.height + 0.5, 0]),
   ], { position: [CRANE.x, CRANE.height, CRANE.z], turn: -Math.atan2(dz, dx) });
   return group([block([1.2, CRANE.height, 1.2], 'factory', [CRANE.x, CRANE.height / 2, CRANE.z]), jib]);
 }

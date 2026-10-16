@@ -34,8 +34,10 @@ roles and their colors, the captions and the continuity.
 ### R4: The viewer controls playback
 
 - **Given** the animation in a browser,
-- **when** the viewer presses play or pause, restarts, or clicks the progress bar,
-- **then** playback starts, stops, restarts or jumps to that time.
+- **when** the viewer presses play or pause, restarts, clicks the progress bar or turns
+  the sound off or on,
+- **then** playback starts, stops, restarts or jumps to that time, or the sound stops or
+  plays again.
 
 ### R5: A frame can be opened directly
 
@@ -81,3 +83,12 @@ roles and their colors, the captions and the continuity.
   two of them begun before the film; about half of all test stations are built during
   the film; and the hall, the IT, some belts and some stations are still unfinished in
   the last frame.
+
+### R11: The film sounds like its picture
+
+- **Given** the animation playing with sound on, after the viewer has clicked or
+  pressed a key on the page,
+- **when** a scene plays,
+- **then** it sounds as [the sound description](../film/script/visual-descriptions.md#sound)
+  says: the music and the station clicks stop with the belts while the alarm sounds,
+  the sound fades with the picture, and a paused film is silent.

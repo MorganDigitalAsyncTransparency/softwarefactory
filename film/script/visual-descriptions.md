@@ -218,4 +218,12 @@ lane in front and some stations are still being built. Fade to black.
 Calm, modern instrumental music, such as piano and light synths, with no vocals. In S09
 the rhythm turns uneven and halting, and in S11 it stops with the belts and starts again
 with them; from S12 on it is steady and forward-moving.
-Use royalty-free music licensed for internal and web use.
+
+Under the music, the sounds of the factory: a low hum of the running belts with the
+noise of the hall, a soft click as a test station checks a box, and a thud each time
+the crane sets a panel. Two alerts: a two-tone alarm the whole time the cloud is down
+in S11, while the belts fall quiet, and a slow warning beep while the panels of S10
+show their red lights. All of it fades with the picture.
+
+The animation makes this sound in the browser (ADR 0005). A video made with other
+tools uses royalty-free music and effects licensed for internal and web use.

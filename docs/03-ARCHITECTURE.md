@@ -13,6 +13,7 @@ three.js comes from a CDN through the page's import map (ADR 0004).
 
 ```text
 film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player ─┬─▶ caption (HTML)
+                                                                   ├─▶ score ─▶ sound (Web Audio)
                                                                    │
                                           scenes (shot: camera + state)
                                                                    │
@@ -32,6 +33,8 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `timeline.js`      | Pure: finds the scene and its progress at a time, fades, and parses `?t=` (R5)      |
 | `player.js`        | Loads the script, runs the clock, wires the controls and shows each frame (R4)      |
 | `caption.js`       | The caption at the bottom of the picture, with balanced line wrapping (R3)          |
+| `score.js`         | Pure: what sounds at a moment of the clocks: the levels of the hum, music and alarms, and the notes, clicks and thuds that start (R11) |
+| `sound.js`         | Plays the score with the Web Audio API, and stops when the film is paused or the sound is off (ADR 0005) |
 | `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state and fades; throws on a missing ID; the line's and the people's clocks (R2, R8, R9) |
 | `flow.js`          | Pure: where boxes, carriers and robots are at a time, and what a gate stops         |
 | `wander.js`        | Pure: where a person who works here and there is at a time                          |
@@ -72,13 +75,16 @@ clock drives the camera, the crane, the cloud's robots and alarm, and how far th
 factory is built. The line's clock is the film's clock minus the seconds the line has
 stood still while the cloud was down; it drives the belts, the boxes and the robots on
 the floor, so they stop and go on from where they were. The people's clock runs faster
-while the line stands still, so they hurry about (R9). The digital look blends every material between its two looks instead of
+while the line stands still, so they hurry about (R9). The sound follows the same
+clocks: the music and the station clicks the line's, the hum, the crane and the alarms
+the film's. Each frame the player asks `score.js` for the sound between the frame
+before and this one, so a jump plays nothing it skipped. The digital look blends every material between its two looks instead of
 drawing a second world.
 
 ### Tests
 
 Node's built-in test runner runs `tests/`: the parser, the timeline, the motion of
-boxes and people, the line's and the people's clocks, caption wrapping, that every scene has a drawing
+boxes and people, the line's and the people's clocks, the score, caption wrapping, that every scene has a drawing
 and continues the camera of the one before, that the layout gives every running belt two test
 stations, one of them working from the start, that the schedule spreads the building over
 the whole film and never finishes it (R10), and that the script itself keeps its timing rules.

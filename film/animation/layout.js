@@ -21,7 +21,8 @@ export const OUTPUT_TESTS = [21, 24, 27];
 export const DOCK = { start: 32, end: 38 };
 export const USERS = [[38.8, -2.8], [39.6, -0.6], [38.9, 1.4]];
 export const CLOUD = { x: 0, y: 21, z: -9 };
-export const CRANE = { x: 12, z: -23, height: 24, reach: 26 };
+// The crane lifts a panel every `liftSeconds` and sets it on the wall at `setAt` of a lift.
+export const CRANE = { x: 12, z: -23, height: 24, reach: 26, liftSeconds: 10, setAt: 0.8 };
 // The server room talks to the cloud and to the stations near it.
 const ROOM_RACKS = [25.6, 27.6, 29.6];
 export const SERVER_ROOM = {

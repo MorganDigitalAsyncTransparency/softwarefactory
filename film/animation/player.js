@@ -3,6 +3,8 @@ import { duration, fade, frameAt, share, startTimeFrom } from './timeline.js';
 import { checkDrawings, draw, lineTime, peopleTime } from './scenes.js';
 import { showCaption } from './caption.js';
 import { createStage } from './stage.js';
+import { createSound } from './sound.js';
+import { events, levels } from './score.js';
 
 const SCRIPT_URL = 'script/script.md';
 // The picture fades from and to black only where a scene asks for it; captions fade at
@@ -11,12 +13,14 @@ const FADE_SECONDS = 0.8;
 const CAPTION_FADE_SECONDS = 0.6;
 const canvas = document.getElementById('stage');
 const stage = createStage(canvas);
+const sound = createSound();
 const caption = document.getElementById('caption');
 const playButton = document.getElementById('play');
 const restartButton = document.getElementById('restart');
+const soundButton = document.getElementById('sound');
 const progressBar = document.getElementById('progress');
 const clock = document.getElementById('clock');
-const playback = { scenes: [], time: 0, playing: false, lastTick: null };
+const playback = { scenes: [], time: 0, playing: false, lastTick: null, soundOn: true, heard: null };
 
 start().catch(showError);
 
@@ -34,8 +38,11 @@ async function start() {
 
 function wireControls() {
   playButton.addEventListener('click', () => (playback.playing ? pause() : play()));
-  restartButton.addEventListener('click', () => { seek(0); play(); });
-  progressBar.addEventListener('input', () => seek(Number(progressBar.value)));
+  restartButton.addEventListener('click', () => { jump(0); play(); });
+  progressBar.addEventListener('input', () => jump(Number(progressBar.value)));
+  soundButton.addEventListener('click', toggleSound);
+  // The browser lets sound start only after the viewer has clicked or pressed a key.
+  ['pointerdown', 'keydown'].forEach((type) => document.addEventListener(type, listen));
   window.addEventListener('resize', () => seek(playback.time));
   document.addEventListener('keydown', (event) => {
     if (event.code !== 'Space') return;
@@ -46,9 +53,10 @@ function wireControls() {
 
 function play() {
   if (playback.playing) return;
-  if (playback.time >= duration(playback.scenes)) seek(0);
+  if (playback.time >= duration(playback.scenes)) jump(0);
   playback.playing = true;
   playback.lastTick = null;
+  listen();
   playButton.setAttribute('aria-label', 'Pause');
   playButton.textContent = '❚❚';
   requestAnimationFrame(tick);
@@ -56,6 +64,7 @@ function play() {
 
 function pause() {
   playback.playing = false;
+  sound.suspend();
   playButton.setAttribute('aria-label', 'Play');
   playButton.textContent = '▶';
 }
@@ -64,16 +73,43 @@ function tick(timestamp) {
   if (!playback.playing) return;
   const elapsed = playback.lastTick === null ? 0 : (timestamp - playback.lastTick) / 1000;
   playback.lastTick = timestamp;
-  seek(Math.min(playback.time + elapsed, duration(playback.scenes)));
+  const frame = seek(Math.min(playback.time + elapsed, duration(playback.scenes)));
+  hear(frame);
   if (playback.time >= duration(playback.scenes)) pause();
   else requestAnimationFrame(tick);
 }
 
+// A jump starts the sound afresh, so the short sounds it skipped over are not played.
+function jump(time) {
+  playback.heard = null;
+  seek(time);
+}
+
 function seek(time) {
   playback.time = time;
-  render(frameAt(playback.scenes, time));
+  const frame = render(frameAt(playback.scenes, time));
   progressBar.value = time;
   clock.textContent = `${formatClock(time)} / ${formatClock(duration(playback.scenes))}`;
+  return frame;
+}
+
+// Plays the frame's sound, and the short sounds that started since the frame before.
+function hear({ shot, clock, volume }) {
+  const from = playback.heard ?? clock;
+  sound.play({ volume, levels: levels(shot, clock), events: events(shot, from, clock) });
+  playback.heard = clock;
+}
+
+function listen() {
+  if (playback.playing && playback.soundOn) sound.resume();
+}
+
+function toggleSound() {
+  playback.soundOn = !playback.soundOn;
+  soundButton.setAttribute('aria-label', playback.soundOn ? 'Sound off' : 'Sound on');
+  soundButton.textContent = playback.soundOn ? '🔊' : '🔇';
+  if (playback.soundOn) listen();
+  else sound.suspend();
 }
 
 function render({ scene, progress }) {
@@ -83,11 +119,13 @@ function render({ scene, progress }) {
   const fades = shot.fades ?? [];
   const fadeIn = fades.includes('in') ? share(seconds, 0, FADE_SECONDS) : 1;
   const fadeOut = fades.includes('out') ? share(length - seconds, 0, FADE_SECONDS) : 1;
-  canvas.style.opacity = Math.min(fadeIn, fadeOut);
+  const volume = Math.min(fadeIn, fadeOut);
+  canvas.style.opacity = volume;
   showCaption(caption, scene.caption, fade(seconds, length, CAPTION_FADE_SECONDS));
   const { scenes, time } = playback;
   const clock = { film: time, line: lineTime(scenes, time), people: peopleTime(scenes, time) };
   stage.render(shot, { ...clock, buildShare: time / duration(scenes) });
+  return { shot, clock, volume };
 }
 
 function formatClock(seconds) {

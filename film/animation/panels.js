@@ -6,7 +6,7 @@ import { box } from './figures.js';
 import { between } from './flow.js';
 import { share } from './timeline.js';
 
-const WARNING_AT = 0.7;
+import { WARNING_AT } from './score.js';
 
 // Three close-ups side by side, where factory, IT and product do not fit together.
 // Each returns its contents for one frame and where its camera looks.

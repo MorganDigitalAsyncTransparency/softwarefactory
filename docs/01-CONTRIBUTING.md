@@ -21,7 +21,8 @@ python3 -m http.server --directory film 8000
 ```
 
 Add `?t=<seconds>` to open a single frame, paused, for example
-`http://localhost:8000/?t=10`. Space plays and pauses.
+`http://localhost:8000/?t=10`. Space plays and pauses. The sound starts after the first
+click or key press on the page; the speaker button turns it off and on.
 
 ## Checks
 

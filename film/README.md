@@ -14,7 +14,7 @@ it is in the [contributing guide](../docs/01-CONTRIBUTING.md#watching-the-animat
 | Audience         | Employees, with a message from senior management. No IT knowledge assumed.               |
 | Purpose          | Explain the current state, so that viewers understand it.                                |
 | Length           | 90–150 seconds.                                                                          |
-| Form             | Animated silent film in a modern style. No voices; captions and instrumental music only. |
+| Form             | Animated silent film in a modern style. No voices; captions, music and the sounds of the factory. |
 | Tone             | Matter-of-fact: "this is how it is". No humor, no selling.                               |
 | Language         | English captions.                                                                        |
 | Where it is seen | On the web, on the viewer's own computer.                                                |
@@ -52,8 +52,8 @@ We are building gates at every step and automating the manual steps away.
 - The factory is never finished: about half of it is built while the film runs, spread
   over the whole film and not only at the start, and the hall, the IT, some belts and
   some test stations are still being built when it ends.
-- The first version is an animation in code, silent for now: the music in the form
-  above comes later, and so does any recording to a video file.
+- The first version is an animation in code that makes its own sound in the browser
+  (ADR 0005); any recording to a video file comes later.
 - The film introduces the people first: Product developers, Software factory developers
   and IT developers each wear their own color, so they are always told apart (see
   [roles](script/script.md#roles)).
