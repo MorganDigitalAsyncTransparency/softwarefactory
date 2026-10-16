@@ -30,7 +30,8 @@ export function laneBelts(state, laneIndex) {
 
 // Everything on a lane that moves: boxes, carriers, and the lights of test stations and
 // gates, which all show red while the cloud is down.
-export function laneMotion(state, { time, hurried }, laneIndex) {
+export function laneMotion(state, clock, laneIndex) {
+  const time = clock.line;
   const z = LANES[laneIndex];
   const flows = stretches(state, laneIndex).map((stretch) => (
     { stretch, boxes: boxesOn(stretch, time, { seed: laneIndex * 1000, origin: BELT.start }) }
@@ -44,7 +45,7 @@ export function laneMotion(state, { time, hurried }, laneIndex) {
     ...middleTests(laneIndex).map((x, index) => station({ x, z, span: TEST_SPAN, key: `middle ${laneIndex} ${index}` }, state, light(tested(boxes, x)))),
     ...Object.entries(GAPS).filter(([gap]) => gapMode(state, gap, laneIndex) === 'open' && !underWork(state, gap, laneIndex))
       .map(([, span]) => pile(span.start, z)),
-    ...Object.keys(GAPS).map((gap) => carrier(state, { time, hurried }, { gap, laneIndex })),
+    ...Object.keys(GAPS).map((gap) => carrier(state, clock, { gap, laneIndex })),
     laneIndex in state.ends && unfinished(state.ends[laneIndex], z),
   ]);
 }
@@ -113,11 +114,12 @@ function unfinished(end, z) {
 }
 
 // A Product developer keeps carrying while the line stands still; a robot stops with it.
-function carrier(state, { time, hurried }, { gap, laneIndex }) {
+function carrier(state, clock, { gap, laneIndex }) {
   const mode = gapMode(state, gap, laneIndex);
+  const robotCarrier = mode === 'robot';
   if (!CARRIED.includes(mode) || underWork(state, gap, laneIndex)) return null;
-  const { x, carrying, facing } = carrierAt(GAPS[gap], mode === 'robot' ? time : hurried, { seed: laneIndex * 7 + (gap === 'B' ? 3 : 0), robot: mode === 'robot' });
-  const figure = mode === 'robot' ? robot({ carrying, time }) : person('product', { seed: laneIndex, carrying, walked: x });
+  const { x, carrying, facing } = carrierAt(GAPS[gap], robotCarrier ? clock.line : clock.people, { seed: laneIndex * 7 + (gap === 'B' ? 3 : 0), robot: robotCarrier });
+  const figure = robotCarrier ? robot({ carrying, time: clock.line }) : person('product', { seed: laneIndex, carrying, walked: x });
   return group([figure], { position: [x, 0, LANES[laneIndex]], turn: facingTurn(facing) });
 }
 

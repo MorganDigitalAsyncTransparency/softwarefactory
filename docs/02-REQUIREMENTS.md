@@ -71,7 +71,7 @@ roles and their colors, the captions and the continuity.
 - **when** it plays,
 - **then** every belt, box and robot stands still while the cloud is down and goes on
   from where it stopped when the cloud is back, while the people keep working and
-  hurry about, faster than before; the same time always shows the same frame.
+  those who walk about or carry boxes hurry, faster than before; the same time always shows the same frame.
 
 ### R10: The factory is built while it runs
 

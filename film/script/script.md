@@ -78,7 +78,7 @@ Each role wears its own color, defined in the
 | S08 | 1:02–1:09 | Move to the middle. The five belts stop short.                                                                                                                                                            | In between, a different story.                                     |
 | S09 | 1:09–1:20 | Product developers run with boxes between the belts. One box arrives too early and one too late; one is dented and one is the wrong size. Piles build up and someone waits.                               | Manual. Random timing. Varying quality.                            |
 | S10 | 1:20–1:31 | Level 3, split into three panels. **Factory:** two belts at different heights. **IT:** a cable from the cloud too short, with the wrong plug. **Product:** two parts that do not fit. All three turn red. | When factory, IT and product don't fit together, everything waits. |
-| S11 | 1:31–1:41 | Overview. A light on the cloud turns red and its cables with it. Every belt and robot stops and every test station turns red. The people do not know why: they keep working and run about to find the fault, until the cloud is back and the belts run again.            | When a cloud service fails, every belt stops.                      |
+| S11 | 1:31–1:41 | Overview. A light on the cloud turns red and its cables with it. Every belt and every robot on the floor stops and every test station turns red. The people do not know why: they keep working and run about to find the fault, until the cloud is back and the belts run again.            | When a cloud service fails, every belt stops.                      |
 
 ## Act 4: What we are doing (1:41–2:15), levels 2 and 3
 

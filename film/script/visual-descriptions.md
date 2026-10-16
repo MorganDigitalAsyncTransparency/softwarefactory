@@ -158,7 +158,7 @@ do not fit. End each panel with a soft red warning light.
 
 ```text
 Wide view of the whole factory. A red light on the cloud starts to blink and every
-cable from the cloud turns red. All belts and robots stop at once, every test station light
+cable from the cloud turns red. All belts and the robots on the floor stop at once, every test station light
 turns red and boxes stand still mid-belt. The people do not know why: they keep
 working and hurry about, some running between the stations to find the fault. Then
 the light goes out, the cables turn blue and the belts move again from where they

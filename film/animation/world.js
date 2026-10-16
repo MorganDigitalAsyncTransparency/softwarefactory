@@ -9,7 +9,7 @@ import { construction, laneBelts, laneMotion, signal, station } from './lanes.js
 import { office } from './office.js';
 import { roomRacks, serverRoom } from './server-room.js';
 import { newLane } from './new-lane.js';
-import { people } from './people.js';
+import { people as walkers } from './people.js';
 import { pull, wiring } from './wiring.js';
 import { BELT, GAPS, LANES, OUTPUT, OUTPUT_TESTS, middleOf } from './layout.js';
 import { beltsLaid, hallBuilt, racksBuilt, roomRacksBuilt } from './schedule.js';
@@ -81,14 +81,14 @@ function buildStill(state) {
   };
 }
 
-function moving(state, { line: time, people: hurried }) {
+function moving(state, { line: time, people }) {
   const work = state.installing;
   return group([
-    ...LANES.map((_, laneIndex) => laneMotion(state, { time, hurried }, laneIndex)),
+    ...LANES.map((_, laneIndex) => laneMotion(state, { line: time, people }, laneIndex)),
     construction(state),
     work && cable({ x: middleOf(GAPS[work.gap]), y: 3.3, z: LANES[work.lane] }, work.share),
     ...releases(state, time),
-    people(hurried),
+    walkers(people),
     ...state.crew.map((member, index) => crewMember(member, time, index)),
   ]);
 }
