@@ -56,11 +56,19 @@ roles and their colors, the captions and the continuity.
 - **Given** any scene,
 - **when** it is drawn,
 - **then** the picture contains no words, symbols of a brand or national markers; the
-  caption below it is the only text.
+  caption over its bottom edge is the only text.
 
 ### R8: The film is one continuous picture
 
 - **Given** two scenes that follow each other,
 - **when** the first ends and the second starts,
-- **then** the camera goes on from where it was, with no cut and no title card; only a
-  scene that asks for it fades through black at its edges.
+- **then** the camera goes on from where it was, with no title card, unless the first
+  scene fades out and the second fades in through black.
+
+### R9: The line stops when the cloud fails
+
+- **Given** a scene where a service in the cloud fails,
+- **when** it plays,
+- **then** every belt, box and person on the floor stands still while the cloud is
+  down, and goes on from where it stopped when the cloud is back; the same time always
+  shows the same frame.

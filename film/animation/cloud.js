@@ -26,6 +26,14 @@ export function agents(time) {
   return group([-3, 3, 6].map((x, index) => walker(x, time, index)));
 }
 
+// A red light on the cloud, blinking while a service in it has failed. Relative to the cloud.
+export function alarm(time) {
+  const on = Math.sin(time * 9) > -0.3;
+  return group([block([0.2, 1.6, 0.2], 'steel', [0, TOP + 0.8, 2.6]), sphere(0.8, on ? 'stop' : 'off', [0, TOP + 2.2, 2.6])], {
+    position: [CLOUD.x, CLOUD.y, CLOUD.z],
+  });
+}
+
 function rack(x) {
   const lights = [0.5, 1, 1.5, 2].map((y) => block([0.9, 0.08, 0.05], 'it', [x, TOP + y, 0.62]));
   return group([block([1.2, 2.5, 1.2], 'rack', [x, TOP + 1.25, 0]), ...lights]);
@@ -54,4 +62,5 @@ export function cable({ x, y, z }, connected = 1) {
 
 export function connect(wire, share) {
   wire.geometry.setDrawRange(0, Math.floor((wire.geometry.index.count * share) / 3) * 3);
+  return wire;
 }

@@ -59,10 +59,10 @@ function scaffold(x1) {
     block([0.08, HALL.height, 0.08], 'scaffold', [x1 + dx, HALL.height / 2, HALL.back + dz])
   )));
   const planks = [3, 6].map((y) => slab([x1, HALL.back + 0.7], [x1 + BAY, HALL.back + 2.1], [y, y + 0.1], 'scaffold'));
-  const builders = [[2.5, 3.1, 1], [5.6, 6.1, 2]].map(([dx, y, seed]) => (
-    group([person('builder', { seed })], { position: [x1 + dx, y, HALL.back + 1.4], turn: Math.PI / 2 })
+  const developers = [[2.5, 3.1, 1], [5.6, 6.1, 2]].map(([dx, y, seed]) => (
+    group([person('factory', { seed })], { position: [x1 + dx, y, HALL.back + 1.4], turn: Math.PI / 2 })
   ));
-  return group([...poles, ...planks, ...builders]);
+  return group([...poles, ...planks, ...developers]);
 }
 
 // A tower crane behind the hall, turned toward the bay that is rising, lifting a wall
@@ -74,12 +74,12 @@ function crane(targetX, time) {
   const panelY = between(0.5, HALL.height + 1, Math.min(1, lift / 0.8));
   const rope = block([0.06, CRANE.height - panelY - 1.5, 0.06], 'steel', [reach, (panelY - CRANE.height + 1.5) / 2, 0]);
   const jib = group([
-    slab([-7, -0.5], [CRANE.reach, 0.5], [0, 1], 'builder'),
+    slab([-7, -0.5], [CRANE.reach, 0.5], [0, 1], 'factory'),
     block([2.5, 1.5, 1.5], 'machine', [-5.5, -0.8, 0]),
     rope,
     lift < 0.8 && block([BAY - 1, 1.8, 0.3], 'wall', [reach, panelY - CRANE.height + 0.5, 0]),
   ], { position: [CRANE.x, CRANE.height, CRANE.z], turn: -Math.atan2(dz, dx) });
-  return group([block([1.2, CRANE.height, 1.2], 'builder', [CRANE.x, CRANE.height / 2, CRANE.z]), jib]);
+  return group([block([1.2, CRANE.height, 1.2], 'factory', [CRANE.x, CRANE.height / 2, CRANE.z]), jib]);
 }
 
 function sideWall(x, spans) {

@@ -4,7 +4,7 @@ import { SPACING, boxesOn, carrierAt, gateStops, stretches } from '../film/anima
 import { BELT, GAPS } from '../film/animation/layout.js';
 
 test('a lane is cut at every gap that is still carried, and after a hand-carried gap boxes come unevenly', () => {
-  const pieces = stretches({ gaps: { A1: 'robot' } }, 0);
+  const pieces = stretches({ gaps: { A1: 'robot' }, ends: {} }, 0);
   assert.deepEqual(pieces.map(({ start, end, uneven }) => [start, end, uneven]), [
     [BELT.start, GAPS.A.start, false],
     [GAPS.A.end, GAPS.B.start, false],
@@ -13,7 +13,7 @@ test('a lane is cut at every gap that is still carried, and after a hand-carried
 });
 
 test('a closed gap and a gate join the belts, and the gate stands where the gap was', () => {
-  const pieces = stretches({ gaps: { A1: 'closed', B1: 'gate' } }, 0);
+  const pieces = stretches({ gaps: { A1: 'closed', B1: 'gate' }, ends: {} }, 0);
   assert.deepEqual(pieces, [{ start: BELT.start, end: BELT.end, uneven: false, gates: [(GAPS.B.start + GAPS.B.end) / 2] }]);
 });
 

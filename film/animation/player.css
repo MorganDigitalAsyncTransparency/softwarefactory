@@ -50,6 +50,10 @@ main {
   pointer-events: none;
 }
 
+#caption:empty {
+  background: none;
+}
+
 .controls {
   display: flex;
   align-items: center;

@@ -15,8 +15,8 @@ test('every scene lasts some time', () => {
   scenes.forEach((scene) => assert.ok(scene.end > scene.start, scene.id));
 });
 
-test('the film ends within the 120 seconds the brief allows', () => {
-  assert.ok(scenes.at(-1).end <= 120);
+test('the film ends within the 150 seconds the brief allows', () => {
+  assert.ok(scenes.at(-1).end <= 150);
 });
 
 test('every caption is shown long enough to read', () => {

@@ -23,7 +23,7 @@ export function stretches(state, laneIndex) {
     result.push({ ...current, end: span.start });
     current = { start: span.end, uneven: mode === 'open', gates: [] };
   });
-  return [...result, { ...current, end: state.ends?.[laneIndex] ?? BELT.end }];
+  return [...result, { ...current, end: state.ends[laneIndex] ?? BELT.end }];
 }
 
 // Boxes on a stretch. Each box is counted from where the lane starts (`origin`), so a

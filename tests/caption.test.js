@@ -16,3 +16,7 @@ test('wraps a long caption into balanced lines of at most 44 characters', () => 
 test('never leaves a single word alone on the last line when it can be avoided', () => {
   assert.deepEqual(wrap('The quick brown fox jumps over the lazy dog today.'), ['The quick brown fox jumps', 'over the lazy dog today.']);
 });
+
+test('an empty caption has no lines, so no band is shown', () => {
+  assert.deepEqual(wrap(''), []);
+});

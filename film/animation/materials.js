@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 
-// Each surface has a physical look and a digital look (S17). The colors follow the style
-// block in film/script/visual-descriptions.md, which keeps the four layers apart.
+// Each surface has a physical look and a digital look, for the scene where the factory
+// turns into software. The colors follow the style block in
+// film/script/visual-descriptions.md, which keeps the layers and the roles apart.
 const LOOKS = {
   ground: { physical: '#B9C2B0', digital: '#06121F' },
   floor: { physical: '#C3C5C6', digital: '#0B1C2E' },
@@ -22,12 +23,14 @@ const LOOKS = {
   it: { physical: '#2F7BD0', digital: '#59E3FF', glow: 0.6 },
   robot: { physical: '#F3F3F0', digital: '#DDF7FF' },
   ok: { physical: '#36D27A', digital: '#36D27A', glow: 1.6 },
-  stop: { physical: '#FF4234', digital: '#FF4234', glow: 1.6 },
+  stop: { physical: '#E8261A', digital: '#E8261A', glow: 0.7 },
   off: { physical: '#3A3F45', digital: '#1B2B3A' },
-  builder: { physical: '#E3B23C', digital: '#E3B23C' },
-  infrastructure: { physical: '#3E7CB1', digital: '#3E7CB1' },
+  officeFloor: { physical: '#D3CABB', digital: '#0B1C2E' },
+  desk: { physical: '#F2F0EA', digital: '#16304A' },
+  screen: { physical: '#26303B', digital: '#26303B' },
+  product: { physical: '#8E6CC0', digital: '#8E6CC0' },
+  factory: { physical: '#E3B23C', digital: '#E3B23C' },
   user: { physical: '#E07A3F', digital: '#E07A3F' },
-  carrier: { physical: '#9A9A9A', digital: '#9A9A9A' },
   trousers: { physical: '#3A3F47', digital: '#3A3F47' },
   skin0: { physical: '#8D5524', digital: '#8D5524' },
   skin1: { physical: '#C68642', digital: '#C68642' },

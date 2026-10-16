@@ -13,7 +13,7 @@ it is in the [contributing guide](../docs/01-CONTRIBUTING.md#watching-the-animat
 | ---------------- | ------------------------------------------------------------------------------------------- |
 | Audience         | Employees, with a message from senior management. No IT knowledge assumed.                  |
 | Purpose          | Explain the current state, so that viewers understand it.                                   |
-| Length           | 90–120 seconds.                                                                             |
+| Length           | 90–150 seconds.                                                                             |
 | Form             | Animated silent film in a modern style. No voices; captions and instrumental music only.    |
 | Tone             | Matter-of-fact: "this is how it is". No humor, no selling.                                  |
 | Language         | English captions.                                                                           |
@@ -52,5 +52,11 @@ We are building gates at every step and automating the manual steps away.
   film ends.
 - The first version is an animation in code, silent for now: the music in the form
   above comes later, and so does any recording to a video file.
-- Users, Builders and IT infrastructure are three separate roles, always shown apart
-  (see [roles](script/script.md#roles)).
+- The film introduces the people first: Product developers, Software factory developers
+  and IT developers each wear their own color and are always shown apart (see
+  [roles](script/script.md#roles)).
+- The parts come from an open office where Product developers work, so viewers see
+  where the product starts.
+- When a service in the cloud fails, every belt stops: the film shows how much the
+  whole line depends on IT.
+- People work here and there on the floor, not only along the belts.

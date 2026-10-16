@@ -11,15 +11,17 @@ Read `film/README.md` first: the brief decides audience, length, tone and langua
 
 - Each row has a scene ID (`S01`, `S02`, …), a time range, what happens in the scene
   and its caption, which may be empty. IDs stay in film order; renumber all of them when a
-  scene is inserted, and update `visual-descriptions.md` and the drawing keys in
-  `film/animation/scenes.js` in the same change.
+  scene is inserted, and update `visual-descriptions.md`, the drawing keys in
+  `film/animation/scenes.js` and the tests in the same change. Scene IDs belong only in
+  those files: search the repository for the old IDs (`grep -rn 'S[0-9][0-9]'`) and
+  replace any found elsewhere with a description.
 - Time ranges follow each other with no gap or overlap, and the last one ends within
   the length in the brief.
 - A caption is short, plain English that a non-technical viewer understands, and its
   scene lasts long enough to read it: about one second per three words plus two
   seconds.
-- Each scene's camera starts where the one before stopped: the film is one
-  continuous picture, faded through black only around a split-screen scene.
+- Keep the film one continuous picture, as the
+  [continuity](../../../film/script/visual-descriptions.md#continuity) rules say.
 - Matter-of-fact tone: describe how it is. No humor, no selling, no brand.
 - Decisions in the brief describe the film without scene IDs, so renumbering never
   breaks them.

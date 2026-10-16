@@ -1,5 +1,4 @@
 import { block, capsule, cylinder, group, sphere } from './shapes.js';
-import { material } from './materials.js';
 
 const BOX = 0.6;
 const SKIN_TONES = ['skin0', 'skin1', 'skin2', 'skin3'];
@@ -26,42 +25,31 @@ export function box(look = 'good', { scale = 1 } = {}) {
   return shape;
 }
 
-// A person in the color of their role. A Carrier who is promoted turns into a Builder:
-// the vest turns yellow and a hard hat appears.
-export function person(role, { seed = 0, carrying = false, walked = 0, promoted = 0 } = {}) {
+// A person in the color of their role: 'product', 'factory' (with a hard hat), 'it' or
+// 'user'.
+export function person(role, { seed = 0, carrying = false, walked = 0 } = {}) {
   const swing = Math.sin((walked / STRIDE) * Math.PI * 2) * 0.45;
-  const builder = role === 'builder' || promoted > 0;
-  const torso = role === 'carrier' && promoted > 0 ? vest(promoted) : role;
   return group([
-    leg(-0.13, swing, role),
-    leg(0.13, -swing, role),
-    capsule([0.24, 0.45], torso, [0, 1.12, 0]),
+    leg(-0.13, swing),
+    leg(0.13, -swing),
+    capsule([0.24, 0.45], role, [0, 1.12, 0]),
     sphere(0.18, SKIN_TONES[seed % SKIN_TONES.length], [0, 1.62, 0]),
-    builder && hardHat(role === 'builder' ? 1 : promoted),
+    role === 'factory' && hardHat(),
     carrying && group([box()], { position: [0.42, 0.95, 0] }),
   ]);
 }
 
-let promotion;
-
-function vest(promoted) {
-  promotion ??= material('carrier').clone();
-  promotion.color.copy(material('carrier').color).lerp(material('builder').color, promoted);
-  return promotion;
-}
-
-function leg(z, swing, role) {
-  const trousers = role === 'infrastructure' ? 'infrastructure' : 'trousers';
-  const result = group([capsule([0.1, 0.55], trousers, [0, -0.38, 0])], { position: [0, 0.76, z] });
+function leg(z, swing) {
+  const result = group([capsule([0.1, 0.55], 'trousers', [0, -0.38, 0])], { position: [0, 0.76, z] });
   result.rotation.z = swing;
   return result;
 }
 
-function hardHat(size) {
+function hardHat() {
   return group([
-    sphere(0.2, 'builder', [0, 0, 0]),
-    cylinder([0.26, 0.03], 'builder', [0, -0.02, 0]),
-  ], { position: [0, 1.7, 0], scale: size });
+    sphere(0.2, 'factory', [0, 0, 0]),
+    cylinder([0.26, 0.03], 'factory', [0, -0.02, 0]),
+  ], { position: [0, 1.7, 0] });
 }
 
 export function robot({ carrying = false, time = 0 } = {}) {

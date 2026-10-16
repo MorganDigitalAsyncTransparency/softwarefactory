@@ -3,7 +3,7 @@ import { box, facingTurn, person, robot } from './figures.js';
 import { group } from './shapes.js';
 import { CARRIED, boxesOn, carrierAt, gapMode, gateStops, stretches } from './flow.js';
 import {
-  BELT, GAPS, INTAKE, INTAKE_TESTS, LANES, PAIR, TESTS, UNFINISHED_LANE, gapKey, middleOf, smallLanes,
+  BELT, GAPS, INTAKE, INTAKE_TESTS, LANES, PAIR, TESTS, gapKey, middleOf, smallLanes,
 } from './layout.js';
 
 const BRIDGED = ['closed', 'gate'];
@@ -12,11 +12,11 @@ const SMALL = { scale: 0.6, spacing: 1.8 };
 const INTAKE_STRETCH = { start: INTAKE.start, end: INTAKE.end, uneven: false, gates: [] };
 
 // The parts of a lane that only change when the state does: the two small belts and
-// their joiner, the belt pieces and the bridged gaps. The unfinished lane's last piece
+// their joiner, the belt pieces and the bridged gaps. An unfinished lane's last piece
 // grows, so it is drawn with what moves.
 export function laneBelts(state, laneIndex) {
   const z = LANES[laneIndex];
-  const last = laneIndex === UNFINISHED_LANE ? [] : [[GAPS.B.end, BELT.end]];
+  const last = laneIndex in state.ends ? [] : [[GAPS.B.end, BELT.end]];
   const pieces = [[BELT.start, GAPS.A.start], [GAPS.A.end, GAPS.B.start], ...last];
   const bridges = Object.entries(GAPS).filter(([gap]) => BRIDGED.includes(gapMode(state, gap, laneIndex)));
   return group([
@@ -28,34 +28,35 @@ export function laneBelts(state, laneIndex) {
 }
 
 // Everything on a lane that moves: boxes, carriers, and the lights of test stations and
-// gates.
+// gates, which all show red while the cloud is down.
 export function laneMotion(state, time, laneIndex) {
   const z = LANES[laneIndex];
   const flows = stretches(state, laneIndex).map((stretch) => (
     { stretch, boxes: boxesOn(stretch, time, { seed: laneIndex * 1000, origin: BELT.start }) }
   ));
-  const end = flows.at(-1).stretch.end;
+  const boxes = flows.flatMap((flow) => flow.boxes);
+  const signal = (busy) => (state.outage ? 'stop' : busy);
   return group([
-    intake(time, laneIndex),
-    ...flows.flatMap(({ boxes }) => boxes.map((item) => placedBox(item, z))),
-    ...flows.flatMap(({ stretch, boxes }) => stretch.gates.map((x) => gate(x, z, gateStops(boxes, x) ? 'stop' : 'ok'))),
-    ...TESTS.filter((x) => x < end).map((x) => tester({ x, z, span: 2.2 }, tested(flows.flatMap(({ boxes }) => boxes), x))),
+    intake(time, laneIndex, signal),
+    ...boxes.map((item) => placedBox(item, z)),
+    ...flows.flatMap((flow) => flow.stretch.gates.map((x) => gate(x, z, signal(gateStops(flow.boxes, x) ? 'stop' : 'ok')))),
+    ...TESTS.map((x) => tester({ x, z, span: 2.2 }, signal(tested(boxes, x)))),
     ...Object.entries(GAPS).filter(([gap]) => gapMode(state, gap, laneIndex) === 'open').map(([, span]) => pile(span.start, z)),
     ...Object.keys(GAPS).map((gap) => carrier(state, time, { gap, laneIndex })),
-    laneIndex === UNFINISHED_LANE && unfinished(end, z),
+    laneIndex in state.ends && unfinished(state.ends[laneIndex], z),
   ]);
 }
 
-// The two small belts of a lane, each box checked twice before the joiner, the first
-// time watched by an AI agent.
-function intake(time, laneIndex) {
+// The two small belts of a lane, from the office desks into the hall, each box checked
+// twice before the joiner, the first time watched by an AI agent.
+function intake(time, laneIndex, signal) {
   const z = LANES[laneIndex];
   const boxes = smallLanes(laneIndex).flatMap((small, index) => (
     boxesOn(INTAKE_STRETCH, time, { seed: laneIndex * 100 + index * 50, spacing: SMALL.spacing }).map((item) => ({ ...item, z: small }))
   ));
   return group([
     ...boxes.map(({ x, z: small }) => group([box('good', { scale: SMALL.scale })], { position: [x, BELT.height, small] })),
-    ...INTAKE_TESTS.map((x) => tester({ x, z, span: 2 * PAIR + INTAKE.width + 0.4 }, tested(boxes, x))),
+    ...INTAKE_TESTS.map((x) => tester({ x, z, span: 2 * PAIR + INTAKE.width + 0.4 }, signal(tested(boxes, x)))),
     group([robot({ time })], { position: [INTAKE_TESTS[0] - 1, 0, z + 1.6], turn: Math.PI / 2 }),
   ]);
 }
@@ -76,14 +77,15 @@ function pile(x, z) {
   })));
 }
 
-// The belt that is still being laid: Builders at its end, and boxes piling up there.
+// A belt that is still being laid: Software factory developers at its end, and boxes
+// piling up there.
 function unfinished(end, z) {
   return group([
     belt(GAPS.B.end, end, z),
     bareBelt(end, BELT.end, z),
     pile(end, z),
-    group([person('builder', { seed: 3 })], { position: [end + 0.6, 0, z + 1.2], turn: Math.PI }),
-    group([person('builder', { seed: 1 })], { position: [end + 1.8, 0, z - 1.2], turn: Math.PI }),
+    group([person('factory', { seed: 3 })], { position: [end + 2.4, 0, z + 1.2], turn: Math.PI }),
+    group([person('factory', { seed: 1 })], { position: [end + 1.8, 0, z - 1.2], turn: Math.PI }),
   ]);
 }
 
@@ -93,11 +95,11 @@ function carrier(state, time, { gap, laneIndex }) {
   const building = [state.installing, state.growing].some((work) => work && gapKey(work.gap, work.lane) === key);
   if (!CARRIED.includes(mode) || building) return null;
   const { x, carrying, facing } = carrierAt(GAPS[gap], time, { seed: laneIndex * 7 + (gap === 'B' ? 3 : 0), robot: mode === 'robot' });
-  const figure = mode === 'robot' ? robot({ carrying, time }) : person('carrier', { seed: laneIndex, carrying, walked: x });
+  const figure = mode === 'robot' ? robot({ carrying, time }) : person('product', { seed: laneIndex, carrying, walked: x });
   return group([figure], { position: [x, 0, LANES[laneIndex]], turn: facingTurn(facing) });
 }
 
-// A gate rising and a belt growing across a gap, while Builders work on it.
+// A gate rising and a belt growing across a gap, while Software factory developers work on it.
 export function construction({ installing, growing }) {
   return group([installing && gateRising(installing), growing && beltGrowing(growing)]);
 }

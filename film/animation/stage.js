@@ -9,7 +9,7 @@ const PANEL_GAP = 0.012;
 const FOG = new THREE.Fog('#000000', 120, 320);
 
 // The 3D stage: one renderer and one camera, drawing either the factory or the three
-// close-up panels of S11.
+// close-up panels where factory, IT and product do not fit together.
 export function createStage(canvas) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
   renderer.shadowMap.enabled = true;
@@ -18,17 +18,17 @@ export function createStage(canvas) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   const camera = new THREE.PerspectiveCamera(32, ASPECT, 0.5, 600);
   return {
-    render(shot, time) {
+    render(shot, clock) {
       fit(renderer, canvas);
-      if (shot.split) drawPanels({ renderer, camera }, shot.progress, time);
-      else drawFactory({ renderer, camera }, shot, time);
+      if (shot.split) drawPanels({ renderer, camera }, shot.progress, clock.line);
+      else drawFactory({ renderer, camera }, shot, clock);
     },
   };
 }
 
-function drawFactory({ renderer, camera }, { camera: [position, target], state }, time) {
+function drawFactory({ renderer, camera }, { camera: [position, target], state }, clock) {
   setDigital(state.digital);
-  const scene = lit(world(state, time), 70);
+  const scene = lit(world(state, clock), 70);
   scene.background = sky(state.digital);
   FOG.color.copy(scene.background);
   scene.fog = FOG;
