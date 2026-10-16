@@ -59,7 +59,7 @@ function intake({ state, time, laneIndex }, light) {
     ...INTAKE_TESTS.map((x, index) => (
       station({ x, z, span: 2 * PAIR + INTAKE.width + 0.4, key: `intake ${laneIndex} ${index}` }, state, light(tested(boxes, x)))
     )),
-    group([robot({ time })], { position: [INTAKE_TESTS[0] - 1, 0, z + 1.6], turn: Math.PI / 2 }),
+    group([robot({ time })], { position: [INTAKE_TESTS[0] - 1, 0, z - 1.6], turn: -Math.PI / 2 }),
   ]);
 }
 
@@ -77,8 +77,8 @@ export function station({ key, ...place }, { filmShare }, light) {
   const seed = Math.round(Math.abs(place.x));
   return group([
     tester({ ...place, built }),
-    group([person('factory', { seed })], { position: [place.x + 1, 0, side], turn: Math.PI }),
-    group([person('it', { seed: seed + 1 })], { position: [place.x + 2.2, 0, side], turn: Math.PI }),
+    group([person('factory', { seed })], { position: [place.x - 1, 0, side], turn: 0 }),
+    group([person('it', { seed: seed + 1 })], { position: [place.x + 1, 0, side], turn: Math.PI }),
   ]);
 }
 

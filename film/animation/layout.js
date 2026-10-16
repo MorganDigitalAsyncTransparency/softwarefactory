@@ -24,13 +24,14 @@ export const SERVER_ROOM = {
 };
 export const SPEED = 2;
 // Where people walk about and work: rectangles of floor between the desks and machines,
-// among them the walkways between the five belts, past their test stations.
+// among them the walkways between the five belts, past their first test stations and
+// short of the joiners and of the piles at the gaps.
 export const AISLES = {
   office: { x: [-43.6, -42.4], z: [-11, 10] },
   front: { x: [-30, 22], z: [8.5, 10.5] },
   serverRoom: { x: [24.8, 30.6], z: [9.7, 10.4] },
   back: { x: [-30, 30], z: [-13.5, -10.5] },
-  ...Object.fromEntries(LANES.slice(1).map((z, index) => [`between${index}`, { x: [-4.3, 0.9], z: [z - 1.65, z - 1.55] }])),
+  ...Object.fromEntries(LANES.slice(1).map((z, index) => [`between${index}`, { x: [-11.4, -6.4], z: [z - 1.65, z - 1.55] }])),
 };
 // The share of the hall and of the last piece of each unfinished belt that stands at the
 // start of the film and at its end: the factory is never finished.

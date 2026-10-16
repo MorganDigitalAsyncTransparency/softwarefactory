@@ -46,7 +46,7 @@ Each role wears its own color, defined in the
   still carry boxes by hand between belts.
 - **Software factory developers** build the factory: belts, test stations, gates and
   machines, the CI/CD and the test frameworks.
-- **IT developers** build and run the IT services: the cloud and its cables.
+- **IT developers** build and run the IT services: the cloud, the server room and their cables.
 - **Users** receive the finished box.
 
 ## Act 1: Who is here (0:00–0:41), level 1 and 2

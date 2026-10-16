@@ -108,16 +108,17 @@ walk about and work here and there.
 
 ```text
 Camera glides in to the left section of the factory. Small boxes arrive at an even
-rhythm on ten narrow automated belts. Each pair of belts passes two test stations; at
-the first a small white robot watches, and a small green light glows as each box is
-checked. Smooth, orderly, rhythmic motion.
+rhythm on ten narrow automated belts. Each pair of belts passes two test stations,
+some of them still half-built; a small white robot watches, and a small green light
+glows as each box is checked. Smooth, orderly, rhythmic motion.
 ```
 
 ### S07
 
 ```text
 Camera pans right along the front of the factory to the loading dock. One large neat
-box passes two test stations, rolls out of the door and is received by a few Users.
+box passes a test station and a half-built one, rolls out of the door and is received
+by a few Users.
 Calm, satisfying, orderly.
 ```
 

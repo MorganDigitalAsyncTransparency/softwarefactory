@@ -12,9 +12,10 @@ const PLACES = {
   output: (_, index) => ({ x: OUTPUT_TESTS[index], y: 4.2, z: OUTPUT.z }),
 };
 
-// Every cable in the factory, built once per state. Cables from the cloud run to the
-// first test station of every belt, to every gate and to each station still being
-// built; the server room talks to the cloud, its own stations, the assembly and the dock.
+// Every cable in the factory, built once per state. The server room talks to the cloud,
+// to its own stations (SERVER_ROOM.stations), the assembly and the dock; cables from the
+// cloud run to every gate and to the other stations that are first on their belt or
+// still being built.
 export function wiring(state) {
   const room = SERVER_ROOM.port;
   const stations = new Set([...firstStations(), ...unfinishedStations()]);

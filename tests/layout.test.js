@@ -6,6 +6,7 @@ import {
 } from '../film/animation/layout.js';
 
 const inside = (x, { start, end }) => x > start && x < end;
+// A person's radius, as drawn in film/animation/figures.js.
 const BODY = 0.24;
 const WORKERS_REACH = Math.max(...BELT_WORKERS) + BODY;
 const BELTS = [
@@ -13,7 +14,7 @@ const BELTS = [
   ['output', 0, OUTPUT_TESTS],
 ];
 
-test('every belt passes at least two test stations, on belt that stands from the first frame', () => {
+test('every belt passes at least two test stations, on a belt that stands from the first frame', () => {
   assert.ok(INTAKE_TESTS.length >= 2 && INTAKE_TESTS.every((x) => inside(x, INTAKE)));
   assert.ok(OUTPUT_TESTS.length >= 2 && OUTPUT_TESTS.every((x) => inside(x, OUTPUT)));
   const builtFromStart = [{ start: BELT.start, end: GAPS.A.start }, { start: GAPS.A.end, end: GAPS.B.start }];
