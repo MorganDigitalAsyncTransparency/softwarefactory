@@ -66,7 +66,7 @@ kept; what moves is drawn again each frame.
 
 Motion is a pure function of time: a box's position is computed from the clock, never
 stored, so seeking to any time draws the same frame. There are two clocks. The film's
-clock drives the camera, the building site and the cloud. The line's clock is the
+clock drives the camera, the building site, the cloud and the stations being built. The line's clock is the
 film's clock minus the seconds the line has stood still while the cloud was down; it
 drives the belts, the boxes and the people, so they stop and go on from where they
 were (R9). The digital look blends every material between its two looks instead of
@@ -77,6 +77,6 @@ drawing a second world.
 Node's built-in test runner runs `tests/`: the parser, the timeline, the motion of
 boxes and people, the line's clock, caption wrapping, that every scene has a drawing
 and continues the camera of the one before, that the layout gives every belt two test
-stations and is never finished, and that the script itself keeps its timing rules.
+stations, one of them working from the start, and is never finished, and that the script itself keeps its timing rules.
 None of them needs three.js. The drawings are checked by eye: open a frame with `?t=`
 per scene.

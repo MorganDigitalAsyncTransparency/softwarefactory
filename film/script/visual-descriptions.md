@@ -48,7 +48,7 @@ blue cables hanging down to stations in the factory. Flow always goes left to ri
 - The gaps in the middle are always in the same places, so S15 shows which ones have
   been closed.
 - The cables from the cloud and from the server room always run to the same stations;
-  a station that is still being built gets its cable once it stands. While the cloud
+  a station that is still being built has its cable pulled in as it is built. While the cloud
   fails in S11 every cable turns red together with a light on the cloud and every
   station light.
 - The factory is never finished. The back wall rises bay by bay all through the film,
@@ -81,7 +81,8 @@ developers walk between the desks.
 ```text
 Camera follows the belts into the hall to the back wall, which is still being built.
 Software factory developers in yellow with hard hats work on scaffolding, a tower crane
-lifts a wall panel, and others raise the walls of a half-built test station.
+lifts a wall panel, and others lay the frame of a new belt section and raise the walls of a half-built test
+station.
 ```
 
 ### S04

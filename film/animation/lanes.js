@@ -3,7 +3,7 @@ import { box, facingTurn, person, robot } from './figures.js';
 import { group } from './shapes.js';
 import { CARRIED, boxesOn, carrierAt, gapMode, gateStops, stretches } from './flow.js';
 import {
-  BELT, GAPS, INTAKE, INTAKE_TESTS, LANES, PAIR, TESTS, gapKey, middleOf, smallLanes, stationBuilt,
+  BELT, BELT_WORKERS, GAPS, INTAKE, INTAKE_TESTS, LANES, PAIR, TESTS, gapKey, middleOf, smallLanes, stationBuilt,
 } from './layout.js';
 
 const BRIDGED = ['closed', 'gate'];
@@ -78,7 +78,7 @@ export function station({ key, ...place }, { filmShare }, light) {
   return group([
     tester({ ...place, built }),
     group([person('factory', { seed })], { position: [place.x + 1, 0, side], turn: Math.PI }),
-    group([person('it', { seed: seed + 1 })], { position: [place.x - 1, 0, side], turn: 0 }),
+    group([person('it', { seed: seed + 1 })], { position: [place.x + 2.2, 0, side], turn: Math.PI }),
   ]);
 }
 
@@ -105,7 +105,7 @@ function unfinished(end, z) {
     belt(GAPS.B.end, end, z),
     bareBelt(end, BELT.end, z),
     pile(end, z),
-    ...[0.4, 1.4].map((dx, seed) => group([person('factory', { seed })], { position: [end + dx, 0, z - 1.2], turn: -Math.PI / 2 })),
+    ...BELT_WORKERS.map((dx, seed) => group([person('factory', { seed })], { position: [end + dx, 0, z - 1.2], turn: -Math.PI / 2 })),
   ]);
 }
 

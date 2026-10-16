@@ -18,7 +18,10 @@ export const DOCK = { start: 32, end: 38 };
 export const USERS = [[38.8, -2.8], [39.6, -0.6], [38.9, 1.4]];
 export const CLOUD = { x: 0, y: 21, z: -9 };
 export const CRANE = { x: 12, z: -23, height: 24, reach: 26 };
-export const SERVER_ROOM = { start: 24, end: 31.6, back: 5, front: 11, port: { x: 27.6, y: 3.3, z: 8.4 } };
+// The server room talks to the cloud and to the stations near it.
+export const SERVER_ROOM = {
+  start: 24, end: 31.6, back: 5, front: 11, port: { x: 27.6, y: 2.9, z: 8.4 }, stations: ['output 0 0', 'output 0 1'],
+};
 export const SPEED = 2;
 // Where people walk about and work: rectangles of floor between the desks and machines,
 // among them the walkways between the five belts, past their test stations.
@@ -27,12 +30,14 @@ export const AISLES = {
   front: { x: [-30, 22], z: [8.5, 10.5] },
   serverRoom: { x: [24.8, 30.6], z: [9.7, 10.4] },
   back: { x: [-30, 30], z: [-13.5, -10.5] },
-  ...Object.fromEntries(LANES.slice(1).map((z, index) => [`between${index}`, { x: [-11, 3], z: [z - 1.7, z - 1.5] }])),
+  ...Object.fromEntries(LANES.slice(1).map((z, index) => [`between${index}`, { x: [-4.3, 0.9], z: [z - 1.65, z - 1.55] }])),
 };
 // The share of the hall and of the last piece of each unfinished belt that stands at the
 // start of the film and at its end: the factory is never finished.
 const HALL_BUILT = [0.3, 0.95];
 const BELTS_LAID = { 0: [0.4, 0.65], 4: [0.2, 0.6] };
+// Where the developers laying a belt stand, past its end.
+export const BELT_WORKERS = [0.4, 1.4];
 const RACKS_BUILT = [4.6, 7.6];
 // Test stations that are still being built, by `kind laneIndex index`, as shares built at
 // the film's start and end; past 1 a station is finished earlier. About a third of all.

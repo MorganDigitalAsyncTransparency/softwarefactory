@@ -1,13 +1,17 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  ASSEMBLY, BELT, GAPS, INTAKE, INTAKE_TESTS, LANES, OUTPUT, OUTPUT_TESTS, TESTS, beltsLaid, hallBuilt, racksBuilt,
-  stationBuilt, unfinishedStations,
+  ASSEMBLY, BELT, BELT_WORKERS, GAPS, INTAKE, INTAKE_TESTS, LANES, OUTPUT, OUTPUT_TESTS, TESTS, beltsLaid, hallBuilt,
+  racksBuilt, stationBuilt, unfinishedStations,
 } from '../film/animation/layout.js';
 
 const inside = (x, { start, end }) => x > start && x < end;
-// The developers laying a belt stand up to this far past its end.
-const WORKERS_REACH = 1.7;
+const BODY = 0.24;
+const WORKERS_REACH = Math.max(...BELT_WORKERS) + BODY;
+const BELTS = [
+  ...LANES.flatMap((_, laneIndex) => [['intake', laneIndex, INTAKE_TESTS], ['middle', laneIndex, TESTS]]),
+  ['output', 0, OUTPUT_TESTS],
+];
 
 test('every belt passes at least two test stations, on belt that stands from the first frame', () => {
   assert.ok(INTAKE_TESTS.length >= 2 && INTAKE_TESTS.every((x) => inside(x, INTAKE)));
@@ -27,7 +31,15 @@ test('the factory is never finished: the hall, the cloud and some belts and stat
 });
 
 test('about a third of the test stations are still being built when the film starts', () => {
-  const all = (INTAKE_TESTS.length + TESTS.length) * LANES.length + OUTPUT_TESTS.length;
+  const all = BELTS.reduce((count, [, , xs]) => count + xs.length, 0);
   const building = unfinishedStations().filter((key) => stationBuilt(key, 0) < 1).length;
   assert.ok(Math.abs(building / all - 0.3) < 0.05, `${building} of ${all}`);
+});
+
+test('every station still being built is a real one, and every belt has a working station from the start', () => {
+  const keys = BELTS.flatMap(([kind, laneIndex, xs]) => xs.map((_, index) => `${kind} ${laneIndex} ${index}`));
+  unfinishedStations().forEach((key) => assert.ok(keys.includes(key), key));
+  BELTS.forEach(([kind, laneIndex, xs]) => {
+    assert.ok(xs.some((_, index) => stationBuilt(`${kind} ${laneIndex} ${index}`, 0) === 1), `${kind} ${laneIndex}`);
+  });
 });

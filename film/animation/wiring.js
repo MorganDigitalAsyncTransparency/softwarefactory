@@ -14,14 +14,15 @@ const PLACES = {
 
 // Every cable in the factory, built once per state. Cables from the cloud run to the
 // first test station of every belt, to every gate and to each station still being
-// built; the server room talks to the cloud, the assembly, the output and the dock.
+// built; the server room talks to the cloud, its own stations, the assembly and the dock.
 export function wiring(state) {
   const room = SERVER_ROOM.port;
-  const fromCloud = [...firstStations(), ...unfinishedStations().filter((key) => !key.endsWith(' 0')), ...gates(state)];
+  const stations = new Set([...firstStations(), ...unfinishedStations()]);
+  const fromCloud = [...stations].filter((key) => !SERVER_ROOM.stations.includes(key));
   return group([
-    ...fromCloud.map((key) => wire(key, place(key))),
+    ...[...fromCloud, ...gates(state)].map((key) => wire(key, place(key))),
     wire('server room', room),
-    ...['output 0 1'].map((key) => wire(key, place(key), room)),
+    ...SERVER_ROOM.stations.map((key) => wire(key, place(key), room)),
     wire('assembly', { x: middleOf(ASSEMBLY), y: 5, z: OUTPUT.z }, room),
     wire('dock', { x: HALL.right - 0.6, y: 4.6, z: OUTPUT.z - 2.4 }, room),
   ]);
@@ -36,7 +37,7 @@ export function pull(cables, { shown, filmShare, outage }) {
 }
 
 function firstStations() {
-  return [...LANES.map((_, laneIndex) => `intake ${laneIndex} 0`), ...LANES.map((_, laneIndex) => `middle ${laneIndex} 0`), 'output 0 0'];
+  return LANES.flatMap((_, laneIndex) => [`intake ${laneIndex} 0`, `middle ${laneIndex} 0`]);
 }
 
 function gates(state) {

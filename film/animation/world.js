@@ -17,8 +17,9 @@ const still = { key: null, parts: null };
 const fixed = {};
 
 // The whole factory at one moment of the `clock` (see scenes.js, lineTime). What changes
-// only with the state is built once and kept. The hall and some belts are built as the
-// film runs, and are never finished; the belts and the people stop when the cloud fails.
+// only with the state is built once and kept. The hall, the cloud, some belts and some
+// stations are built as the film runs, and are never finished; the belts and the people
+// stop when the cloud fails.
 export function world(state, clock) {
   const { filmShare } = clock;
   const factory = { ...state, filmShare, built: hallBuilt(filmShare), ends: beltsLaid(filmShare) };
@@ -32,7 +33,8 @@ export function world(state, clock) {
   [fixed.cloud, sky].forEach((part) => { part.position.y = (1 - shown.cloud) * 40; });
   const work = group([site(factory.built, clock.film)]);
   [building, work, fixed.office].forEach((part) => { part.scale.y = Math.max(0.01, shown.hall); });
-  [machines, fixed.serverRoom].forEach((part) => { part.scale.y = Math.max(0.01, shown.machines); });
+  machines.scale.y = Math.max(0.01, shown.machines);
+  fixed.serverRoom.scale.y = Math.max(0.01, shown.cloud);
   pull(cables, { shown: shown.cables, filmShare, outage: factory.outage });
   return group([
     fixed.ground, fixed.office, building, work, machines, fixed.serverRoom, cables, fixed.cloud, sky,

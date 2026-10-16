@@ -16,9 +16,9 @@ become five, and five become one:
 - **Middle:** five belts, with gaps where people carry boxes by hand.
 - **Right:** one machine joins the five into one belt, which carries one large,
   finished box out to the loading dock.
-- **Everywhere:** every belt passes at least two test stations, and people move about
-  the floor, working here and there. About a third of the stations are still being
-  built and connected.
+- **Everywhere:** every belt has at least two test stations, at least one of them
+  working from the start; about a third of all stations are still being built and
+  connected. People move about the floor, working here and there.
 - **Front right corner:** a small server room, with cables to some of the stations and
   up to the cloud.
 - **Around it:** the hall itself is being built all through the film. Walls rise bay
@@ -51,20 +51,20 @@ Each role wears its own color, defined in the
 
 ## Act 1: Who is here (0:00–0:41), level 1 and 2
 
-| ID  | Time      | Scene                                                                                                                                                                                                                                      | Caption                                                           |
-| --- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
-| S01 | 0:00–0:09 | The camera descends over the factory as it appears one layer at a time: the hall, the belts, the boxes, and last the cloud with its cables.                                                                                                | A factory.                                                        |
-| S02 | 0:09–0:17 | The camera glides to the open office. Product developers work at their desks, and small boxes leave the desks on belts into the hall.                                                                                                      | Product developers write and test the product.                    |
-| S03 | 0:17–0:25 | The camera follows the belts to the back wall, where Software factory developers build on scaffolding and lay a new belt while the crane lifts a panel.                                                                                    | Software factory developers build the factory around it.          |
-| S04 | 0:25–0:33 | The camera rises to the cloud, where a new rack rises among the servers and AI robots. Below, IT developers pull new cables to stations that are still being built, and the server room in the corner talks to the stations and the cloud. | IT developers run the IT services: the cloud and the server room. |
-| S05 | 0:33–0:41 | The camera settles over the whole factory. Ten belts become five and five become one; a large box leaves at the dock.                                                                                                                      | Many parts in. One product out.                                   |
+| ID  | Time      | Scene                                                                                                                                                                                                                                      | Caption                                                  |
+| --- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- |
+| S01 | 0:00–0:09 | The camera descends over the factory as it appears one layer at a time: the hall, the belts, the boxes, and last the cloud with its cables.                                                                                                | A factory.                                               |
+| S02 | 0:09–0:17 | The camera glides to the open office. Product developers work at their desks, and small boxes leave the desks on belts into the hall.                                                                                                      | Product developers write and test the product.           |
+| S03 | 0:17–0:25 | The camera follows the belts to the back wall, where Software factory developers build on scaffolding, lay a new belt and raise a half-built test station while the crane lifts a panel.                                                   | Software factory developers build the factory around it. |
+| S04 | 0:25–0:33 | The camera rises to the cloud, where a new rack rises among the servers and AI robots. Below, IT developers pull new cables to stations that are still being built, and the server room in the corner talks to the stations and the cloud. | IT developers run the cloud and the server room.         |
+| S05 | 0:33–0:41 | The camera settles over the whole factory. Ten belts become five and five become one; a large box leaves at the dock.                                                                                                                      | Many parts in. One product out.                          |
 
 ## Act 2: The ends work (0:41–1:02), level 2
 
-| ID  | Time      | Scene                                                                                                                                       | Caption                                                 |
-| --- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| S06 | 0:41–0:53 | Zoom to the left. Small boxes arrive at an even pace on ten belts. Each passes two test stations, a robot watches, and a green light glows. | Shift left: quality checked early. Automated for years. |
-| S07 | 0:53–1:02 | Pan to the right. A large box passes two test stations, is loaded out and received by Users.                                                | On the right: we can release.                           |
+| ID  | Time      | Scene                                                                                                                                   | Caption                                                 |
+| --- | --------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| S06 | 0:41–0:53 | Zoom to the left. Small boxes arrive at an even pace on ten belts. Each passes test stations, a robot watches, and a green light glows. | Shift left: quality checked early. Automated for years. |
+| S07 | 0:53–1:02 | Pan to the right. A large box passes a test station and one still being built, is loaded out and received by Users.                     | On the right: we can release.                           |
 
 ## Act 3: The middle (1:02–1:41), levels 1 to 3
 

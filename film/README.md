@@ -9,16 +9,16 @@ it is in the [contributing guide](../docs/01-CONTRIBUTING.md#watching-the-animat
 
 ## Brief
 
-| Question         | Decision                                                                                    |
-| ---------------- | ------------------------------------------------------------------------------------------- |
-| Audience         | Employees, with a message from senior management. No IT knowledge assumed.                  |
-| Purpose          | Explain the current state, so that viewers understand it.                                   |
-| Length           | 90–150 seconds.                                                                             |
-| Form             | Animated silent film in a modern style. No voices; captions and instrumental music only.    |
-| Tone             | Matter-of-fact: "this is how it is". No humor, no selling.                                  |
-| Language         | English captions.                                                                           |
-| Where it is seen | On the web, on the viewer's own computer.                                                   |
-| Brand            | None. Neutral and global: no logo, no company colors, no national markers.                  |
+| Question         | Decision                                                                                 |
+| ---------------- | ---------------------------------------------------------------------------------------- |
+| Audience         | Employees, with a message from senior management. No IT knowledge assumed.               |
+| Purpose          | Explain the current state, so that viewers understand it.                                |
+| Length           | 90–150 seconds.                                                                          |
+| Form             | Animated silent film in a modern style. No voices; captions and instrumental music only. |
+| Tone             | Matter-of-fact: "this is how it is". No humor, no selling.                               |
+| Language         | English captions.                                                                        |
+| Where it is seen | On the web, on the viewer's own computer.                                                |
+| Brand            | None. Neutral and global: no logo, no company colors, no national markers.               |
 
 ## Core message
 
@@ -30,16 +30,17 @@ We are building gates at every step and automating the manual steps away.
 
 ## Analogies
 
-| Physical factory                          | Software factory                                |
-| ----------------------------------------- | ----------------------------------------------- |
-| Many small boxes arriving on the left     | Small code changes, checked early (shift left)  |
-| Conveyor belts                            | The CI/CD pipeline                              |
-| Carrying boxes by hand between belts      | Manual hand-offs between pipeline stages        |
-| Gates that stop damaged boxes             | Quality gates                                   |
-| Long cables from the cloud to each station | Integrations, tested at every step             |
-| Robots                                    | Automation and AI agents                        |
-| The large box at the loading dock         | A release                                       |
-| The factory being built around the belts  | The software factory built while it runs        |
+| Physical factory                         | Software factory                               |
+| ---------------------------------------- | ---------------------------------------------- |
+| Many small boxes arriving on the left    | Small code changes, checked early (shift left) |
+| Conveyor belts                           | The CI/CD pipeline                             |
+| Carrying boxes by hand between belts     | Manual hand-offs between pipeline stages       |
+| Gates that stop damaged boxes            | Quality gates                                  |
+| Long cables to the stations              | Integrations, tested at every step             |
+| The cloud and the server room            | IT services, in the cloud and run in-house     |
+| Robots                                   | Automation and AI agents                       |
+| The large box at the loading dock        | A release                                      |
+| The factory being built around the belts | The software factory built while it runs       |
 
 ## Decisions
 
@@ -48,8 +49,8 @@ We are building gates at every step and automating the manual steps away.
 - *Shift left* gets its own caption.
 - The film is one continuous picture with captions at the bottom, not cut by black title
   cards, which broke its flow.
-- The factory is never finished: the hall and some belts are still being built when the
-  film ends.
+- The factory is never finished: the hall, the cloud, some belts and some test stations
+  are still being built when the film ends.
 - The first version is an animation in code, silent for now: the music in the form
   above comes later, and so does any recording to a video file.
 - The film introduces the people first: Product developers, Software factory developers
