@@ -47,11 +47,14 @@ blue cables hanging down to stations in the factory. Flow always goes left to ri
   and walking on, each role in its own color. Only the boxes ride the belts.
 - The gaps in the middle are always in the same places, so S15 shows which ones have
   been closed.
-- The cables from the cloud always run to the same stations. While the cloud fails in
-  S11 they turn red together with a light on the cloud and every station light.
+- The cables from the cloud and from the server room always run to the same stations;
+  a station that is still being built gets its cable once it stands. While the cloud
+  fails in S11 every cable turns red together with a light on the cloud and every
+  station light.
 - The factory is never finished. The back wall rises bay by bay all through the film,
-  a yellow tower crane behind the hall keeps lifting panels, and two belts in the middle
-  are still being laid in the last frame.
+  a yellow tower crane behind the hall keeps lifting panels, new racks rise in the
+  cloud, about a third of the test stations start half-built and some still are in the
+  last frame, and two belts in the middle are still being laid.
 
 ## Scene prompts
 
@@ -68,8 +71,8 @@ into place as its cables reach down. Calm, steady, wide establishing shot.
 
 ```text
 Camera glides down to the open office left of the hall. Product developers in purple
-work at white desks with screens. From each desk in the front row a narrow belt runs
-into the hall through a hatch in its wall, carrying small cardboard boxes. A few
+work at white desks with screens. From each desk in the row nearest the hall a narrow
+belt runs into the hall through a hatch in its wall, carrying small cardboard boxes. A few
 developers walk between the desks.
 ```
 
@@ -78,15 +81,17 @@ developers walk between the desks.
 ```text
 Camera follows the belts into the hall to the back wall, which is still being built.
 Software factory developers in yellow with hard hats work on scaffolding, a tower crane
-lifts a wall panel, and others lay the frame of a new belt section.
+lifts a wall panel, and others raise the walls of a half-built test station.
 ```
 
 ### S04
 
 ```text
-Camera rises to the white cloud above the factory: dark blue server racks, small white
-robots walking between them, and long blue cables hanging down to the stations.
-Below, IT developers in blue walk between the stations and check the cables.
+Camera rises to the white cloud above the factory: dark blue server racks, a new rack
+rising at the end of the row, small white robots walking between them, and long blue
+cables hanging down to the stations. Below, IT developers in blue pull new cables to
+half-built stations. In the front corner of the hall a small server room with three
+racks has cables of its own to the stations nearby and up to the cloud.
 ```
 
 ### S05
@@ -197,7 +202,8 @@ keep flowing out to users on the right. Calm, ongoing, unfinished.
 
 ```text
 The camera rises slowly over the whole factory and the office. The line keeps running,
-the crane lifts another panel and two belts are still being laid. Fade to black.
+the crane lifts another panel, a rack is rising in the cloud, and two belts and some
+stations are still being built. Fade to black.
 ```
 
 ## Sound

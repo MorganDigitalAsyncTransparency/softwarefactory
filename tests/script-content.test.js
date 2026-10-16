@@ -15,8 +15,9 @@ test('every scene lasts some time', () => {
   scenes.forEach((scene) => assert.ok(scene.end > scene.start, scene.id));
 });
 
-test('the film ends within the 150 seconds the brief allows', () => {
-  assert.ok(scenes.at(-1).end <= 150);
+test('the film ends within the length the brief allows', () => {
+  const [, longest] = readFileSync('film/README.md', 'utf8').match(/\| Length\s*\|\s*\d+–(\d+) seconds/);
+  assert.ok(scenes.at(-1).end <= Number(longest));
 });
 
 test('every caption is shown long enough to read', () => {

@@ -7,18 +7,25 @@ const PUFFS = Array.from({ length: 18 }, (_, index) => ({
   position: [-14 + index * 1.65, noise(index) * 1.6, (noise(index + 0.3) - 0.5) * 7],
   radius: 2.6 + noise(index + 0.6) * 2,
 }));
-const RACKS = [-7.5, -4.5, -1.5, 1.5, 4.5, 7.5];
+const RACKS = [-10.5, -7.5, -4.5, -1.5, 1.5, 4.5, 7.5, 10.5];
 const TOP = 2.2;
 
-// IT infrastructure: the cloud, with server racks on it.
+// IT infrastructure: the cloud, with a platform for its server racks.
 export function cloud() {
   const puffs = PUFFS.map(({ position, radius }) => sphere(radius, 'cloud', position));
   puffs.forEach((puff) => { puff.scale.y = 0.5; puff.castShadow = false; });
-  return group([
-    ...puffs,
-    slab([-9.5, -2.2], [9.5, 2.2], [TOP - 0.3, TOP], 'rack'),
-    ...RACKS.map((x) => rack(x)),
-  ], { position: [CLOUD.x, CLOUD.y, CLOUD.z] });
+  return group([...puffs, slab([-12.5, -2.2], [12.5, 2.2], [TOP - 0.3, TOP], 'rack')], { position: [CLOUD.x, CLOUD.y, CLOUD.z] });
+}
+
+// The racks in the cloud, `count` of them standing; the next one is rising, so the
+// cloud grows all through the film.
+export function cloudRacks(count) {
+  const standing = RACKS.slice(0, Math.ceil(count)).map((x, index) => {
+    const built = rack([CLOUD.x + x, CLOUD.y + TOP, CLOUD.z]);
+    built.scale.y = Math.max(0.01, Math.min(1, count - index));
+    return built;
+  });
+  return group(standing);
 }
 
 // The AI agents walking between the racks, relative to the cloud.
@@ -34,9 +41,10 @@ export function alarm(time) {
   });
 }
 
-function rack(x) {
-  const lights = [0.5, 1, 1.5, 2].map((y) => block([0.9, 0.08, 0.05], 'it', [x, TOP + y, 0.62]));
-  return group([block([1.2, 2.5, 1.2], 'rack', [x, TOP + 1.25, 0]), ...lights]);
+// A server rack standing at `position`, in the cloud or in the server room.
+export function rack(position) {
+  const lights = [0.5, 1, 1.5, 2].map((y) => block([0.9, 0.08, 0.05], 'it', [0, y, 0.62]));
+  return group([block([1.2, 2.5, 1.2], 'rack', [0, 1.25, 0]), ...lights], { position });
 }
 
 function walker(x, time, index) {
@@ -48,13 +56,15 @@ function walker(x, time, index) {
   return agent;
 }
 
-// A cable from the cloud down to a station: an integration that has to work at every
-// step. `connected` draws part of it, for a cable that is still being pulled.
-export function cable({ x, y, z }, connected = 1) {
-  const start = new THREE.Vector3(CLOUD.x + x * 0.3, CLOUD.y - 1.5, CLOUD.z + 1 + z * 0.15);
-  const end = new THREE.Vector3(x, y, z);
-  const curve = new THREE.CubicBezierCurve3(start, start.clone().setY(start.y - 9), end.clone().setY(end.y + 7), end);
-  const wire = tube(`${x} ${y} ${z}`, curve, 'it');
+// A cable to a station: an integration that has to work at every step. It hangs down
+// from the cloud, or arches over from another point such as the server room.
+// `connected` draws part of it, for a cable that is still being pulled.
+export function cable(end, connected = 1, from = null) {
+  const to = new THREE.Vector3(end.x, end.y, end.z);
+  const start = from ? new THREE.Vector3(from.x, from.y, from.z) : new THREE.Vector3(CLOUD.x + end.x * 0.3, CLOUD.y - 1.5, CLOUD.z + 1 + end.z * 0.15);
+  const [drop, rise] = from ? [4, 4] : [-9, 7];
+  const curve = new THREE.CubicBezierCurve3(start, start.clone().setY(start.y + drop), to.clone().setY(to.y + rise), to);
+  const wire = tube(JSON.stringify([end, from]), curve, 'it');
   wire.castShadow = false;
   connect(wire, connected);
   return wire;

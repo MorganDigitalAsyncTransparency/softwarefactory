@@ -18,18 +18,29 @@ export const DOCK = { start: 32, end: 38 };
 export const USERS = [[38.8, -2.8], [39.6, -0.6], [38.9, 1.4]];
 export const CLOUD = { x: 0, y: 21, z: -9 };
 export const CRANE = { x: 12, z: -23, height: 24, reach: 26 };
+export const SERVER_ROOM = { start: 24, end: 31.6, back: 5, front: 11, port: { x: 27.6, y: 3.3, z: 8.4 } };
 export const SPEED = 2;
-// Where people walk about and work: rectangles of floor that no machine stands on.
+// Where people walk about and work: rectangles of floor between the desks and machines,
+// among them the walkways between the five belts, past their test stations.
 export const AISLES = {
-  office: { x: [-44, -42.4], z: [-11, 10] },
-  front: { x: [-30, 30], z: [8.5, 10.5] },
+  office: { x: [-43.6, -42.4], z: [-11, 10] },
+  front: { x: [-30, 22], z: [8.5, 10.5] },
+  serverRoom: { x: [24.8, 30.6], z: [9.7, 10.4] },
   back: { x: [-30, 30], z: [-13.5, -10.5] },
-  middle: { x: [-11, 2.5], z: [0.8, 1] },
+  ...Object.fromEntries(LANES.slice(1).map((z, index) => [`between${index}`, { x: [-11, 3], z: [z - 1.7, z - 1.5] }])),
 };
 // The share of the hall and of the last piece of each unfinished belt that stands at the
 // start of the film and at its end: the factory is never finished.
 const HALL_BUILT = [0.3, 0.95];
-const BELTS_LAID = { 0: [0.45, 0.95], 4: [0.2, 0.85] };
+const BELTS_LAID = { 0: [0.4, 0.65], 4: [0.2, 0.6] };
+const RACKS_BUILT = [4.6, 7.6];
+// Test stations that are still being built, by `kind laneIndex index`, as shares built at
+// the film's start and end; past 1 a station is finished earlier. About a third of all.
+const STATIONS_BUILT = {
+  'intake 1 1': [0.2, 1.6], 'intake 3 1': [0.5, 1.2], 'intake 4 0': [0.1, 0.9],
+  'middle 0 1': [0.3, 0.8], 'middle 2 1': [0.15, 1.4], 'middle 4 1': [0.4, 2],
+  'output 0 1': [0.25, 0.95],
+};
 
 export function gapKey(gap, laneIndex) {
   return `${gap}${laneIndex + 1}`;
@@ -54,6 +65,19 @@ export function beltsLaid(filmShare) {
   return Object.fromEntries(Object.entries(BELTS_LAID).map(([laneIndex, laid]) => (
     [laneIndex, GAPS.B.end + (BELT.end - GAPS.B.end) * grown(laid, filmShare)]
   )));
+}
+
+// How many server racks stand in the cloud: it grows all through the film, too.
+export function racksBuilt(filmShare) {
+  return grown(RACKS_BUILT, filmShare);
+}
+
+export function stationBuilt(key, filmShare) {
+  return key in STATIONS_BUILT ? Math.min(1, grown(STATIONS_BUILT[key], filmShare)) : 1;
+}
+
+export function unfinishedStations() {
+  return Object.keys(STATIONS_BUILT);
 }
 
 function grown([first, last], filmShare) {

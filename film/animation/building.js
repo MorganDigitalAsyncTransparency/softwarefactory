@@ -90,10 +90,11 @@ function sideWall(x, spans) {
   ]);
 }
 
-// Openings low in the left wall where the parts come in, one for each small belt.
+// Openings low in the left wall where the parts come in, one for each small belt, seen
+// from the office and from the hall.
 function hatches() {
   return LANES.flatMap((z) => [z - PAIR, z + PAIR]).map((z) => (
-    slab([HALL.left + 0.2, z - 0.6], [HALL.left + 0.3, z + 0.6], [0.6, 1.6], 'hatch')
+    slab([HALL.left - 0.3, z - 0.6], [HALL.left + 0.3, z + 0.6], [0.6, 1.6], 'hatch')
   ));
 }
 

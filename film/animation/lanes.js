@@ -3,7 +3,7 @@ import { box, facingTurn, person, robot } from './figures.js';
 import { group } from './shapes.js';
 import { CARRIED, boxesOn, carrierAt, gapMode, gateStops, stretches } from './flow.js';
 import {
-  BELT, GAPS, INTAKE, INTAKE_TESTS, LANES, PAIR, TESTS, gapKey, middleOf, smallLanes,
+  BELT, GAPS, INTAKE, INTAKE_TESTS, LANES, PAIR, TESTS, gapKey, middleOf, smallLanes, stationBuilt,
 } from './layout.js';
 
 const BRIDGED = ['closed', 'gate'];
@@ -35,12 +35,12 @@ export function laneMotion(state, time, laneIndex) {
     { stretch, boxes: boxesOn(stretch, time, { seed: laneIndex * 1000, origin: BELT.start }) }
   ));
   const boxes = flows.flatMap((flow) => flow.boxes);
-  const signal = (busy) => (state.outage ? 'stop' : busy);
+  const light = (busy) => signal(state, busy);
   return group([
-    intake(time, laneIndex, signal),
+    intake({ state, time, laneIndex }, light),
     ...boxes.map((item) => placedBox(item, z)),
-    ...flows.flatMap((flow) => flow.stretch.gates.map((x) => gate(x, z, signal(gateStops(flow.boxes, x) ? 'stop' : 'ok')))),
-    ...TESTS.map((x) => tester({ x, z, span: 2.2 }, signal(tested(boxes, x)))),
+    ...flows.flatMap((flow) => flow.stretch.gates.map((x) => gate(x, z, light(gateStops(flow.boxes, x) ? 'stop' : 'ok')))),
+    ...TESTS.map((x, index) => station({ x, z, span: 2.2, key: `middle ${laneIndex} ${index}` }, state, light(tested(boxes, x)))),
     ...Object.entries(GAPS).filter(([gap]) => gapMode(state, gap, laneIndex) === 'open').map(([, span]) => pile(span.start, z)),
     ...Object.keys(GAPS).map((gap) => carrier(state, time, { gap, laneIndex })),
     laneIndex in state.ends && unfinished(state.ends[laneIndex], z),
@@ -49,15 +49,36 @@ export function laneMotion(state, time, laneIndex) {
 
 // The two small belts of a lane, from the office desks into the hall, each box checked
 // twice before the joiner, the first time watched by an AI agent.
-function intake(time, laneIndex, signal) {
+function intake({ state, time, laneIndex }, light) {
   const z = LANES[laneIndex];
   const boxes = smallLanes(laneIndex).flatMap((small, index) => (
     boxesOn(INTAKE_STRETCH, time, { seed: laneIndex * 100 + index * 50, spacing: SMALL.spacing }).map((item) => ({ ...item, z: small }))
   ));
   return group([
     ...boxes.map(({ x, z: small }) => group([box('good', { scale: SMALL.scale })], { position: [x, BELT.height, small] })),
-    ...INTAKE_TESTS.map((x) => tester({ x, z, span: 2 * PAIR + INTAKE.width + 0.4 }, signal(tested(boxes, x)))),
+    ...INTAKE_TESTS.map((x, index) => (
+      station({ x, z, span: 2 * PAIR + INTAKE.width + 0.4, key: `intake ${laneIndex} ${index}` }, state, light(tested(boxes, x)))
+    )),
     group([robot({ time })], { position: [INTAKE_TESTS[0] - 1, 0, z + 1.6], turn: Math.PI / 2 }),
+  ]);
+}
+
+// Every light shows red while the cloud is down.
+export function signal({ outage }, busy) {
+  return outage ? 'stop' : busy;
+}
+
+// A test station, or one still being built: a Software factory developer builds it and
+// an IT developer connects its new cable.
+export function station({ key, ...place }, { filmShare }, light) {
+  const built = stationBuilt(key, filmShare);
+  if (built === 1) return tester(place, light);
+  const side = place.z + place.span / 2 + 0.2;
+  const seed = Math.round(Math.abs(place.x));
+  return group([
+    tester({ ...place, built }),
+    group([person('factory', { seed })], { position: [place.x + 1, 0, side], turn: Math.PI }),
+    group([person('it', { seed: seed + 1 })], { position: [place.x - 1, 0, side], turn: 0 }),
   ]);
 }
 
@@ -77,15 +98,14 @@ function pile(x, z) {
   })));
 }
 
-// A belt that is still being laid: Software factory developers at its end, and boxes
-// piling up there.
+// A belt that is still being laid: Software factory developers on one side of the bare
+// frame, and boxes piling up on the other.
 function unfinished(end, z) {
   return group([
     belt(GAPS.B.end, end, z),
     bareBelt(end, BELT.end, z),
     pile(end, z),
-    group([person('factory', { seed: 3 })], { position: [end + 2.4, 0, z + 1.2], turn: Math.PI }),
-    group([person('factory', { seed: 1 })], { position: [end + 1.8, 0, z - 1.2], turn: Math.PI }),
+    ...[0.4, 1.4].map((dx, seed) => group([person('factory', { seed })], { position: [end + dx, 0, z - 1.2], turn: -Math.PI / 2 })),
   ]);
 }
 

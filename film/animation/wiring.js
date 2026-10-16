@@ -1,0 +1,54 @@
+import { cable, connect } from './cloud.js';
+import { material } from './materials.js';
+import { group } from './shapes.js';
+import {
+  ASSEMBLY, GAPS, HALL, INTAKE_TESTS, LANES, OUTPUT, OUTPUT_TESTS, SERVER_ROOM, TESTS, middleOf, stationBuilt,
+  unfinishedStations,
+} from './layout.js';
+
+const PLACES = {
+  intake: (laneIndex, index) => ({ x: INTAKE_TESTS[index], y: 2.6, z: LANES[laneIndex] }),
+  middle: (laneIndex, index) => ({ x: TESTS[index], y: 2.6, z: LANES[laneIndex] }),
+  output: (_, index) => ({ x: OUTPUT_TESTS[index], y: 4.2, z: OUTPUT.z }),
+};
+
+// Every cable in the factory, built once per state. Cables from the cloud run to the
+// first test station of every belt, to every gate and to each station still being
+// built; the server room talks to the cloud, the assembly, the output and the dock.
+export function wiring(state) {
+  const room = SERVER_ROOM.port;
+  const fromCloud = [...firstStations(), ...unfinishedStations().filter((key) => !key.endsWith(' 0')), ...gates(state)];
+  return group([
+    ...fromCloud.map((key) => wire(key, place(key))),
+    wire('server room', room),
+    ...['output 0 1'].map((key) => wire(key, place(key), room)),
+    wire('assembly', { x: middleOf(ASSEMBLY), y: 5, z: OUTPUT.z }, room),
+    wire('dock', { x: HALL.right - 0.6, y: 4.6, z: OUTPUT.z - 2.4 }, room),
+  ]);
+}
+
+// Each frame: how much of each cable is pulled in, and red while the cloud is down.
+export function pull(cables, { shown, filmShare, outage }) {
+  cables.children.forEach((line) => {
+    connect(line, Math.min(shown, stationBuilt(line.userData.key, filmShare)));
+    line.material = material(outage ? 'stop' : 'it');
+  });
+}
+
+function firstStations() {
+  return [...LANES.map((_, laneIndex) => `intake ${laneIndex} 0`), ...LANES.map((_, laneIndex) => `middle ${laneIndex} 0`), 'output 0 0'];
+}
+
+function gates(state) {
+  return Object.entries(state.gaps).filter(([, mode]) => mode === 'gate').map(([key]) => key);
+}
+
+function place(key) {
+  if (GAPS[key[0]]) return { x: middleOf(GAPS[key[0]]), y: 3.3, z: LANES[Number(key[1]) - 1] };
+  const [kind, laneIndex, index] = key.split(' ');
+  return PLACES[kind](Number(laneIndex), Number(index));
+}
+
+function wire(key, end, from) {
+  return Object.assign(cable(end, 1, from), { userData: { key } });
+}

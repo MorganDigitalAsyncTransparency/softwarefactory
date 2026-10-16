@@ -53,8 +53,10 @@ We are building gates at every step and automating the manual steps away.
 - The first version is an animation in code, silent for now: the music in the form
   above comes later, and so does any recording to a video file.
 - The film introduces the people first: Product developers, Software factory developers
-  and IT developers each wear their own color and are always shown apart (see
+  and IT developers each wear their own color, so they are always told apart (see
   [roles](script/script.md#roles)).
+- IT is both the cloud and a small server room in the factory, and it grows during the
+  film like everything else.
 - The parts come from an open office where Product developers work, so viewers see
   where the product starts.
 - When a service in the cloud fails, every belt stops: the film shows how much the

@@ -39,10 +39,13 @@ export function gate(x, z, signal) {
 
 // A test station: a tunnel over the belt with a screen and a light that turns green as
 // each box is tested. `span` is how wide a stretch of belts it covers, `clear` how high.
-export function tester({ x, z, span, clear = 1.55 }, signal) {
+// A station that is still being built has only its side walls, rising.
+export function tester({ x, z, span, clear = 1.55, built = 1 }, signal) {
+  const sides = [-1, 1].map((side) => block([1.2, clear * built, 0.18], 'machine', [x, (clear * built) / 2, z + side * (span / 2 - 0.09)]));
+  if (built < 1) return group(sides);
   return group([
     slab([x - 0.6, z - span / 2], [x + 0.6, z + span / 2], [clear, clear + 0.65], 'machine'),
-    ...[-1, 1].map((side) => block([1.2, clear, 0.18], 'machine', [x, clear / 2, z + side * (span / 2 - 0.09)])),
+    ...sides,
     block([0.7, 0.45, 0.06], 'it', [x, clear + 0.3, z + span / 2 + 0.04]),
     sphere(0.16, light(signal), [x, clear + 0.85, z]),
   ]);

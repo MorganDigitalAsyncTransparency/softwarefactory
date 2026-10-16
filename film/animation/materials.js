@@ -6,7 +6,7 @@ import * as THREE from 'three';
 const LOOKS = {
   ground: { physical: '#B9C2B0', digital: '#06121F' },
   floor: { physical: '#C3C5C6', digital: '#0B1C2E' },
-  floorLine: { physical: '#E2B93B', digital: '#1B5F80' },
+  floorLine: { physical: '#F4F4EE', digital: '#1B5F80' },
   wall: { physical: '#E6D3B3', digital: '#0B1C2E', fade: true },
   glass: { physical: '#A9BBC4', digital: '#0B1C2E', fade: true },
   steel: { physical: '#50565E', digital: '#16304A', fade: true, metal: true },

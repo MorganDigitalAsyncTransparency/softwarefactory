@@ -1,17 +1,16 @@
 import { hall, site, standingBays } from './building.js';
-import { assembly, output, tester } from './machines.js';
-import { agents, alarm, cable, cloud, connect } from './cloud.js';
+import { assembly, output } from './machines.js';
+import { agents, alarm, cable, cloud, cloudRacks } from './cloud.js';
 import { box, facingTurn, person, robot } from './figures.js';
 import { group, slab } from './shapes.js';
-import { material } from './materials.js';
 import { boxesOn } from './flow.js';
 import { share } from './timeline.js';
-import { construction, laneBelts, laneMotion } from './lanes.js';
+import { construction, laneBelts, laneMotion, signal, station } from './lanes.js';
 import { office } from './office.js';
+import { serverRoom } from './server-room.js';
 import { people } from './people.js';
-import {
-  ASSEMBLY, BELT, GAPS, HALL, INTAKE_TESTS, LANES, OUTPUT, OUTPUT_TESTS, TESTS, beltsLaid, hallBuilt, middleOf,
-} from './layout.js';
+import { pull, wiring } from './wiring.js';
+import { BELT, GAPS, LANES, OUTPUT, OUTPUT_TESTS, beltsLaid, hallBuilt, middleOf, racksBuilt } from './layout.js';
 
 const RELEASE = { spacing: 7, speed: 1.4 };
 const still = { key: null, parts: null };
@@ -21,20 +20,22 @@ const fixed = {};
 // only with the state is built once and kept. The hall and some belts are built as the
 // film runs, and are never finished; the belts and the people stop when the cloud fails.
 export function world(state, clock) {
-  const factory = { ...state, built: hallBuilt(clock.filmShare), ends: beltsLaid(clock.filmShare) };
+  const { filmShare } = clock;
+  const factory = { ...state, filmShare, built: hallBuilt(filmShare), ends: beltsLaid(filmShare) };
   const shown = layersShown(factory.reveal);
   const { building, machines, cables } = stillParts(factory);
   fixed.ground ??= ground();
   fixed.office ??= office();
+  fixed.serverRoom ??= serverRoom();
   fixed.cloud ??= group([cloud()]);
-  fixed.cloud.position.y = (1 - shown.cloud) * 40;
+  const sky = group([agents(clock.film), cloudRacks(racksBuilt(filmShare)), factory.outage && alarm(clock.film)]);
+  [fixed.cloud, sky].forEach((part) => { part.position.y = (1 - shown.cloud) * 40; });
   const work = group([site(factory.built, clock.film)]);
   [building, work, fixed.office].forEach((part) => { part.scale.y = Math.max(0.01, shown.hall); });
-  machines.scale.y = Math.max(0.01, shown.machines);
-  cables.children.forEach((wire) => Object.assign(connect(wire, shown.cables), { material: material(factory.outage ? 'stop' : 'it') }));
+  [machines, fixed.serverRoom].forEach((part) => { part.scale.y = Math.max(0.01, shown.machines); });
+  pull(cables, { shown: shown.cables, filmShare, outage: factory.outage });
   return group([
-    fixed.ground, fixed.office, building, work, machines, cables, fixed.cloud,
-    group([agents(clock.film), factory.outage && alarm(clock.film)], { position: fixed.cloud.position.toArray() }),
+    fixed.ground, fixed.office, building, work, machines, fixed.serverRoom, cables, fixed.cloud, sky,
     shown.product > 0 && moving(factory, clock.line),
   ]);
 }
@@ -63,25 +64,8 @@ function buildStill(state) {
   return {
     building: hall(standingBays(state.built)),
     machines: group([...LANES.map((_, laneIndex) => laneBelts(state, laneIndex)), assembly(), output()]),
-    cables: group(stations(state).map((station) => cable(station))),
+    cables: wiring(state),
   };
-}
-
-// Where the cables from the cloud end: the first test station on each pair of small
-// belts and on each of the five belts, every gate, the assembly, the first test station
-// on the output and the dock.
-function stations(state) {
-  const gates = Object.entries(state.gaps).filter(([, mode]) => mode === 'gate')
-    .map(([key]) => ({ x: middleOf(GAPS[key[0]]), y: 3.3, z: LANES[Number(key[1]) - 1] }));
-  const tests = LANES.map((z) => ({ x: TESTS[0], y: 2.6, z }));
-  return [
-    ...LANES.map((z) => ({ x: INTAKE_TESTS[0], y: 2.6, z })),
-    ...tests,
-    ...gates,
-    { x: middleOf(ASSEMBLY), y: 5, z: OUTPUT.z },
-    { x: OUTPUT_TESTS[0], y: 4.2, z: OUTPUT.z },
-    { x: HALL.right - 0.6, y: 4.6, z: OUTPUT.z - 2.4 },
-  ];
 }
 
 function moving(state, time) {
@@ -96,12 +80,13 @@ function moving(state, time) {
   ]);
 }
 
-function releases({ outage }, time) {
+function releases(state, time) {
   const stretch = { start: OUTPUT.start + 1, end: OUTPUT.end, uneven: false, gates: [] };
   const boxes = boxesOn(stretch, time, RELEASE);
+  const place = (x, index) => ({ x, z: OUTPUT.z, span: 3.8, clear: 3.1, key: `output 0 ${index}` });
   return [
     ...boxes.map(({ x }) => group([box('good', { scale: 3 })], { position: [x, BELT.height, OUTPUT.z] })),
-    ...OUTPUT_TESTS.map((x) => tester({ x, z: OUTPUT.z, span: 3.8, clear: 3.1 }, outage ? 'stop' : boxes.some((item) => Math.abs(item.x - x) < 1) && 'ok')),
+    ...OUTPUT_TESTS.map((x, index) => station(place(x, index), state, signal(state, boxes.some((item) => Math.abs(item.x - x) < 1) && 'ok'))),
   ];
 }
 

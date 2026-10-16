@@ -2,9 +2,9 @@ import { noise } from './layout.js';
 
 // Pure motion for people who work here and there: each walks to a random spot near
 // their own patch of an aisle, works there a while, and walks on.
-const LEG_SECONDS = 9;
+const LEG_SECONDS = 7;
 const WALKING_SPEED = 1.4;
-const PATCH = 6;
+const PATCH = 6.5;
 
 export function wanderAt({ area, seed }, time) {
   const leg = Math.floor(time / LEG_SECONDS + noise(seed));
@@ -17,7 +17,7 @@ export function wanderAt({ area, seed }, time) {
     x: from.x + (to.x - from.x) * along,
     z: from.z + (to.z - from.z) * along,
     turn: Math.atan2(from.z - to.z, to.x - from.x),
-    walked: leg * PATCH + walked,
+    walked: walked < distance ? walked : 0,
   };
 }
 

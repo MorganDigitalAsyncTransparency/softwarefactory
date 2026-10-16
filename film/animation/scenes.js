@@ -1,5 +1,5 @@
 import { between } from './flow.js';
-import { DOCK, GAPS, JOINER, LANES, OUTPUT, middleOf } from './layout.js';
+import { DOCK, GAPS, LANES, OUTPUT, middleOf } from './layout.js';
 import { share } from './timeline.js';
 
 // Cameras are [position, target] in metres. The film is one continuous picture, so each
@@ -8,7 +8,7 @@ const HIGH = [[-44, 92, 132], [-6, 12, -3]];
 const OVERVIEW = [[-6, 56, 76], [-6, 7, -3]];
 const OFFICE_VIEW = [[-33, 14, 20], [-43, 1, -1]];
 const SITE_VIEW = [[-2, 20, 16], [-2, 4, -12]];
-const CLOUD_VIEW = [[8, 30, 46], [0, 16, -8]];
+const CLOUD_VIEW = [[18, 34, 64], [10, 11, -2]];
 const SETTLED = [[-6, 50, 72], [-6, 6.5, -3]];
 const LEFT = [[-22, 17, 22], [-27, 1, -1]];
 const DOOR_VIEW = [[DOCK.start - 10, 12, 21], [DOCK.start - 6, 1.5, OUTPUT.z]];
@@ -35,7 +35,6 @@ const TODAY = {
 };
 // While the cloud is down, in this share of the outage scene, the line stands still.
 const OUTAGE = [0.2, 0.7];
-const HALTED = { S11: OUTAGE };
 
 // Each drawing returns the shot for one frame: a camera path, the world's state and
 // whether the picture fades from or to black at the scene's edges.
@@ -50,7 +49,7 @@ const DRAWINGS = {
   S08: ({ progress }) => shot([DOCK_VIEW, DOOR_VIEW, MIDDLE], progress, START),
   S09: ({ progress }) => ({ ...shot([MIDDLE, MIDDLE_CLOSE], progress, START), fades: ['out'] }),
   S10: ({ progress }) => ({ split: true, progress, fades: ['in', 'out'] }),
-  S11: ({ progress }) => ({ ...cloudFails(progress), fades: ['in'] }),
+  S11: ({ progress }) => ({ ...cloudFails(progress), fades: ['in'], halts: OUTAGE }),
   S12: gateInstalled,
   S13: stepsAutomated,
   S14: ({ progress }) => shot([MIDDLE, MIDDLE_HIGH], progress, { ...AUTOMATED, digital: share(progress, 0, 0.7) }),
@@ -58,11 +57,14 @@ const DRAWINGS = {
   S16: ({ progress }) => ({ ...shot([OVERVIEW, FAREWELL], progress, TODAY), fades: ['out'] }),
 };
 
-// The belts' own clock: film time without the seconds the line stood still, so every
-// box and person stops where they were and goes on from there.
+// The belts' own clock: film time without the seconds the line stood still, in the
+// share of each scene its drawing `halts`, so every box and person stops where they
+// were and goes on from there.
 export function lineTime(scenes, time) {
-  return scenes.filter(({ id }) => HALTED[id]).reduce((line, scene) => {
-    const [from, to] = HALTED[scene.id].map((at) => scene.start + at * (scene.end - scene.start));
+  return scenes.reduce((line, scene) => {
+    const { halts } = draw({ scene, progress: 0 });
+    if (!halts) return line;
+    const [from, to] = halts.map((at) => scene.start + at * (scene.end - scene.start));
     return line - share(time, from, to) * (to - from);
   }, time);
 }
@@ -118,9 +120,9 @@ function stepsAutomated({ progress }) {
   return shot([GATE_CLOSE, MIDDLE], progress, { ...START, gaps, crew, growing });
 }
 
-// The Product developer who handed a stretch to a robot goes back to the office.
+// The Product developer who handed a stretch to a robot walks off toward the office.
 function walkOff(walked) {
   const from = { x: GAPS.A.end + 0.6, z: LANES[2] + 1.3 };
-  const to = { x: JOINER.end + 1, z: LANES[2] + 1.6 };
+  const to = { x: GAPS.A.start - 3, z: LANES[2] + 1.6 };
   return { x: between(from.x, to.x, walked), z: between(from.z, to.z, walked), facing: -1 };
 }
