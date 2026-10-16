@@ -18,10 +18,11 @@ const RELEASE = { spacing: 7, speed: 1.4 };
 const still = { key: null, parts: null };
 const fixed = {};
 
-// The whole factory at one moment of the `clock` (see scenes.js, lineTime). What changes
-// only with the state is built once and kept. The hall, the cloud, the server room, a
-// sixth lane, some belts and some stations are built as the film runs (schedule.js) and
-// are never finished; the belts, the people and the building stop when the cloud fails.
+// The whole factory at one moment of the `clock` (see scenes.js, lineTime and
+// peopleTime). What changes only with the state is built once and kept. The hall, the
+// cloud, the server room, a sixth lane, some belts and some stations are built as the
+// film runs (schedule.js) and are never finished. When the cloud fails the belts and
+// robots stop, and the people hurry about.
 export function world(state, clock) {
   const { buildShare } = clock;
   const factory = { ...state, buildShare, built: hallBuilt(buildShare), ends: beltsLaid(buildShare) };
@@ -42,7 +43,7 @@ export function world(state, clock) {
     fixed.ground, fixed.office, building, work, machines, fixed.serverRoom, cables, fixed.cloud, sky,
     risen(roomRacks(roomRacksBuilt(buildShare)), shown.cloud),
     risen(newLane(factory), shown.machines),
-    shown.product > 0 && moving(factory, clock.line),
+    shown.product > 0 && moving(factory, clock),
   ]);
 }
 
@@ -80,14 +81,14 @@ function buildStill(state) {
   };
 }
 
-function moving(state, time) {
+function moving(state, { line: time, people: hurried }) {
   const work = state.installing;
   return group([
-    ...LANES.map((_, laneIndex) => laneMotion(state, time, laneIndex)),
+    ...LANES.map((_, laneIndex) => laneMotion(state, { time, hurried }, laneIndex)),
     construction(state),
     work && cable({ x: middleOf(GAPS[work.gap]), y: 3.3, z: LANES[work.lane] }, work.share),
     ...releases(state, time),
-    people(time),
+    people(hurried),
     ...state.crew.map((member, index) => crewMember(member, time, index)),
   ]);
 }

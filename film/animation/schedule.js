@@ -3,7 +3,7 @@ import { BELT, GAPS, INTAKE, JOINER, NEW_LANE, TESTS } from './layout.js';
 
 // When each part of the factory is built, as R10 in docs/02-REQUIREMENTS.md asks.
 // Every value is a share of the building: 0 is the first frame and 1 the last (see
-// `buildShare` in player.js). A start below 0 means the part was begun before the film;
+// `buildShare` in player.js, the share of the film played). A start below 0 means the part was begun before the film;
 // an end above 1 means it is still unfinished when the film ends.
 
 // The share of the hall that stands, how far the last piece of each unfinished belt is

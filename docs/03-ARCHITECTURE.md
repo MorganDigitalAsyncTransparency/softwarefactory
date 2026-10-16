@@ -32,7 +32,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `timeline.js`      | Pure: finds the scene and its progress at a time, fades, and parses `?t=` (R5)      |
 | `player.js`        | Loads the script, runs the clock, wires the controls and shows each frame (R4)      |
 | `caption.js`       | The caption at the bottom of the picture, with balanced line wrapping (R3)          |
-| `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state and fades; throws on a missing ID; the line's clock (R2, R8, R9) |
+| `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state and fades; throws on a missing ID; the line's and the people's clocks (R2, R8, R9) |
 | `flow.js`          | Pure: where boxes, carriers and robots are at a time, and what a gate stops         |
 | `wander.js`        | Pure: where a person who works here and there is at a time                          |
 | `layout.js`        | Pure: the positions shared by every scene, in metres, and repeatable noise          |
@@ -59,26 +59,26 @@ Every factory scene draws the same world and changes only two things: the camera
 which glides along a path over the scene and starts where the scene before stopped,
 and the state, which says which gaps in the middle are closed, gated or carried by a
 robot, whether the cloud has failed, and who works where. How far the hall, the cloud and
-the unfinished belts and test stations have come is not part of a scene: it follows the share of the line's
-clock that has played (`schedule.js`), so the factory grows all through the film, stops while the line
-stops, and is never finished. That
+the unfinished belts and test stations have come is not part of a scene: it follows the share of the film
+that has played (`schedule.js`), so the factory grows all through the film and is never finished. That
 keeps the layout identical across scenes, as the continuity rules in
 [visual-descriptions.md](../film/script/visual-descriptions.md#continuity) ask.
 What changes only with the state (the hall, the belts, the cables) is built once and
 kept; what moves is drawn again each frame.
 
 Motion is a pure function of time: a box's position is computed from the clock, never
-stored, so seeking to any time draws the same frame. There are two clocks. The film's
-clock drives the camera, the crane and the cloud's robots and alarm. The line's clock is
-the film's clock minus the seconds the line has stood still while the cloud was down;
-it drives the belts, the boxes, the people and how far the factory is built, so they
-stop and go on from where they were (R9). The digital look blends every material between its two looks instead of
+stored, so seeking to any time draws the same frame. There are three clocks. The film's
+clock drives the camera, the crane, the cloud's robots and alarm, and how far the
+factory is built. The line's clock is the film's clock minus the seconds the line has
+stood still while the cloud was down; it drives the belts, the boxes and the robots on
+the floor, so they stop and go on from where they were. The people's clock runs faster
+while the line stands still, so they hurry about (R9). The digital look blends every material between its two looks instead of
 drawing a second world.
 
 ### Tests
 
 Node's built-in test runner runs `tests/`: the parser, the timeline, the motion of
-boxes and people, the line's clock, caption wrapping, that every scene has a drawing
+boxes and people, the line's and the people's clocks, caption wrapping, that every scene has a drawing
 and continues the camera of the one before, that the layout gives every running belt two test
 stations, one of them working from the start, that the schedule spreads the building over
 the whole film and never finishes it (R10), and that the script itself keeps its timing rules.

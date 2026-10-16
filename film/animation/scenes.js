@@ -35,8 +35,10 @@ const TODAY = {
     { role: 'it', x: middleOf(GAPS.B), z: LANES[2] - CREW_SIDE, facing: 0 },
   ],
 };
-// While the cloud is down, in this share of the outage scene, the line stands still.
+// While the cloud is down, in this share of the outage scene, the line stands still
+// and the people hurry about, this many times their usual pace, to find out why.
 const OUTAGE = [0.2, 0.7];
+const RUSH = 2.5;
 
 // Each drawing returns the shot for one frame: a camera path, the world's state and
 // whether the picture fades from or to black at the scene's edges.
@@ -60,15 +62,25 @@ const DRAWINGS = {
 };
 
 // The belts' own clock: film time without the seconds the line stood still, in the
-// share of each scene its drawing `halts`, so every box and person stops where they
-// were and goes on from there.
+// share of each scene its drawing `halts`, so every box and robot stops where it was
+// and goes on from there.
 export function lineTime(scenes, time) {
-  return scenes.reduce((line, scene) => {
+  return time - haltedSeconds(scenes, time);
+}
+
+// The people's clock runs faster while the line stands still: they keep working and
+// hurry about.
+export function peopleTime(scenes, time) {
+  return time + (RUSH - 1) * haltedSeconds(scenes, time);
+}
+
+function haltedSeconds(scenes, time) {
+  return scenes.reduce((halted, scene) => {
     const { halts } = draw({ scene, progress: 0 });
-    if (!halts) return line;
+    if (!halts) return halted;
     const [from, to] = halts.map((at) => scene.start + at * (scene.end - scene.start));
-    return line - share(time, from, to) * (to - from);
-  }, time);
+    return halted + share(time, from, to) * (to - from);
+  }, 0);
 }
 
 export function checkDrawings(scenes) {

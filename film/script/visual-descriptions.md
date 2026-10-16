@@ -50,7 +50,7 @@ blue cables hanging down to stations in the factory. Flow always goes left to ri
 - The cables from the cloud and from the server room always run to the same stations;
   a station that is still being built has its cable pulled in as it is built. While the cloud
   fails in S11 every cable turns red together with a light on the cloud and every
-  station light, and nothing on the floor is built until it is back.
+  station light; the belts stop, but the people keep working.
 - The factory is never finished, and something is being built in every scene. The back
   wall rises bay by bay, a yellow tower crane behind the hall keeps lifting panels, new
   racks rise in the cloud and in the server room, new test stations rise one after the
@@ -158,9 +158,11 @@ do not fit. End each panel with a soft red warning light.
 
 ```text
 Wide view of the whole factory. A red light on the cloud starts to blink and every
-cable from the cloud turns red. All belts stop at once, every test station light turns
-red, boxes stand still mid-belt and the people freeze where they are. Then the light
-goes out, the cables turn blue and everything moves again from where it stopped. The
+cable from the cloud turns red. All belts and robots stop at once, every test station light
+turns red and boxes stand still mid-belt. The people do not know why: they keep
+working and hurry about, some running between the stations to find the fault. Then
+the light goes out, the cables turn blue and the belts move again from where they
+stopped. The
 camera glides down to the middle of the floor.
 ```
 

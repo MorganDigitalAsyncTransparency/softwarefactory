@@ -61,6 +61,7 @@ We are building gates at every step and automating the manual steps away.
   film like everything else.
 - The parts come from an open office where Product developers work, so viewers see
   where the product starts.
-- When a service in the cloud fails, every belt stops: the film shows how much the
-  whole line depends on IT.
+- When a service in the cloud fails, every belt stops while the people, who do not know
+  why, keep working and run about to find the fault: the film shows how much the whole
+  line depends on IT.
 - People work here and there on the floor, not only along the belts.

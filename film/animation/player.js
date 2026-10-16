@@ -1,6 +1,6 @@
 import { parseScript } from './script-parser.js';
 import { duration, fade, frameAt, share, startTimeFrom } from './timeline.js';
-import { checkDrawings, draw, lineTime } from './scenes.js';
+import { checkDrawings, draw, lineTime, peopleTime } from './scenes.js';
 import { showCaption } from './caption.js';
 import { createStage } from './stage.js';
 
@@ -86,8 +86,8 @@ function render({ scene, progress }) {
   canvas.style.opacity = Math.min(fadeIn, fadeOut);
   showCaption(caption, scene.caption, fade(seconds, length, CAPTION_FADE_SECONDS));
   const { scenes, time } = playback;
-  const line = lineTime(scenes, time);
-  stage.render(shot, { film: time, line, buildShare: line / lineTime(scenes, duration(scenes)) });
+  const clock = { film: time, line: lineTime(scenes, time), people: peopleTime(scenes, time) };
+  stage.render(shot, { ...clock, buildShare: time / duration(scenes) });
 }
 
 function formatClock(seconds) {

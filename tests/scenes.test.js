@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { parseScript } from '../film/animation/script-parser.js';
-import { checkDrawings, draw, lineTime } from '../film/animation/scenes.js';
+import { checkDrawings, draw, lineTime, peopleTime } from '../film/animation/scenes.js';
 
 const scenes = parseScript(readFileSync('film/script/script.md', 'utf8'));
 
@@ -37,7 +37,7 @@ test('the gate that is built stays in the factory for the rest of the film', () 
     .forEach((scene) => assert.equal(draw({ scene, progress: 0.5 }).state.gaps.B2, 'gate', scene.id));
 });
 
-test('while the cloud is down the line stands still, and goes on from where it stopped', () => {
+test('while the cloud is down the line stands still and the people hurry, and both go on from there', () => {
   const outage = scenes.filter((scene) => [0, 0.25, 0.5, 0.75, 1].some((progress) => draw({ scene, progress }).state?.outage));
   assert.equal(outage.length, 1);
   const [scene] = outage;
@@ -48,4 +48,6 @@ test('while the cloud is down the line stands still, and goes on from where it s
   assert.equal(lineTime(scenes, scene.start), scene.start);
   const film = scenes.at(-1).end;
   assert.ok(Math.abs(film - lineTime(scenes, film) - (halted.at(-1) - halted[0])) < 0.3);
+  const [first, last] = [halted[0], halted.at(-1)];
+  assert.ok(peopleTime(scenes, last) - peopleTime(scenes, first) > 2 * (last - first));
 });

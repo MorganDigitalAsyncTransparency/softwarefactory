@@ -69,9 +69,9 @@ roles and their colors, the captions and the continuity.
 
 - **Given** a scene where a service in the cloud fails,
 - **when** it plays,
-- **then** every belt, box and person on the floor stands still while the cloud is
-  down, and nothing on the floor is built, and all of it goes on from where it stopped when the
-  cloud is back; the same time always shows the same frame.
+- **then** every belt, box and robot stands still while the cloud is down and goes on
+  from where it stopped when the cloud is back, while the people keep working and
+  hurry about, faster than before; the same time always shows the same frame.
 
 ### R10: The factory is built while it runs
 
