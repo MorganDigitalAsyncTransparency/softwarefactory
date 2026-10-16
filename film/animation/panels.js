@@ -5,13 +5,12 @@ import { belt } from './machines.js';
 import { box } from './figures.js';
 import { between } from './flow.js';
 import { share } from './timeline.js';
-
-import { WARNING_AT } from './score.js';
+import { PANEL_WARNING_AT } from './layout.js';
 
 // Three close-ups side by side, where factory, IT and product do not fit together.
 // Each returns its contents for one frame and where its camera looks.
 export function panels(progress, time) {
-  const warning = progress > WARNING_AT;
+  const warning = progress > PANEL_WARNING_AT;
   return [
     { contents: belts(progress), look: [[-0.5, 1.2, 0], 14] },
     { contents: shortCable(time), look: [[0, 4, 0], 16] },

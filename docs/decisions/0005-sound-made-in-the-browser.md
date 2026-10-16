@@ -30,7 +30,7 @@ any time (R5). How does the film get sound that stays text and follows the pictu
 Chosen option: "A: Web Audio from a score in code", because it keeps the repository
 text only, needs nothing installed or licensed, and lets a pure module (`score.js`) say
 what sounds at any moment of the film's clocks, so it is tested like the motion.
-Recordings (B) would sound richer but need hosting, licences and syncing. A library (C)
+Recordings (B) would sound richer but need hosting, licenses and syncing. A library (C)
 adds a dependency for what a few oscillators and filters do.
 
 ### Consequences

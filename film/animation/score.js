@@ -1,12 +1,10 @@
-import { CRANE, noise } from './layout.js';
+import { CRANE, PANEL_WARNING_AT, noise } from './layout.js';
 import { share } from './timeline.js';
 
 // The film's sound as a score: what plays at a moment of the clock, as plain numbers for
-// sound.js to play. The music and the click of the test stations follow the line's
+// sound.js to play. The music and the clicks follow the line's
 // clock, so they stop with the belts; the hum, the crane and the alarms follow the film.
 
-// The red lights in the split panels come on at this share of their scene.
-export const WARNING_AT = 0.7;
 const BEAT = 0.75;
 const BEATS_PER_CHORD = 8;
 // A calm loop of four chords, as MIDI notes: A minor, F, C and G.
@@ -32,20 +30,20 @@ export function levels(shot, { film, line }) {
   };
 }
 
-// The short sounds that start between two moments: notes of the music, the click of a
-// test station checking a box, and the thud of the crane setting a panel.
+// The short sounds that start between two moments: notes of the music, a click in time
+// with the belts, and the thud of the crane setting a panel where the factory is seen.
 export function events(shot, from, to) {
   const beats = beatsBetween(from.line, to.line).filter((beat) => !(shot.uneven && noise(beat) < SKIPPED));
   return [
     ...beats.map((beat) => ({ kind: 'note', pitch: frequency(noteAt(beat) + 12) })),
     ...beats.filter((beat) => beat % CLICK_EVERY === 1).map(() => ({ kind: 'click' })),
-    ...(crossed(from.film, to.film) ? [{ kind: 'thud' }] : []),
+    ...(shot.state && crossed(from.film, to.film) ? [{ kind: 'thud' }] : []),
   ];
 }
 
 function alertAt({ split, progress, state }, film) {
   if (state?.outage) return { level: 1, pitch: ALARM_PITCHES[Math.floor(film * 2) % 2] };
-  const warning = split && progress > WARNING_AT && film % 1 < 0.5;
+  const warning = split && progress > PANEL_WARNING_AT && film % 1 < 0.5;
   return { level: warning ? 0.6 : 0, pitch: ALARM_PITCHES[1] / 2 };
 }
 

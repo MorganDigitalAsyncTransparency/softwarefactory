@@ -46,7 +46,10 @@ test('the music halts in the uneven scene and runs evenly elsewhere', () => {
   assert.ok(perSecond(uneven) < 0.8 * perSecond(even));
 });
 
-test('the crane thuds once each time it sets a panel', () => {
+test('the crane thuds once each time it sets a panel in view', () => {
   const thuds = times.slice(1).filter((film) => heard(film - STEP, film).some(({ kind }) => kind === 'thud'));
-  assert.equal(thuds.length, Math.floor((times.at(-1) / CRANE.liftSeconds) - CRANE.setAt) + 1);
+  const lifts = times.at(-1) / CRANE.liftSeconds;
+  assert.ok(thuds.length >= lifts - 2 && thuds.length <= lifts, `${thuds.length} thuds`);
+  thuds.forEach((film) => assert.ok(shotAt(film).state, `no crane in view at ${film}`));
+  thuds.slice(1).forEach((film, index) => assert.ok(film - thuds[index] >= CRANE.liftSeconds - STEP));
 });

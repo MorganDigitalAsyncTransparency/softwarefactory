@@ -220,8 +220,8 @@ the rhythm turns uneven and halting, and in S11 it stops with the belts and star
 with them; from S12 on it is steady and forward-moving.
 
 Under the music, the sounds of the factory: a low hum of the running belts with the
-noise of the hall, a soft click as a test station checks a box, and a thud each time
-the crane sets a panel. Two alerts: a two-tone alarm the whole time the cloud is down
+noise of the hall, a soft click in time with the belts, and a thud each time the crane
+sets a panel while the factory is in view. Two alerts: a two-tone alarm the whole time the cloud is down
 in S11, while the belts fall quiet, and a slow warning beep while the panels of S10
 show their red lights. All of it fades with the picture.
 

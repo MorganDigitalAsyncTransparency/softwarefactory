@@ -18,6 +18,8 @@ export const TEST_SPAN = 2.2;
 export const ASSEMBLY = { start: 12, end: 17 };
 export const OUTPUT = { start: 15, end: 37.5, z: -0.9 };
 export const OUTPUT_TESTS = [21, 24, 27];
+// The red lights in the split panels come on at this share of their scene.
+export const PANEL_WARNING_AT = 0.7;
 export const DOCK = { start: 32, end: 38 };
 export const USERS = [[38.8, -2.8], [39.6, -0.6], [38.9, 1.4]];
 export const CLOUD = { x: 0, y: 21, z: -9 };

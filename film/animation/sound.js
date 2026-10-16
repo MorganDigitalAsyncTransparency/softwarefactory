@@ -27,6 +27,7 @@ function build(context) {
   const master = gainNode(context, VOLUME, context.destination);
   const hum = gainNode(context, 0, master);
   [55, 110].forEach((frequency) => tone(context, { type: 'sawtooth', frequency }, filtered(context, 'lowpass', 180, hum)));
+  // The noise of the hall rises and falls with the hum, so it goes through the hum's gain.
   noise(context, filtered(context, 'bandpass', 900, gainNode(context, MIX.room / MIX.hum, hum)));
   const pad = gainNode(context, 0, filtered(context, 'lowpass', 900, master));
   const chord = [0, 1, 2].map(() => tone(context, { type: 'triangle', frequency: 220 }, pad));
@@ -55,6 +56,7 @@ const SHORT = {
 function pluck({ context, master }, { type, frequency, level, seconds }) {
   const now = context.currentTime;
   const envelope = gainNode(context, 0, master);
+  envelope.gain.setValueAtTime(0, now);
   envelope.gain.linearRampToValueAtTime(level, now + 0.01);
   envelope.gain.exponentialRampToValueAtTime(0.0001, now + seconds);
   const oscillator = tone(context, { type, frequency }, envelope);

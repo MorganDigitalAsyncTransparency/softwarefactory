@@ -11,6 +11,8 @@ const SCRIPT_URL = 'script/script.md';
 // every scene's edges.
 const FADE_SECONDS = 0.8;
 const CAPTION_FADE_SECONDS = 0.6;
+// A frame later than this, as when the tab was hidden, starts the sound afresh like a jump.
+const LATE_SECONDS = 0.25;
 const canvas = document.getElementById('stage');
 const stage = createStage(canvas);
 const sound = createSound();
@@ -43,6 +45,7 @@ function wireControls() {
   soundButton.addEventListener('click', toggleSound);
   // The browser lets sound start only after the viewer has clicked or pressed a key.
   ['pointerdown', 'keydown'].forEach((type) => document.addEventListener(type, listen));
+  document.addEventListener('visibilitychange', () => (document.hidden ? sound.suspend() : listen()));
   window.addEventListener('resize', () => seek(playback.time));
   document.addEventListener('keydown', (event) => {
     if (event.code !== 'Space') return;
@@ -73,6 +76,7 @@ function tick(timestamp) {
   if (!playback.playing) return;
   const elapsed = playback.lastTick === null ? 0 : (timestamp - playback.lastTick) / 1000;
   playback.lastTick = timestamp;
+  if (elapsed > LATE_SECONDS) playback.heard = null;
   const frame = seek(Math.min(playback.time + elapsed, duration(playback.scenes)));
   hear(frame);
   if (playback.time >= duration(playback.scenes)) pause();
@@ -94,7 +98,7 @@ function seek(time) {
 }
 
 // Plays the frame's sound, and the short sounds that started since the frame before.
-function hear({ shot, clock, volume }) {
+function hear({ shot, clock, fade: volume }) {
   const from = playback.heard ?? clock;
   sound.play({ volume, levels: levels(shot, clock), events: events(shot, from, clock) });
   playback.heard = clock;
@@ -119,13 +123,13 @@ function render({ scene, progress }) {
   const fades = shot.fades ?? [];
   const fadeIn = fades.includes('in') ? share(seconds, 0, FADE_SECONDS) : 1;
   const fadeOut = fades.includes('out') ? share(length - seconds, 0, FADE_SECONDS) : 1;
-  const volume = Math.min(fadeIn, fadeOut);
-  canvas.style.opacity = volume;
+  const picture = Math.min(fadeIn, fadeOut);
+  canvas.style.opacity = picture;
   showCaption(caption, scene.caption, fade(seconds, length, CAPTION_FADE_SECONDS));
   const { scenes, time } = playback;
   const clock = { film: time, line: lineTime(scenes, time), people: peopleTime(scenes, time) };
   stage.render(shot, { ...clock, buildShare: time / duration(scenes) });
-  return { shot, clock, volume };
+  return { shot, clock, fade: picture };
 }
 
 function formatClock(seconds) {
