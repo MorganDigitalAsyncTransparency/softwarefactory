@@ -2,13 +2,13 @@ import { cable, connect } from './cloud.js';
 import { material } from './materials.js';
 import { group } from './shapes.js';
 import {
-  ASSEMBLY, GAPS, HALL, INTAKE_TESTS, LANES, OUTPUT, OUTPUT_TESTS, SERVER_ROOM, TESTS, middleOf, stationBuilt,
+  ALL_LANES, ASSEMBLY, GAPS, HALL, INTAKE_TESTS, LANES, OUTPUT, OUTPUT_TESTS, SERVER_ROOM, TESTS, middleOf, stationBuilt,
   unfinishedStations,
 } from './layout.js';
 
 const PLACES = {
-  intake: (laneIndex, index) => ({ x: INTAKE_TESTS[index], y: 2.6, z: LANES[laneIndex] }),
-  middle: (laneIndex, index) => ({ x: TESTS[index], y: 2.6, z: LANES[laneIndex] }),
+  intake: (laneIndex, index) => ({ x: INTAKE_TESTS[index], y: 2.6, z: ALL_LANES[laneIndex] }),
+  middle: (laneIndex, index) => ({ x: TESTS[index], y: 2.6, z: ALL_LANES[laneIndex] }),
   output: (_, index) => ({ x: OUTPUT_TESTS[index], y: 4.2, z: OUTPUT.z }),
 };
 

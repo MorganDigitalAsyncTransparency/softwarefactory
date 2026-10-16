@@ -1,6 +1,6 @@
 import { block, cylinder, group, slab, sphere } from './shapes.js';
 import { light } from './materials.js';
-import { ASSEMBLY, BELT, DOCK, HALL, JOINER, LANES, OUTPUT, PAIR } from './layout.js';
+import { ALL_LANES, ASSEMBLY, BELT, DOCK, HALL, JOINER, LANES, OUTPUT, PAIR } from './layout.js';
 
 const LEG_EVERY = 2.5;
 
@@ -53,7 +53,7 @@ export function tester({ x, z, span, clear = 1.55, built = 1 }, signal) {
 
 // Where each pair of small belts is joined into one belt with larger boxes.
 export function joiner(laneIndex) {
-  const z = LANES[laneIndex];
+  const z = ALL_LANES[laneIndex];
   return group([
     slab([JOINER.start, z - PAIR - 0.8], [JOINER.end, z + PAIR + 0.8], [0, 1.9], 'machine'),
     slab([JOINER.start + 0.3, z - 0.6], [JOINER.end - 0.3, z + 0.6], [1.9, 2.3], 'steel'),

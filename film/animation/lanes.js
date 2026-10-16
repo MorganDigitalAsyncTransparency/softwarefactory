@@ -3,7 +3,7 @@ import { box, facingTurn, person, robot } from './figures.js';
 import { group } from './shapes.js';
 import { CARRIED, boxesOn, carrierAt, gapMode, gateStops, stretches } from './flow.js';
 import {
-  BELT, BELT_WORKERS, GAPS, INTAKE, INTAKE_TESTS, LANES, PAIR, TESTS, gapKey, middleOf, smallLanes, stationBuilt,
+  BELT, BELT_WORKERS, GAPS, INTAKE, INTAKE_TESTS, LANES, PAIR, TESTS, middleOf, smallLanes, stationBuilt,
 } from './layout.js';
 
 const BRIDGED = ['closed', 'gate'];
@@ -41,14 +41,15 @@ export function laneMotion(state, time, laneIndex) {
     ...boxes.map((item) => placedBox(item, z)),
     ...flows.flatMap((flow) => flow.stretch.gates.map((x) => gate(x, z, light(gateStops(flow.boxes, x) ? 'stop' : 'ok')))),
     ...TESTS.map((x, index) => station({ x, z, span: 2.2, key: `middle ${laneIndex} ${index}` }, state, light(tested(boxes, x)))),
-    ...Object.entries(GAPS).filter(([gap]) => gapMode(state, gap, laneIndex) === 'open').map(([, span]) => pile(span.start, z)),
+    ...Object.entries(GAPS).filter(([gap]) => gapMode(state, gap, laneIndex) === 'open' && !underWork(state, gap, laneIndex))
+      .map(([, span]) => pile(span.start, z)),
     ...Object.keys(GAPS).map((gap) => carrier(state, time, { gap, laneIndex })),
     laneIndex in state.ends && unfinished(state.ends[laneIndex], z),
   ]);
 }
 
-// The two small belts of a lane, from the office desks into the hall, each box checked
-// twice before the joiner, the first time watched by an AI agent.
+// The two small belts of a lane, from the office desks into the hall, with their test
+// stations before the joiner; an AI agent watches the first.
 function intake({ state, time, laneIndex }, light) {
   const z = LANES[laneIndex];
   const boxes = smallLanes(laneIndex).flatMap((small, index) => (
@@ -72,6 +73,7 @@ export function signal({ outage }, busy) {
 // an IT developer connects its new cable.
 export function station({ key, ...place }, { filmShare }, light) {
   const built = stationBuilt(key, filmShare);
+  if (built === 0) return null;
   if (built === 1) return tester(place, light);
   const side = place.z + place.span / 2 + 0.2;
   const seed = Math.round(Math.abs(place.x));
@@ -111,12 +113,15 @@ function unfinished(end, z) {
 
 function carrier(state, time, { gap, laneIndex }) {
   const mode = gapMode(state, gap, laneIndex);
-  const key = gapKey(gap, laneIndex);
-  const building = [state.installing, state.growing].some((work) => work && gapKey(work.gap, work.lane) === key);
-  if (!CARRIED.includes(mode) || building) return null;
+  if (!CARRIED.includes(mode) || underWork(state, gap, laneIndex)) return null;
   const { x, carrying, facing } = carrierAt(GAPS[gap], time, { seed: laneIndex * 7 + (gap === 'B' ? 3 : 0), robot: mode === 'robot' });
   const figure = mode === 'robot' ? robot({ carrying, time }) : person('product', { seed: laneIndex, carrying, walked: x });
   return group([figure], { position: [x, 0, LANES[laneIndex]], turn: facingTurn(facing) });
+}
+
+// Whether a gap is being bridged or gated right now, so no one carries across it.
+function underWork(state, gap, laneIndex) {
+  return [state.installing, state.growing].some((work) => work && work.gap === gap && work.lane === laneIndex);
 }
 
 // A gate rising and a belt growing across a gap, while Software factory developers work on it.

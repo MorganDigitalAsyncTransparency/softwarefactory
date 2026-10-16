@@ -1,7 +1,7 @@
 import { block, group, slab } from './shapes.js';
 import { person } from './figures.js';
 import { between } from './flow.js';
-import { CRANE, HALL, LANES, OUTPUT, PAIR } from './layout.js';
+import { ALL_LANES, CRANE, HALL, LANES, OUTPUT, PAIR } from './layout.js';
 
 const BAY = 8;
 const BAYS = (HALL.right - HALL.left) / BAY;
@@ -93,7 +93,7 @@ function sideWall(x, spans) {
 // Openings low in the left wall where the parts come in, one for each small belt, seen
 // from the office and from the hall.
 function hatches() {
-  return LANES.flatMap((z) => [z - PAIR, z + PAIR]).map((z) => (
+  return ALL_LANES.flatMap((z) => [z - PAIR, z + PAIR]).map((z) => (
     slab([HALL.left - 0.3, z - 0.6], [HALL.left + 0.3, z + 0.6], [0.6, 1.6], 'hatch')
   ));
 }

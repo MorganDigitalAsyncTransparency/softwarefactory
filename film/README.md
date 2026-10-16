@@ -49,8 +49,9 @@ We are building gates at every step and automating the manual steps away.
 - *Shift left* gets its own caption.
 - The film is one continuous picture with captions at the bottom, not cut by black title
   cards, which broke its flow.
-- The factory is never finished: the hall, the cloud, some belts and some test stations
-  are still being built when the film ends.
+- The factory is never finished: about half of it is built while the film runs, spread
+  over the whole film and not only at the start, and the hall, the IT, some belts and
+  some test stations are still being built when it ends.
 - The first version is an animation in code, silent for now: the music in the form
   above comes later, and so does any recording to a video file.
 - The film introduces the people first: Product developers, Software factory developers

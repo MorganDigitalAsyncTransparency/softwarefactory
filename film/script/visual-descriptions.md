@@ -51,10 +51,11 @@ blue cables hanging down to stations in the factory. Flow always goes left to ri
   a station that is still being built has its cable pulled in as it is built. While the cloud
   fails in S11 every cable turns red together with a light on the cloud and every
   station light.
-- The factory is never finished. The back wall rises bay by bay all through the film,
-  a yellow tower crane behind the hall keeps lifting panels, new racks rise in the
-  cloud, about a third of the test stations start half-built and some still are in the
-  last frame, and two belts in the middle are still being laid.
+- The factory is never finished, and something is being built in every scene. The back
+  wall rises bay by bay, a yellow tower crane behind the hall keeps lifting panels, new
+  racks rise in the cloud and in the server room, new test stations rise one after the
+  other with a Software factory developer and an IT developer at each, a sixth lane is
+  laid in front, and two belts in the middle are still being laid in the last frame.
 
 ## Scene prompts
 

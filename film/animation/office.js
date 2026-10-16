@@ -1,6 +1,6 @@
 import { block, group, slab } from './shapes.js';
 import { person } from './figures.js';
-import { INTAKE, LANES, OFFICE, smallLanes } from './layout.js';
+import { ALL_LANES, INTAKE, OFFICE, smallLanes } from './layout.js';
 
 const DESK = { depth: 1.2, width: 1.2, height: 0.75 };
 const ISLANDS = { x: -46, zs: [-9, -4, 1, 6] };
@@ -8,7 +8,7 @@ const ISLANDS = { x: -46, zs: [-9, -4, 1, 6] };
 // The open office left of the hall, where Product developers write and test the product.
 // Each small belt starts at a desk, so every part the factory takes in comes from here.
 export function office() {
-  const lineDesks = LANES.flatMap((_, laneIndex) => smallLanes(laneIndex));
+  const lineDesks = ALL_LANES.flatMap((_, laneIndex) => smallLanes(laneIndex));
   return group([
     slab([OFFICE.start, OFFICE.back], [OFFICE.end, OFFICE.front], [-0.1, 0.02], 'officeFloor'),
     ...lineDesks.map((z, index) => desk(INTAKE.start - DESK.depth / 2, z, { seed: index, facing: 0 })),

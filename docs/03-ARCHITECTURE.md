@@ -20,7 +20,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
                                      stage ─▶ world ─┬─ building, office
                                        │             ├─ lanes ─▶ machines, flow
                                        │             ├─ people ─▶ wander
-                                       │             ├─ cloud, wiring, server-room
+                                       │             ├─ cloud, wiring, server-room, new-lane
                                        │             └─ figures
                                        └─▶ panels
   (who calls whom, not every import: the 3D modules also share figures, shapes and materials)
@@ -40,7 +40,8 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `world.js`         | Puts the factory together and shows its layers one by one in the opening           |
 | `building.js`      | The hall: floor, walls, windows and roof, and the site where it is still being built: the rising bay, scaffolding and crane |
 | `office.js`        | The open office left of the hall, with a desk at the start of every small belt     |
-| `server-room.js`   | The small server room in the corner of the hall                                     |
+| `server-room.js`   | The small server room in the corner of the hall, and its racks as they are installed |
+| `new-lane.js`      | The sixth lane, laid during the film, with its test stations                        |
 | `wiring.js`        | Every cable, from the cloud or the server room, how far it is pulled in, and red while the cloud is down |
 | `people.js`        | Who walks about where, by role, and the Users at the dock                           |
 | `lanes.js`         | Each lane: two small belts and their joiner, the belt with its gaps, flowing boxes, carriers, test stations, gates and the belt still being laid |

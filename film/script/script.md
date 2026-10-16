@@ -17,10 +17,14 @@ become five, and five become one:
 - **Right:** one machine joins the five into one belt, which carries one large,
   finished box out to the loading dock.
 - **Everywhere:** every belt has at least two test stations, at least one of them
-  working from the start; about a third of all stations are still being built and
-  connected. People move about the floor, working here and there.
+  working from the start. People move about the floor, working here and there.
+- **Front:** a sixth lane is laid while the others run: its small belts grow from the
+  office into the hall and its belt across the middle, with no boxes on it yet.
 - **Front right corner:** a small server room, with cables to some of the stations and
   up to the cloud.
+- **All through the film:** about half of the factory is built while it runs, a piece
+  at a time from the first scene to the last: test stations rise and are connected,
+  belts are laid, and IT adds racks in the cloud and in the server room.
 - **Around it:** the hall itself is being built all through the film. Walls rise bay
   by bay, a crane lifts panels and Software factory developers work on scaffolding. It
   is never finished.

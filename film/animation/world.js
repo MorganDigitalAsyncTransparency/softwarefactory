@@ -7,10 +7,13 @@ import { boxesOn } from './flow.js';
 import { share } from './timeline.js';
 import { construction, laneBelts, laneMotion, signal, station } from './lanes.js';
 import { office } from './office.js';
-import { serverRoom } from './server-room.js';
+import { roomRacks, serverRoom } from './server-room.js';
+import { newLane } from './new-lane.js';
 import { people } from './people.js';
 import { pull, wiring } from './wiring.js';
-import { BELT, GAPS, LANES, OUTPUT, OUTPUT_TESTS, beltsLaid, hallBuilt, middleOf, racksBuilt } from './layout.js';
+import {
+  BELT, GAPS, LANES, OUTPUT, OUTPUT_TESTS, beltsLaid, hallBuilt, middleOf, racksBuilt, roomRacksBuilt,
+} from './layout.js';
 
 const RELEASE = { spacing: 7, speed: 1.4 };
 const still = { key: null, parts: null };
@@ -38,6 +41,8 @@ export function world(state, clock) {
   pull(cables, { shown: shown.cables, filmShare, outage: factory.outage });
   return group([
     fixed.ground, fixed.office, building, work, machines, fixed.serverRoom, cables, fixed.cloud, sky,
+    shown.cloud > 0 && roomRacks(roomRacksBuilt(filmShare)),
+    shown.machines > 0 && newLane(factory),
     shown.product > 0 && moving(factory, clock.line),
   ]);
 }
