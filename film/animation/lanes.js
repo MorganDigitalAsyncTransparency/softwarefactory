@@ -3,8 +3,9 @@ import { box, facingTurn, person, robot } from './figures.js';
 import { group } from './shapes.js';
 import { CARRIED, boxesOn, carrierAt, gapMode, gateStops, stretches } from './flow.js';
 import {
-  BELT, BELT_WORKERS, GAPS, INTAKE, INTAKE_SPAN, INTAKE_TESTS, LANES, middleOf, middleTests, smallLanes, stationBuilt,
+  BELT, BELT_WORKERS, GAPS, INTAKE, INTAKE_SPAN, INTAKE_TESTS, LANES, middleOf, smallLanes,
 } from './layout.js';
+import { middleTests, stationBuilt } from './schedule.js';
 
 const BRIDGED = ['closed', 'gate'];
 const BIN_EDGE = 1.05;
@@ -71,8 +72,8 @@ export function signal({ outage }, busy) {
 
 // A test station, or one still being built: a Software factory developer builds it and
 // an IT developer connects its new cable.
-export function station({ key, ...place }, { filmShare }, light) {
-  const built = stationBuilt(key, filmShare);
+export function station({ key, ...place }, { buildShare }, light) {
+  const built = stationBuilt(key, buildShare);
   if (built === 0) return null;
   if (built === 1) return tester(place, light);
   const side = place.z + place.span / 2 + 0.2;

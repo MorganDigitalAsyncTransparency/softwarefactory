@@ -86,7 +86,8 @@ function render({ scene, progress }) {
   canvas.style.opacity = Math.min(fadeIn, fadeOut);
   showCaption(caption, scene.caption, fade(seconds, length, CAPTION_FADE_SECONDS));
   const { scenes, time } = playback;
-  stage.render(shot, { film: time, line: lineTime(scenes, time), filmShare: time / duration(scenes) });
+  const line = lineTime(scenes, time);
+  stage.render(shot, { film: time, line, buildShare: line / lineTime(scenes, duration(scenes)) });
 }
 
 function formatClock(seconds) {

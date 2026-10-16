@@ -70,5 +70,14 @@ roles and their colors, the captions and the continuity.
 - **Given** a scene where a service in the cloud fails,
 - **when** it plays,
 - **then** every belt, box and person on the floor stands still while the cloud is
-  down, and goes on from where it stopped when the cloud is back; the same time always
-  shows the same frame.
+  down, and nothing is built, and all of it goes on from where it stopped when the
+  cloud is back; the same time always shows the same frame.
+
+### R10: The factory is built while it runs
+
+- **Given** any moment of the film, from the first frame to the last,
+- **when** it is drawn,
+- **then** at least one and at most three test stations are being built, no more than
+  two of them begun before the film; about half of all test stations are built during
+  the film; and the hall, the IT, some belts and some stations are still unfinished in
+  the last frame.

@@ -22,9 +22,10 @@ become five, and five become one:
   office into the hall and its belt across the middle, with no boxes on it yet.
 - **Front right corner:** a small server room, with cables to some of the stations and
   up to the cloud.
-- **All through the film:** about half of the factory is built while it runs, a piece
-  at a time from the first scene to the last: test stations rise and are connected,
-  belts are laid, and IT adds racks in the cloud and in the server room.
+- **All through the film:** the factory is built while it runs, a piece at a time
+  from the first scene to the last (see [the brief](../README.md#decisions)): test
+  stations rise and are connected, belts are laid, and IT adds racks in the cloud and
+  in the server room.
 - **Around it:** the hall itself is being built all through the film. Walls rise bay
   by bay, a crane lifts panels and Software factory developers work on scaffolding. It
   is never finished.

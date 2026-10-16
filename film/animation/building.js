@@ -1,7 +1,7 @@
 import { block, group, slab } from './shapes.js';
 import { person } from './figures.js';
 import { between } from './flow.js';
-import { ALL_LANES, CRANE, HALL, LANES, OUTPUT, PAIR } from './layout.js';
+import { ALL_LANES, CRANE, HALL, OUTPUT, PAIR } from './layout.js';
 
 const BAY = 8;
 const BAYS = (HALL.right - HALL.left) / BAY;
@@ -42,7 +42,7 @@ export function site(built, time) {
 }
 
 function floorLines() {
-  const middles = LANES.slice(1).map((z, index) => (z + LANES[index]) / 2);
+  const middles = ALL_LANES.slice(1).map((z, index) => (z + ALL_LANES[index]) / 2);
   return middles.map((z) => slab([HALL.left + 1, z - 0.06], [HALL.right - 1, z + 0.06], [0, 0.01], 'floorLine'));
 }
 

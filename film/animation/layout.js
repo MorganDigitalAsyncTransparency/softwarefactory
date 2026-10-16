@@ -1,5 +1,3 @@
-import { share } from './timeline.js';
-
 // One factory layout for every scene, in metres, so the camera can move without the
 // world changing (visual-descriptions.md, continuity). Flow runs along +x, left to right:
 // from the office, ten small belts are joined in pairs into five, and the five into one.
@@ -12,7 +10,8 @@ export const INTAKE = { start: -40, end: -14, width: 0.9 };
 export const JOINER = { start: -14, end: -12 };
 export const BELT = { start: -12, end: 12, width: 1.6, height: 1 };
 export const GAPS = { A: { start: -6, end: -2 }, B: { start: 3, end: 7 } };
-export const INTAKE_TESTS = [-26, -19];
+// The third station on each pair of small belts is built during the film.
+export const INTAKE_TESTS = [-26, -19, -22.5];
 export const INTAKE_SPAN = 2 * PAIR + INTAKE.width + 0.4;
 export const TESTS = [-9, 0.5, 9.5];
 export const ASSEMBLY = { start: 12, end: 17 };
@@ -22,12 +21,15 @@ export const DOCK = { start: 32, end: 38 };
 export const USERS = [[38.8, -2.8], [39.6, -0.6], [38.9, 1.4]];
 export const CLOUD = { x: 0, y: 21, z: -9 };
 export const CRANE = { x: 12, z: -23, height: 24, reach: 26 };
-// The server room talks to the cloud and to the stations near it.
+// The server room talks to the cloud and to the stations near it; its port sits on the
+// first rack.
+const ROOM_RACKS = [25.6, 27.6, 29.6];
 export const SERVER_ROOM = {
-  start: 24, end: 31.6, back: 5, front: 11, port: { x: 25.6, y: 2.9, z: 8.4 }, stations: ['output 0 0', 'output 0 1', 'output 0 2'],
+  start: 24, end: 31.6, back: 5, front: 11, racks: ROOM_RACKS, port: { x: ROOM_RACKS[0], y: 2.9, z: 8.4 },
+  stations: ['output 0 0', 'output 0 1', 'output 0 2'],
 };
-// The sixth lane is laid in order: its small belts, the joiner, then its belt.
-export const NEW_LANE = { index: 5, z: 8.7, intake: [0, 0.42], joiner: [0.42, 0.5], middle: [0.5, 1.15] };
+// The sixth lane, laid during the film in front of the others.
+export const NEW_LANE = { index: 5, z: 8.7 };
 export const ALL_LANES = [...LANES, NEW_LANE.z];
 export const SPEED = 2;
 // Where people walk about and work: rectangles of floor between the desks and machines,
@@ -36,29 +38,12 @@ export const SPEED = 2;
 export const AISLES = {
   office: { x: [-43.6, -42.4], z: [-11, 10] },
   front: { x: [-30, 22], z: [10.9, 11.5] },
-  serverRoom: { x: [24.8, 30.6], z: [9.95, 10.4] },
+  serverRoom: { x: [24.8, 30.6], z: [10.2, 10.6] },
   back: { x: [-30, 30], z: [-13.5, -10.5] },
   ...Object.fromEntries(LANES.slice(1).map((z, index) => [`between${index}`, { x: [-11.4, -6.4], z: [z - 1.65, z - 1.55] }])),
 };
-// About half of the factory is built while the film runs, spread over the whole film,
-// and it is never finished. These are the shares of the hall, of the last piece of each
-// unfinished belt and of the racks that stand at the start of the film and at its end.
-const HALL_BUILT = [0.15, 0.95];
-const BELTS_LAID = { 0: [0.1, 0.65], 4: [0.02, 0.6] };
 // Where the developers laying a belt stand, past its end.
 export const BELT_WORKERS = [0.4, 1.4];
-const RACKS_BUILT = [2.6, 7.6];
-const ROOM_RACKS_BUILT = [1, 2.7];
-// Test stations built during the film, by `kind laneIndex index`, as the shares of the
-// film when building starts and ends. Some are half-built when the film starts, new ones
-// follow one after the other, and the last are still being built when it ends.
-const STATIONS_BUILT = {
-  'intake 1 1': [-0.15, 0.1], 'middle 0 1': [-0.1, 0.2], 'output 0 2': [-0.05, 0.3],
-  'intake 3 1': [-0.2, 0.15], 'middle 2 1': [-0.1, 0.35], 'middle 4 1': [-0.05, 0.45],
-  'intake 0 1': [-0.12, 0.25], 'middle 1 2': [0.08, 0.26], 'middle 3 2': [0.2, 0.38],
-  'intake 5 0': [0.3, 0.46], 'intake 5 1': [0.46, 0.62], 'middle 2 2': [0.55, 0.73],
-  'middle 5 0': [0.62, 0.8], 'output 0 1': [0.72, 0.9], 'middle 5 1': [0.88, 1.12],
-};
 
 export function gapKey(gap, laneIndex) {
   return `${gap}${laneIndex + 1}`;
@@ -68,57 +53,9 @@ export function middleOf({ start, end }) {
   return (start + end) / 2;
 }
 
-// The stations along the belt of a lane: a lane that is still being laid has no third
-// station at its far end yet.
-export function middleTests(laneIndex) {
-  return laneIndex in BELTS_LAID || laneIndex === NEW_LANE.index ? TESTS.slice(0, 2) : TESTS;
-}
-
 // The two small belts that are joined into middle belt `laneIndex`.
 export function smallLanes(laneIndex) {
   return [ALL_LANES[laneIndex] - PAIR, ALL_LANES[laneIndex] + PAIR];
-}
-
-// The factory is built all through the film: the share of the hall that stands, and
-// where each unfinished belt ends, when `filmShare` of the film has played.
-export function hallBuilt(filmShare) {
-  return grown(HALL_BUILT, filmShare);
-}
-
-export function beltsLaid(filmShare) {
-  return Object.fromEntries(Object.entries(BELTS_LAID).map(([laneIndex, laid]) => (
-    [laneIndex, GAPS.B.end + (BELT.end - GAPS.B.end) * grown(laid, filmShare)]
-  )));
-}
-
-// How many server racks stand in the cloud: it grows all through the film, too.
-export function racksBuilt(filmShare) {
-  return grown(RACKS_BUILT, filmShare);
-}
-
-export function roomRacksBuilt(filmShare) {
-  return grown(ROOM_RACKS_BUILT, filmShare);
-}
-
-export function stationBuilt(key, filmShare) {
-  return key in STATIONS_BUILT ? share(filmShare, ...STATIONS_BUILT[key]) : 1;
-}
-
-// How far the new lane's small belts and its belt are laid.
-export function newLaneLaid(filmShare) {
-  return {
-    intake: INTAKE.start + (INTAKE.end - INTAKE.start) * share(filmShare, ...NEW_LANE.intake),
-    joiner: share(filmShare, ...NEW_LANE.joiner),
-    middle: JOINER.end + (BELT.end - JOINER.end) * share(filmShare, ...NEW_LANE.middle),
-  };
-}
-
-export function unfinishedStations() {
-  return Object.keys(STATIONS_BUILT);
-}
-
-function grown([first, last], filmShare) {
-  return first + (last - first) * filmShare;
 }
 
 // A repeatable pseudo-random value in [0, 1), so irregular motion is the same on every

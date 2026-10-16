@@ -50,7 +50,7 @@ blue cables hanging down to stations in the factory. Flow always goes left to ri
 - The cables from the cloud and from the server room always run to the same stations;
   a station that is still being built has its cable pulled in as it is built. While the cloud
   fails in S11 every cable turns red together with a light on the cloud and every
-  station light.
+  station light, and nothing on the floor is built until it is back.
 - The factory is never finished, and something is being built in every scene. The back
   wall rises bay by bay, a yellow tower crane behind the hall keeps lifting panels, new
   racks rise in the cloud and in the server room, new test stations rise one after the

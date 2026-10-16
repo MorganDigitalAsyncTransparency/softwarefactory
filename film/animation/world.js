@@ -11,37 +11,36 @@ import { roomRacks, serverRoom } from './server-room.js';
 import { newLane } from './new-lane.js';
 import { people } from './people.js';
 import { pull, wiring } from './wiring.js';
-import {
-  BELT, GAPS, LANES, OUTPUT, OUTPUT_TESTS, beltsLaid, hallBuilt, middleOf, racksBuilt, roomRacksBuilt,
-} from './layout.js';
+import { BELT, GAPS, LANES, OUTPUT, OUTPUT_TESTS, middleOf } from './layout.js';
+import { beltsLaid, hallBuilt, racksBuilt, roomRacksBuilt } from './schedule.js';
 
 const RELEASE = { spacing: 7, speed: 1.4 };
 const still = { key: null, parts: null };
 const fixed = {};
 
 // The whole factory at one moment of the `clock` (see scenes.js, lineTime). What changes
-// only with the state is built once and kept. The hall, the cloud, some belts and some
-// stations are built as the film runs, and are never finished; the belts and the people
-// stop when the cloud fails.
+// only with the state is built once and kept. The hall, the cloud, the server room, a
+// sixth lane, some belts and some stations are built as the film runs (schedule.js) and
+// are never finished; the belts, the people and the building stop when the cloud fails.
 export function world(state, clock) {
-  const { filmShare } = clock;
-  const factory = { ...state, filmShare, built: hallBuilt(filmShare), ends: beltsLaid(filmShare) };
+  const { buildShare } = clock;
+  const factory = { ...state, buildShare, built: hallBuilt(buildShare), ends: beltsLaid(buildShare) };
   const shown = layersShown(factory.reveal);
   const { building, machines, cables } = stillParts(factory);
   fixed.ground ??= ground();
   fixed.office ??= office();
   fixed.serverRoom ??= serverRoom();
   fixed.cloud ??= group([cloud()]);
-  const sky = group([agents(clock.film), cloudRacks(racksBuilt(filmShare)), factory.outage && alarm(clock.film)]);
+  const sky = group([agents(clock.film), cloudRacks(racksBuilt(buildShare)), factory.outage && alarm(clock.film)]);
   [fixed.cloud, sky].forEach((part) => { part.position.y = (1 - shown.cloud) * 40; });
   const work = group([site(factory.built, clock.film)]);
   [building, work, fixed.office].forEach((part) => risen(part, shown.hall));
   risen(machines, shown.machines);
   risen(fixed.serverRoom, shown.cloud);
-  pull(cables, { shown: shown.cables, filmShare, outage: factory.outage });
+  pull(cables, { shown: shown.cables, buildShare, outage: factory.outage });
   return group([
     fixed.ground, fixed.office, building, work, machines, fixed.serverRoom, cables, fixed.cloud, sky,
-    risen(roomRacks(roomRacksBuilt(filmShare)), shown.cloud),
+    risen(roomRacks(roomRacksBuilt(buildShare)), shown.cloud),
     risen(newLane(factory), shown.machines),
     shown.product > 0 && moving(factory, clock.line),
   ]);

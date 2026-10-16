@@ -2,9 +2,9 @@ import { cable, connect } from './cloud.js';
 import { material } from './materials.js';
 import { group } from './shapes.js';
 import {
-  ALL_LANES, ASSEMBLY, GAPS, HALL, INTAKE_TESTS, LANES, OUTPUT, OUTPUT_TESTS, SERVER_ROOM, TESTS, middleOf, stationBuilt,
-  unfinishedStations,
+  ALL_LANES, ASSEMBLY, GAPS, HALL, INTAKE_TESTS, LANES, OUTPUT, OUTPUT_TESTS, SERVER_ROOM, TESTS, middleOf,
 } from './layout.js';
+import { stationBuilt, unfinishedStations } from './schedule.js';
 
 const PLACES = {
   intake: (laneIndex, index) => ({ x: INTAKE_TESTS[index], y: 2.6, z: ALL_LANES[laneIndex] }),
@@ -30,9 +30,9 @@ export function wiring(state) {
 }
 
 // Each frame: how much of each cable is pulled in, and red while the cloud is down.
-export function pull(cables, { shown, filmShare, outage }) {
+export function pull(cables, { shown, buildShare, outage }) {
   cables.children.forEach((line) => {
-    connect(line, Math.min(shown, stationBuilt(line.userData.key, filmShare)));
+    connect(line, Math.min(shown, stationBuilt(line.userData.key, buildShare)));
     line.material = material(outage ? 'stop' : 'it');
   });
 }
