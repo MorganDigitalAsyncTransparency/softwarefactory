@@ -4,18 +4,21 @@ A short animated silent film that explains a software factory by comparing it wi
 physical factory. This file is the film brief: who the film is for and the decisions
 that shape it. The scenes themselves are in [script/script.md](script/script.md).
 
+The film plays as an animation drawn in code: [`index.html`](index.html). How to watch
+it is in the [contributing guide](../docs/01-CONTRIBUTING.md#watching-the-animation).
+
 ## Brief
 
-| Question         | Decision                                                                                    |
-| ---------------- | ------------------------------------------------------------------------------------------- |
-| Audience         | Employees, with a message from senior management. No IT knowledge assumed.                  |
-| Purpose          | Explain the current state, so that viewers understand it.                                   |
-| Length           | 90–120 seconds.                                                                             |
-| Form             | Animated silent film in a modern style. No voices; intertitles and instrumental music only. |
-| Tone             | Matter-of-fact: "this is how it is". No humor, no selling.                                  |
-| Language         | English intertitles.                                                                        |
-| Where it is seen | On the web, on the viewer's own computer.                                                   |
-| Brand            | None. Neutral and global: no logo, no company colors, no national markers.                  |
+| Question         | Decision                                                                                 |
+| ---------------- | ---------------------------------------------------------------------------------------- |
+| Audience         | Employees, with a message from senior management. No IT knowledge assumed.               |
+| Purpose          | Explain the current state, so that viewers understand it.                                |
+| Length           | 90–150 seconds.                                                                          |
+| Form             | Animated silent film in a modern style. No voices; captions, music and the sounds of the factory. |
+| Tone             | Matter-of-fact: "this is how it is". No humor, no selling.                               |
+| Language         | English captions.                                                                        |
+| Where it is seen | On the web, on the viewer's own computer.                                                |
+| Brand            | None. Neutral and global: no logo, no company colors, no national markers.               |
 
 ## Core message
 
@@ -27,21 +30,38 @@ We are building gates at every step and automating the manual steps away.
 
 ## Analogies
 
-| Physical factory                          | Software factory                                |
-| ----------------------------------------- | ----------------------------------------------- |
-| Many small boxes arriving on the left     | Small code changes, checked early (shift left)  |
-| Conveyor belts                            | The CI/CD pipeline                              |
-| Carrying boxes by hand between belts      | Manual hand-offs between pipeline stages        |
-| Gates that stop damaged boxes             | Quality gates                                   |
-| Long cables from the cloud to each station | Integrations, tested at every step             |
-| Robots                                    | Automation and AI agents                        |
-| The large box at the loading dock         | A release                                       |
-| The factory being built around the belts  | The software factory built while it runs        |
+| Physical factory                         | Software factory                               |
+| ---------------------------------------- | ---------------------------------------------- |
+| Many small boxes arriving on the left    | Small code changes, checked early (shift left) |
+| Conveyor belts                           | The CI/CD pipeline                             |
+| Carrying boxes by hand between belts     | Manual hand-offs between pipeline stages       |
+| Gates that stop damaged boxes            | Quality gates                                  |
+| Long cables to the stations              | Integrations, tested at every step             |
+| The cloud and the server room            | IT services, in the cloud and run in-house     |
+| Robots                                   | Automation and AI agents                       |
+| The large box at the loading dock        | A release                                      |
+| The factory being built around the belts | The software factory built while it runs       |
 
 ## Decisions
 
 - The software layer is revealed late, after the factory story, so the factory image
   carries the film.
-- *Shift left* gets its own intertitle.
-- Users, Builders and IT infrastructure are three separate roles, always shown apart
-  (see [roles](script/script.md#roles)).
+- *Shift left* gets its own caption.
+- The film is one continuous picture with captions at the bottom, not cut by black title
+  cards, which broke its flow.
+- The factory is never finished: about half of it is built while the film runs, spread
+  over the whole film and not only at the start, and the hall, the IT, some belts and
+  some test stations are still being built when it ends.
+- The first version is an animation in code that makes its own sound in the browser
+  (ADR 0005); any recording to a video file comes later.
+- The film introduces the people first: Product developers, Software factory developers
+  and IT developers each wear their own color, so they are always told apart (see
+  [roles](script/script.md#roles)).
+- IT is both the cloud and a small server room in the factory, and it grows during the
+  film like everything else.
+- The parts come from an open office where Product developers work, so viewers see
+  where the product starts.
+- When a service in the cloud fails, every belt stops while the people, who do not know
+  why, keep working and run about to find the fault: the film shows how much the whole
+  line depends on IT.
+- People work here and there on the floor, not only along the belts.

@@ -19,7 +19,7 @@ Argue against the change from each of these six perspectives:
 - **Consistency:** do names, structure and conventions match the rest of the
   repository? Do links and scene IDs resolve?
 - **Edge cases:** which inputs or states break it? For the film: timings with gaps or
-  overlaps, an intertitle too long to read, a scene with no prompt.
+  overlaps, a caption too long to read, a scene with no prompt.
 - **Simplicity:** is there needless complexity? Can the same result be reached with
   less?
 - **Code "just in case":** go through the diff line by line against "Clean code,

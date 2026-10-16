@@ -18,3 +18,5 @@ re-litigating settled questions.
 | 0001 | [Everything in the repository is in English](0001-english-only.md)                     |
 | 0002 | [A short agent guide, phases as skills and an independent reviewer](0002-short-agent-guide-phases-as-skills.md) |
 | 0003 | [The repository is text-only](0003-text-only-repository.md)                            |
+| 0004 | [The film animation is 3D, drawn with three.js by ES modules that read the script](0004-film-animation-in-3d.md) |
+| 0005 | [The film's sound is made in the browser from a score in code](0005-sound-made-in-the-browser.md) |

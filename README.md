@@ -10,11 +10,11 @@ with a physical one.
 
 | Path                               | Contents                                                                 |
 | ---------------------------------- | ------------------------------------------------------------------------ |
-| [`film/`](film/README.md)          | The film brief: audience, form, core message and decisions               |
+| [`film/`](film/README.md)          | The film brief, and the animation that plays it (`film/index.html`)      |
 | [`film/script/`](film/script/)     | The script and the visual descriptions with prompts for each scene       |
-| [`docs/`](docs/01-CONTRIBUTING.md) | How to contribute, and the [decision records](docs/decisions/README.md)  |
+| [`docs/`](docs/01-CONTRIBUTING.md) | How to contribute and watch the film, requirements, architecture and the [decision records](docs/decisions/README.md) |
 | `.claude/`                         | Skills and the reviewer agent that AI agents use in this repository      |
-| `scripts/`, `.github/`             | The checks CI runs, and the pull request template                        |
+| `scripts/`, `tests/`, `.github/`   | The checks and tests CI runs, and the pull request template              |
 
 ## Working in this repository
 
