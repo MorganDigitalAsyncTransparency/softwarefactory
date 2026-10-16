@@ -1,5 +1,5 @@
 import { block, group, slab } from './shapes.js';
-import { rack } from './cloud.js';
+import { risingRacks } from './cloud.js';
 import { person } from './figures.js';
 import { SERVER_ROOM } from './layout.js';
 
@@ -25,10 +25,9 @@ export function serverRoom() {
 // developer installing it.
 export function roomRacks(count) {
   const { z } = SERVER_ROOM.port;
-  return group(RACKS.slice(0, Math.ceil(count)).map((x, index) => {
-    const built = Math.min(1, count - index);
-    const standing = rack([x, 0, z]);
-    standing.scale.y = built;
-    return group([standing, built < 1 && group([person('it', { seed: index })], { position: [x, 0, z + 1.1], turn: -Math.PI / 2 })]);
-  }));
+  const installing = RACKS[Math.floor(count)];
+  return group([
+    ...risingRacks(RACKS.map((x) => [x, 0, z]), count),
+    installing && group([person('it', { seed: 1 })], { position: [installing, 0, z + 1.1], turn: -Math.PI / 2 }),
+  ]);
 }

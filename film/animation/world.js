@@ -35,16 +35,22 @@ export function world(state, clock) {
   const sky = group([agents(clock.film), cloudRacks(racksBuilt(filmShare)), factory.outage && alarm(clock.film)]);
   [fixed.cloud, sky].forEach((part) => { part.position.y = (1 - shown.cloud) * 40; });
   const work = group([site(factory.built, clock.film)]);
-  [building, work, fixed.office].forEach((part) => { part.scale.y = Math.max(0.01, shown.hall); });
-  machines.scale.y = Math.max(0.01, shown.machines);
-  fixed.serverRoom.scale.y = Math.max(0.01, shown.cloud);
+  [building, work, fixed.office].forEach((part) => risen(part, shown.hall));
+  risen(machines, shown.machines);
+  risen(fixed.serverRoom, shown.cloud);
   pull(cables, { shown: shown.cables, filmShare, outage: factory.outage });
   return group([
     fixed.ground, fixed.office, building, work, machines, fixed.serverRoom, cables, fixed.cloud, sky,
-    shown.cloud > 0 && roomRacks(roomRacksBuilt(filmShare)),
-    shown.machines > 0 && newLane(factory),
+    risen(roomRacks(roomRacksBuilt(filmShare)), shown.cloud),
+    risen(newLane(factory), shown.machines),
     shown.product > 0 && moving(factory, clock.line),
   ]);
+}
+
+// A part of the opening that rises out of the floor as its layer is revealed.
+function risen(part, shown) {
+  part.scale.y = Math.max(0.01, shown);
+  return part;
 }
 
 function ground() {

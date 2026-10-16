@@ -92,8 +92,9 @@ station.
 Camera rises to the white cloud above the factory: dark blue server racks, a new rack
 rising at the end of the row, small white robots walking between them, and long blue
 cables hanging down to the stations. Below, IT developers in blue pull new cables to
-half-built stations. In the front corner of the hall a small server room with three
-racks has cables of its own to the stations nearby and up to the cloud.
+half-built stations. In the front corner of the hall a small server room with one
+rack standing and an IT developer installing a second has cables of its own to the
+stations nearby and up to the cloud.
 ```
 
 ### S05

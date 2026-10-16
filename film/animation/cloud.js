@@ -20,12 +20,16 @@ export function cloud() {
 // The racks in the cloud, `count` of them standing; the next one is rising, so the
 // cloud grows all through the film.
 export function cloudRacks(count) {
-  const standing = RACKS.slice(0, Math.ceil(count)).map((x, index) => {
-    const built = rack([CLOUD.x + x, CLOUD.y + TOP, CLOUD.z]);
-    built.scale.y = Math.max(0.01, Math.min(1, count - index));
-    return built;
+  return group(risingRacks(RACKS.map((x) => [CLOUD.x + x, CLOUD.y + TOP, CLOUD.z]), count));
+}
+
+// Racks at `positions`, `count` of them standing and the next one rising.
+export function risingRacks(positions, count) {
+  return positions.slice(0, Math.ceil(count)).map((position, index) => {
+    const standing = rack(position);
+    standing.scale.y = Math.min(1, count - index);
+    return standing;
   });
-  return group(standing);
 }
 
 // The AI agents walking between the racks, relative to the cloud.

@@ -3,30 +3,37 @@ import { person } from './figures.js';
 import { group } from './shapes.js';
 import { station } from './lanes.js';
 import {
-  INTAKE, INTAKE_TESTS, JOINER, LANES, NEW_LANE, PAIR, TESTS, newLaneLaid, smallLanes,
+  BELT_WORKERS, HALL, INTAKE, INTAKE_SPAN, INTAKE_TESTS, JOINER, NEW_LANE, middleTests, newLaneLaid, smallLanes,
 } from './layout.js';
 
-const LANE = LANES.length;
-const CREW_SIDE = 1.6;
+// The crew laying the lane works in front of it, toward the camera.
+const CREW_DISTANCE = 1.6;
+const WALL_CLEARANCE = 2;
 
 // The sixth lane, laid while the factory runs: its two small belts grow from the office
-// into the hall, then its belt grows across the middle, Software factory developers at
-// each tip, with its test stations built behind them. No boxes run on it yet.
+// into the hall, its joiner rises, then its belt grows across the middle, Software
+// factory developers at each tip and its test stations built behind them. No boxes run
+// on it yet.
 export function newLane(state) {
-  const { intake, middle } = newLaneLaid(state.filmShare);
-  const { z } = NEW_LANE;
-  const started = middle > JOINER.end;
+  const { intake, joiner: joined, middle } = newLaneLaid(state.filmShare);
+  const { index, z } = NEW_LANE;
+  const rising = joiner(index);
+  rising.scale.y = Math.max(0.01, joined);
   return group([
-    ...smallLanes(LANE).map((small) => intake > INTAKE.start && belt(INTAKE.start, intake, small, INTAKE.width)),
+    ...smallLanes(index).map((small) => intake > INTAKE.start && belt(INTAKE.start, intake, small, INTAKE.width)),
     intake < INTAKE.end && crew(intake, z),
-    started && joiner(LANE),
-    started && belt(JOINER.end, middle, z),
-    started && crew(middle, z),
-    ...INTAKE_TESTS.map((x, index) => station({ x, z, span: 2 * PAIR + INTAKE.width + 0.4, key: `intake ${LANE} ${index}` }, state, null)),
-    ...TESTS.slice(0, 2).map((x, index) => station({ x, z, span: 2.2, key: `middle ${LANE} ${index}` }, state, null)),
+    joined > 0 && rising,
+    middle > JOINER.end && belt(JOINER.end, middle, z),
+    middle > JOINER.end && crew(middle, z),
+    ...INTAKE_TESTS.map((x, at) => station({ x, z, span: INTAKE_SPAN, key: `intake ${index} ${at}` }, state, null)),
+    ...middleTests(index).map((x, at) => station({ x, z, span: 2.2, key: `middle ${index} ${at}` }, state, null)),
   ]);
 }
 
+// Two developers at the tip of a belt; they step around the hall's wall where the belt
+// passes through it.
 function crew(tip, z) {
-  return group([0.4, 1.4].map((dx, seed) => group([person('factory', { seed: seed + 2 })], { position: [tip + dx, 0, z + CREW_SIDE] })));
+  if (Math.abs(tip - HALL.left) < WALL_CLEARANCE) return null;
+  const at = (dx, seed) => group([person('factory', { seed: seed + 2 })], { position: [tip + dx, 0, z + CREW_DISTANCE] });
+  return group(BELT_WORKERS.map(at));
 }

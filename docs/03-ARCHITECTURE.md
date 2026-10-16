@@ -77,7 +77,7 @@ drawing a second world.
 
 Node's built-in test runner runs `tests/`: the parser, the timeline, the motion of
 boxes and people, the line's clock, caption wrapping, that every scene has a drawing
-and continues the camera of the one before, that the layout gives every belt two test
+and continues the camera of the one before, that the layout gives every running belt two test
 stations, one of them working from the start, and is never finished, and that the script itself keeps its timing rules.
 None of them needs three.js. The drawings are checked by eye: open a frame with `?t=`
 per scene.
