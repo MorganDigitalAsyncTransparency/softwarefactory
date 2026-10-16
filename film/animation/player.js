@@ -12,7 +12,7 @@ const SCRIPT_URL = 'script/script.md';
 const FADE_SECONDS = 0.8;
 const CAPTION_FADE_SECONDS = 0.6;
 // A frame later than this, as when the tab was hidden, starts the sound afresh like a jump.
-const LATE_SECONDS = 0.25;
+const LATE_SECONDS = 1;
 const canvas = document.getElementById('stage');
 const stage = createStage(canvas);
 const sound = createSound();
