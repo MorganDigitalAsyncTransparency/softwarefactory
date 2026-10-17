@@ -79,6 +79,10 @@ export function stationsBuiltDuringFilm() {
   return Object.keys(STATIONS_BUILT);
 }
 
+export function stationReady(key) {
+  return STATIONS_BUILT[key][1];
+}
+
 // How far the new lane's small belts and its belt are laid, and how far its joiner has risen.
 export function newLaneLaid(buildShare) {
   const { intake, joiner, middle } = NEW_LANE_LAID;

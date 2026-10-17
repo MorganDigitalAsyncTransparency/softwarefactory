@@ -27,7 +27,10 @@ become five, and five become one:
 - **Front:** a sixth lane is laid while the others run: its small belts grow from the
   office into the hall and its belt across the middle, with no boxes on it yet.
 - **Front right corner:** a small server room, with cables to some of the stations and
-  up to the cloud.
+  up to the cloud, and a card reader that lets only IT developers in.
+- **Access:** communication is access controlled, quietly, as
+  [the brief](../README.md#decisions) decides: now and then one station stops testing
+  until an IT developer puts its access right, and some new stations wait for theirs.
 - **All through the film:** the factory is built while it runs, a piece at a time
   from the first scene to the last (see [the brief](../README.md#decisions)): test
   stations rise and are connected, belts are laid, and IT adds racks in the cloud and

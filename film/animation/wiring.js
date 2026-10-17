@@ -4,7 +4,8 @@ import { group } from './shapes.js';
 import {
   ALL_LANES, ASSEMBLY, GAPS, HALL, INTAKE_TESTS, LANES, OUTPUT, OUTPUT_TESTS, SERVER_ROOM, TESTS, middleOf,
 } from './layout.js';
-import { stationBuilt, stationsBuiltDuringFilm } from './schedule.js';
+import { cabledStations } from './access.js';
+import { stationBuilt } from './schedule.js';
 
 const PLACES = {
   intake: (laneIndex, index) => ({ x: INTAKE_TESTS[index], y: 2.6, z: ALL_LANES[laneIndex] }),
@@ -18,8 +19,7 @@ const PLACES = {
 // built during the film.
 export function wiring(state) {
   const room = SERVER_ROOM.port;
-  const stations = new Set([...firstStations(), ...stationsBuiltDuringFilm()]);
-  const fromCloud = [...stations].filter((key) => !SERVER_ROOM.stations.includes(key));
+  const fromCloud = [...cabledStations()].filter((key) => !SERVER_ROOM.stations.includes(key));
   return group([
     ...[...fromCloud, ...gates(state)].map((key) => wire(key, place(key))),
     wire('server room', room),
@@ -35,10 +35,6 @@ export function pull(cables, { shown, buildShare, outage }) {
     connect(line, Math.min(shown, stationBuilt(line.userData.key, buildShare)));
     line.material = material(outage ? 'stop' : 'it');
   });
-}
-
-function firstStations() {
-  return LANES.flatMap((_, laneIndex) => [`intake ${laneIndex} 0`, `middle ${laneIndex} 0`]);
 }
 
 function gates(state) {

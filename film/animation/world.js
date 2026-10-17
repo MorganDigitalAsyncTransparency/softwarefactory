@@ -7,7 +7,8 @@ import { boxesOn } from './flow.js';
 import { share } from './timeline.js';
 import { construction, laneBelts, laneMotion, signal, station } from './lanes.js';
 import { office } from './office.js';
-import { roomRacks, serverRoom } from './server-room.js';
+import { cardReader, roomRacks, serverRoom } from './server-room.js';
+import { readerVisit } from './access.js';
 import { newLane } from './new-lane.js';
 import { people as walkers } from './people.js';
 import { pull, wiring } from './wiring.js';
@@ -15,6 +16,8 @@ import { BELT, GAPS, LANES, OUTPUT, OUTPUT_TESTS, middleOf } from './layout.js';
 import { beltsLaid, gapsLaid, hallBuilt, racksBuilt, racksFitted, roomRacksBuilt } from './schedule.js';
 
 const RELEASE = { spacing: 7, speed: 1.4 };
+// The release is sealed after its last test station, before it leaves for the dock.
+const SEALED_FROM = OUTPUT_TESTS.at(-1) + 1.5;
 const still = { key: null, parts: null };
 const fixed = {};
 
@@ -44,6 +47,7 @@ export function world(state, clock) {
   return group([
     fixed.ground, fixed.office, building, work, machines, fixed.serverRoom, cables, fixed.cloud, sky,
     risen(roomRacks(roomRacksBuilt(buildShare)), shown.cloud),
+    risen(cardReader(readerVisit(buildShare)), shown.cloud),
     risen(newLane(factory), shown.machines),
     shown.product > 0 && moving(factory, clock),
   ]);
@@ -106,7 +110,7 @@ function releases(state, time) {
   const boxes = boxesOn(stretch, time, RELEASE);
   const place = (x, index) => ({ x, z: OUTPUT.z, span: 3.8, clear: 3.1, key: `output 0 ${index}` });
   return [
-    ...boxes.map(({ x }) => group([box('good', { scale: 3 })], { position: [x, BELT.height, OUTPUT.z] })),
+    ...boxes.map(({ x }) => group([box('good', { scale: 3, sealed: x > SEALED_FROM })], { position: [x, BELT.height, OUTPUT.z] })),
     ...OUTPUT_TESTS.map((x, index) => station(place(x, index), state, signal(state, boxes.some((item) => Math.abs(item.x - x) < 1) && 'ok'))),
   ];
 }

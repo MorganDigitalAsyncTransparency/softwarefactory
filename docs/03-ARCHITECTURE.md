@@ -39,19 +39,20 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `flow.js`          | Pure: where boxes, carriers and robots are at a time, which boxes are new, and what a gate stops or, once IT has fitted it, lets pass (R12, R13) |
 | `wander.js`        | Pure: where a person who works here and there is at a time                          |
 | `layout.js`        | Pure: the positions shared by every scene, in metres, and repeatable noise          |
+| `access.js`        | Pure: which stations have a cable, when a station's access is denied or still awaited, who waits at it, and who tries the server room's card reader (R14) |
 | `schedule.js`      | Pure: when each part of the factory is built, and how far it has come, and how many racks are upgraded (R10, R13) |
 | `stage.js`         | The renderer, camera and light; draws the factory or the split panels               |
 | `world.js`         | Puts the factory together, with the crew of a scene and their speech bubbles, and shows its layers one by one in the opening |
 | `building.js`      | The hall: floor, walls, windows and roof, and the site where it is still being built: the rising bay, scaffolding and crane |
 | `office.js`        | The open office left of the hall, with a desk at the start of every small belt     |
-| `server-room.js`   | The small server room in the corner of the hall, and its racks as they are installed |
+| `server-room.js`   | The small server room in the corner of the hall, its racks as they are installed, and the card reader by it |
 | `new-lane.js`      | The sixth lane, laid during the film, with its test stations                        |
 | `wiring.js`        | Every cable, from the cloud or the server room, how far it is pulled in, and red while the cloud is down |
 | `people.js`        | Who walks about where, by role, and the Users at the dock                           |
-| `lanes.js`         | Each lane: two small belts and their joiner, the belt with its gaps, flowing boxes, carriers, test stations, gates with the adapter being lowered onto them, the belt still being laid and the builds that crawl |
-| `machines.js`      | Belts, gates with the adapter IT fits them with, test stations, joiners, the assembly machine and the output to the dock |
+| `lanes.js`         | Each lane: two small belts and their joiner, the belt with its gaps, flowing boxes, carriers, test stations that test only with access and the people waiting at a denied one, gates with the adapter being lowered onto them, the belt still being laid and the builds that crawl |
+| `machines.js`      | Belts, gates with the adapter IT fits them with, test stations and their locks, joiners, the assembly machine and the output to the dock |
 | `cloud.js`         | IT: the cloud with its growing and upgraded server racks, IT developers and AI agents, cables, and the alarm when it fails |
-| `figures.js`       | People by role, robots, boxes and wordless speech bubbles                           |
+| `figures.js`       | People by role, robots, boxes, sealed or not, and wordless speech bubbles           |
 | `panels.js`        | The three close-ups where factory, IT and product do not fit                        |
 | `shapes.js`        | Meshes from shared geometries                                                       |
 | `materials.js`     | One material per surface, each with a physical and a digital look                   |
@@ -87,6 +88,6 @@ Node's built-in test runner runs `tests/`: the parser, the timeline, the motion 
 boxes and people, the line's and the people's clocks, the score, caption wrapping, that every scene has a drawing
 and continues the camera of the one before, that the layout gives every running belt two test
 stations, one of them working from the start, that the schedule spreads the building over
-the whole film and never finishes it (R10), and that the script itself keeps its timing rules.
+the whole film and never finishes it (R10), that an access change stops one station at a time outside the outage (R14), and that the script itself keeps its timing rules.
 None of them needs three.js. The drawings are checked by eye: open a frame with `?t=`
 per scene.
