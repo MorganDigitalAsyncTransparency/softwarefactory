@@ -13,7 +13,6 @@ const TOP = 2.2;
 const TALL = 4.5;
 // The IT developers up there are drawn a little larger, for the same reason.
 const SEEN_FROM_BELOW = 1.3;
-const ROOM_HEIGHT = 2.5;
 
 // IT infrastructure: the cloud, with a platform for its server racks.
 export function cloud() {
@@ -29,7 +28,7 @@ export function cloudRacks(count) {
 }
 
 // Racks at `positions`, `count` of them standing and the next one rising.
-export function risingRacks(positions, count, height = ROOM_HEIGHT) {
+export function risingRacks(positions, count, height) {
   return positions.slice(0, Math.ceil(count)).map((position, index) => {
     const standing = rack(position, height);
     standing.scale.y = Math.min(1, count - index);
@@ -42,12 +41,13 @@ export function agents(time) {
   return group([-3, 3, 6].map((x, index) => walker(x, time, index)));
 }
 
-// IT developers in blue at work by the racks, each pacing to and fro in front of one.
+// IT developers in blue at work by the racks, each pacing to and fro in front of one,
+// where the puffs in front are low enough to show them.
 export function itDevelopers(time) {
-  return group([-9, 0, 9].map((x, index) => {
-    const walked = Math.sin(time * 0.35 + index * 1.7) * 1.6;
+  return group([-9.5, 4, 8.5].map((x, index) => {
+    const walked = Math.sin(time * 0.35 + index * 1.7);
     const speed = Math.cos(time * 0.35 + index * 1.7);
-    const developer = group([person('it', { seed: index, walked: Math.abs(speed) > 0.3 ? walked : 0 })], {
+    const developer = group([person('it', { seed: index, walked })], {
       position: [CLOUD.x + x + walked, CLOUD.y + TOP, CLOUD.z + 1.9], turn: speed > 0 ? 0 : Math.PI,
     });
     developer.scale.setScalar(SEEN_FROM_BELOW);

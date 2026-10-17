@@ -46,8 +46,7 @@ blue cables hanging down to stations in the factory. Flow always goes left to ri
 - People move about the floor all the time, walking to a spot, working there a while
   and walking on, each role in its own color. Only the boxes ride the belts.
 - The gaps in the middle are always in the same places, so S15 shows which ones have
-  been closed. They lie and measure a little differently on every belt, so the five
-  belts never look alike; boxes are missing here and there even on the even belts.
+  been closed.
 - The cables from the cloud and from the server room always run to the same stations;
   a station that is still being built has its cable pulled in as it is built. While the cloud
   fails in S11 every cable turns red together with a light on the cloud and every
@@ -92,9 +91,9 @@ station.
 ### S04
 
 ```text
-Camera rises to the white cloud above the factory: tall dark blue server racks, a new
-rack rising at the end of the row, IT developers in blue at work by them, small white
-robots walking between them, and long blue cables hanging down to the stations. Below, IT developers in blue pull new cables to
+Camera rises to the white cloud above the factory: the server racks, a new rack rising
+at the end of the row, IT developers at work by them, small white robots walking
+between them, and long blue cables hanging down to the stations. Below, IT developers in blue pull new cables to
 half-built stations. In the front corner of the hall a small server room with one
 rack standing and an IT developer installing a second has cables of its own to the
 stations nearby and up to the cloud.

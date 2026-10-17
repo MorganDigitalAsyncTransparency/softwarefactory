@@ -1,5 +1,5 @@
 import { between } from './flow.js';
-import { DOCK, GAPS, LANES, OUTPUT, middleOf } from './layout.js';
+import { CREW_SIDE, DOCK, GAPS, LANES, OUTPUT, middleOf } from './layout.js';
 import { share } from './timeline.js';
 
 // Cameras are [position, target] in metres. The film is one continuous picture, so each
@@ -21,8 +21,6 @@ const FAREWELL = [[-14, 66, 92], [-6, 9, -3]];
 const GATE = { x: middleOf(GAPS[1].B), z: LANES[1] };
 const GATE_WIDE = [[GATE.x + 7, 7, GATE.z + 13], [GATE.x - 0.5, 1.3, GATE.z]];
 const GATE_CLOSE = [[GATE.x + 5, 6, GATE.z + 11], [GATE.x - 0.5, 1.3, GATE.z]];
-// Crews work on the side of a belt away from the boxes piled at its gaps.
-const CREW_SIDE = 1.05;
 const START = { gaps: {}, reveal: 1, digital: 0, crew: [] };
 const GATED = { ...START, gaps: { B2: 'gate' } };
 const AUTOMATED = { ...START, gaps: { ...GATED.gaps, A2: 'closed', A3: 'robot' } };

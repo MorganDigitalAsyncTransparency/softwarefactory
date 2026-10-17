@@ -1,17 +1,17 @@
-import { bareBelt, belt, gate, joiner, tester } from './machines.js';
+import { bareBelt, belt, gate, gatePosts, joiner, tester } from './machines.js';
 import { box, facingTurn, person, robot } from './figures.js';
 import { group } from './shapes.js';
 import { CARRIED, boxesOn, carriedSpan, carrierAt, gapMode, gateStops, stretches } from './flow.js';
 import {
-  BELT, BELT_WORKERS, GAPS, INTAKE, INTAKE_SPAN, INTAKE_TESTS, LANES, TEST_SPAN, middleOf, smallLanes,
+  BELT, BELT_WORKERS, CRAWLING_GATE, CREW_SIDE, GAPS, INTAKE, INTAKE_SPAN, INTAKE_TESTS, LANES, TEST_SPAN, middleOf, smallLanes,
 } from './layout.js';
-import { middleTests, slowGates, stationBuilt } from './schedule.js';
+import { gateRisen, middleTests, stationBuilt } from './schedule.js';
 
 const BRIDGED = ['closed', 'gate'];
+const GATE_HEIGHT = 2.6;
 const BIN_EDGE = 1.05;
-const CREW_SIDE = 1.05;
 const SMALL = { scale: 0.6, spacing: 1.8 };
-const INTAKE_STRETCH = { start: INTAKE.start, end: INTAKE.end, uneven: false, gates: [] };
+const INTAKE_STRETCH = { start: INTAKE.start, end: INTAKE.end, uneven: false, missing: 0, gates: [] };
 
 // The parts of a lane that only change when the state does: the two small belts and
 // their joiner, the belt pieces and the bridged gaps. An unfinished lane's last piece
@@ -48,7 +48,7 @@ export function laneMotion(state, clock, laneIndex) {
     ...Object.keys(GAPS[laneIndex]).filter((gap) => gapMode(state, gap, laneIndex) === 'open' && !underWork(state, gap, laneIndex))
       .map((gap) => slowlyLaid(state, gap, laneIndex)),
     ...Object.keys(GAPS[laneIndex]).map((gap) => carrier(state, clock, { gap, laneIndex })),
-    ...slowGates(laneIndex, state.buildShare).map(({ x, built }) => gateCrawling(x, z, built)),
+    laneIndex === CRAWLING_GATE.lane && gateCrawling(z, gateRisen(state.buildShare)),
     laneIndex in state.ends && unfinished(GAPS[laneIndex].B.end, state.ends[laneIndex], z),
   ]);
 }
@@ -115,15 +115,15 @@ function slowlyLaid(state, gap, laneIndex) {
   return group([belt(whole.start, start, z), pile(start, z), worker(start, z - CREW_SIDE, laneIndex)]);
 }
 
-// A gate that is rising very slowly over a belt, with a Software factory developer at it.
-function gateCrawling(x, z, built) {
-  const rising = gate(x, z, null);
-  rising.scale.y = built;
-  return group([rising, worker(x + 0.6, z - CREW_SIDE, x)]);
+// A gate rising very slowly over a running belt, with a Software factory developer at
+// it: only its posts stand so far, so the boxes pass between them.
+function gateCrawling(z, risen) {
+  const { x } = CRAWLING_GATE;
+  return group([...gatePosts(x, z, GATE_HEIGHT * risen), worker(x + 0.6, z - CREW_SIDE, 2)]);
 }
 
 function worker(x, z, seed) {
-  return group([person('factory', { seed: Math.round(Math.abs(seed)) })], { position: [x, 0, z], turn: facingTurn(0) });
+  return group([person('factory', { seed })], { position: [x, 0, z], turn: facingTurn(0) });
 }
 
 // A belt that is still being laid: Software factory developers on one side of the bare

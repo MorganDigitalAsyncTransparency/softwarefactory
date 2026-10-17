@@ -12,7 +12,7 @@ import { newLane } from './new-lane.js';
 import { people as walkers } from './people.js';
 import { pull, wiring } from './wiring.js';
 import { BELT, GAPS, LANES, OUTPUT, OUTPUT_TESTS, middleOf } from './layout.js';
-import { beltsLaid, hallBuilt, racksBuilt, roomRacksBuilt } from './schedule.js';
+import { beltsLaid, gapsLaid, hallBuilt, racksBuilt, roomRacksBuilt } from './schedule.js';
 
 const RELEASE = { spacing: 7, speed: 1.4 };
 const still = { key: null, parts: null };
@@ -25,7 +25,7 @@ const fixed = {};
 // robots stop, and the people hurry about.
 export function world(state, clock) {
   const { buildShare } = clock;
-  const factory = { ...state, buildShare, built: hallBuilt(buildShare), ends: beltsLaid(buildShare) };
+  const factory = { ...state, buildShare, built: hallBuilt(buildShare), ends: beltsLaid(buildShare), laid: gapsLaid(buildShare) };
   const shown = layersShown(factory.reveal);
   const { building, machines, cables } = stillParts(factory);
   fixed.ground ??= ground();
@@ -94,7 +94,7 @@ function moving(state, { line: time, people }) {
 }
 
 function releases(state, time) {
-  const stretch = { start: OUTPUT.start + 1, end: OUTPUT.end, uneven: false, gates: [] };
+  const stretch = { start: OUTPUT.start + 1, end: OUTPUT.end, uneven: false, missing: 0, gates: [] };
   const boxes = boxesOn(stretch, time, RELEASE);
   const place = (x, index) => ({ x, z: OUTPUT.z, span: 3.8, clear: 3.1, key: `output 0 ${index}` });
   return [

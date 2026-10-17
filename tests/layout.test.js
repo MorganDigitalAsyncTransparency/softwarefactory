@@ -1,10 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  ASSEMBLY, BELT, BELT_WORKERS, GAPS, INTAKE, INTAKE_TESTS, LANES, NEW_LANE, OUTPUT, OUTPUT_TESTS, SERVER_ROOM, TESTS,
+  ASSEMBLY, BELT, BELT_WORKERS, CRAWLING_GATE, GAPS, INTAKE, INTAKE_TESTS, LANES, NEW_LANE, OUTPUT, OUTPUT_TESTS, SERVER_ROOM, TESTS,
 } from '../film/animation/layout.js';
 import {
-  beltsLaid, hallBuilt, middleTests, newLaneLaid, racksBuilt, roomRacksBuilt, slowGates, stationBuilt, stationsBuiltDuringFilm,
+  beltsLaid, hallBuilt, middleTests, newLaneLaid, racksBuilt, roomRacksBuilt, gateRisen, stationBuilt, stationsBuiltDuringFilm,
 } from '../film/animation/schedule.js';
 
 const inside = (x, { start, end }) => x > start && x < end;
@@ -82,8 +82,8 @@ test('the factory is never finished: the hall, the IT and some belts and station
 });
 
 test('a gate that crawls rises all film long and is less than half up in the last frame', () => {
-  const lane = LANES.findIndex((_, laneIndex) => slowGates(laneIndex, 0).length > 0);
-  const [first, middle, last] = [0, 0.5, 1].map((buildShare) => slowGates(lane, buildShare)[0]);
-  assert.ok(first.built > 0 && first.built < middle.built && middle.built < last.built && last.built < 0.5);
-  assert.ok(!inside(first.x, GAPS[lane].A) && !inside(first.x, GAPS[lane].B) && TESTS.every((x) => Math.abs(x - first.x) > 1.2));
+  const [first, middle, last] = [0, 0.5, 1].map(gateRisen);
+  const { lane, x } = CRAWLING_GATE;
+  assert.ok(first > 0 && first < middle && middle < last && last < 0.5);
+  assert.ok(!inside(x, GAPS[lane].A) && !inside(x, GAPS[lane].B) && TESTS.every((test) => Math.abs(test - x) > 1.2));
 });

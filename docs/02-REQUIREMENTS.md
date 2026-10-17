@@ -93,3 +93,11 @@ roles and their colors, the captions and the continuity.
 - **then** it sounds as [the sound description](../film/script/visual-descriptions.md#sound)
   says: the music and the station clicks stop with the belts while the alarm sounds,
   the sound fades with the picture, and a paused film is silent.
+
+### R12: The middle is uneven
+
+- **Given** the five belts in the middle,
+- **when** any frame is drawn,
+- **then** their gaps lie and measure differently on each belt, a few boxes are missing
+  on their even stretches while the small belts and the release belt keep an even
+  pace, and a person carrying now and then rests for a whole round.

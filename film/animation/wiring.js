@@ -46,8 +46,8 @@ function gates(state) {
 }
 
 function place(key) {
-  const gaps = GAPS[Number(key[1]) - 1];
-  if (gaps) return { x: middleOf(gaps[key[0]]), y: 3.3, z: LANES[Number(key[1]) - 1] };
+  const gap = key.match(/^([AB])(\d)$/);
+  if (gap) return { x: middleOf(GAPS[gap[2] - 1][gap[1]]), y: 3.3, z: LANES[gap[2] - 1] };
   const [kind, laneIndex, index] = key.split(' ');
   return PLACES[kind](Number(laneIndex), Number(index));
 }

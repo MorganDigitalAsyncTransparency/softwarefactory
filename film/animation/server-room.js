@@ -5,6 +5,7 @@ import { SERVER_ROOM } from './layout.js';
 
 const HEIGHT = 3.2;
 const LOW = 1.1;
+const RACK_HEIGHT = 2.5;
 
 // A small server room in the front corner of the hall: local IT that talks to some of
 // the stations and to the cloud. Its front wall is low and it has no roof, so the racks
@@ -26,7 +27,7 @@ export function roomRacks(count) {
   const { racks, port: { z } } = SERVER_ROOM;
   const installing = racks[Math.floor(count)];
   return group([
-    ...risingRacks(racks.map((x) => [x, 0, z]), count),
+    ...risingRacks(racks.map((x) => [x, 0, z]), count, RACK_HEIGHT),
     group([person('it', { seed: 1 })], { position: [installing, 0, z + 1.1], turn: -Math.PI / 2 }),
   ]);
 }

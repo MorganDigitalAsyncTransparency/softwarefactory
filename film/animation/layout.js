@@ -43,6 +43,10 @@ export const SERVER_ROOM = {
 export const NEW_LANE = { index: 5, z: 8.7 };
 export const ALL_LANES = [...LANES, NEW_LANE.z];
 export const SPEED = 2;
+// Crews work on the side of a belt away from the boxes piled at its gaps.
+export const CREW_SIDE = 1.05;
+// A gate that rises very slowly over a running belt all through the film.
+export const CRAWLING_GATE = { lane: 3, x: 7.4 };
 // Where people walk about and work: rectangles of floor between the desks and machines,
 // among them the walkways between the five belts, past their first test stations and
 // short of the joiners and of the piles at the gaps.
