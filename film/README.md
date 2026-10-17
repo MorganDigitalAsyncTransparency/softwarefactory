@@ -36,6 +36,8 @@ We are building gates at every step and automating the manual steps away.
 | Conveyor belts                           | The CI/CD pipeline                             |
 | Carrying boxes by hand between belts     | Manual hand-offs between pipeline stages       |
 | Gates that stop damaged boxes            | Quality gates                                  |
+| A box with a pink band                   | A change that needs something new              |
+| An adapter or rack with the same band    | IT adapting its services for that change       |
 | Long cables to the stations              | Integrations, tested at every step             |
 | The cloud and the server room            | IT services, in the cloud and run in-house     |
 | Robots                                   | Automation and AI agents                       |

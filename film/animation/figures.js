@@ -54,13 +54,13 @@ function hardHat() {
   ], { position: [0, 1.7, 0] });
 }
 
-// A speech bubble with no words, high over the head of someone talking so a gate in
-// front does not hide it: it holds a small picture of what they talk about.
+// A speech bubble with no words, high over and in front of someone talking so a gate or
+// cable does not hide it: it holds a small picture of what they talk about.
 export function bubble(subject) {
   const tail = [[0.12, -0.5, 0.08], [0.2, -0.8, 0.06], [0.26, -1.05, 0.045]].map(([x, y, radius]) => sphere(radius, 'bubble', [x, y, 0]));
   const shape = sphere(0.45, 'bubble', [0, 0, 0]);
   shape.scale.set(1, 0.75, 0.6);
-  return group([shape, ...tail, group([subject], { position: [0, -0.12, 0.3], scale: 0.45 })], { position: [0, 3.3, 0] });
+  return group([shape, ...tail, group([subject], { position: [0, -0.12, 0.3], scale: 0.45 })], { position: [0, 3.3, 1.3] });
 }
 
 export function robot({ carrying = false, time = 0 } = {}) {

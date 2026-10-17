@@ -19,8 +19,9 @@ Clean modern 3D animation, simple solid shapes with soft daylight and shadows, c
 muted palette, no text, no logos, no brand colors, no flags, neutral global setting.
 Smooth, steady camera. Four layers that never share a color: the building has
 sand-colored walls with windows; the machines are steel grey with black belts; the
-product is plain cardboard boxes, some with a pink band for something new; IT is blue. Simple stylised characters with
-minimal facial detail, diverse, gender-neutral silhouettes. Each role wears its own
+product is plain cardboard boxes; IT is blue. The one shared color is a pink band
+for something new the product needs: on some boxes, and on the IT parts made for it.
+Simple stylised characters with minimal facial detail, diverse, gender-neutral silhouettes. Each role wears its own
 color: Product developers wear purple; Software factory developers wear yellow with
 hard hats; IT developers wear the blue of IT; Users wear warm orange. AI agents are
 small identical rounded white robots with a single soft blue light. Test stations
@@ -178,9 +179,9 @@ camera glides down to the middle of the floor.
 Software factory developers in yellow install a gate between two conveyor belts. A
 dented box arrives and the gate stops it with a red light; an intact box arrives and
 passes through with a green light. An IT developer in blue connects a long cable from
-the cloud into the gate. Then a box with a pink band arrives and the gate pushes it off
-with an amber light. A Product developer in purple walks over; a white speech bubble
-over them shows the banded box, and one over the IT developer shows a small blue
+the cloud into the gate. A Product developer in purple walks over to them. Then a box
+with a pink band arrives and the gate pushes it off with an amber light; a white speech
+bubble over the Product developer shows the banded box, and one over the IT developer shows a small blue
 adapter with the same pink band. The adapter is lowered onto the gate, and the next
 banded box passes with a green light. Clear, deliberate, satisfying.
 ```

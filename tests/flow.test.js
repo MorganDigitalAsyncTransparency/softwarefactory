@@ -1,12 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { SPACING, boxesOn, carriedSpan, carrierAt, fitting, gateSignal, stretches } from '../film/animation/flow.js';
-import { BELT, GAPS } from '../film/animation/layout.js';
+import { BELT, GAPS, SPEED } from '../film/animation/layout.js';
 import { gapsLaid } from '../film/animation/schedule.js';
 
 test('a lane is cut at every gap that is still carried, and after a hand-carried gap boxes come unevenly', () => {
   const { A, B } = GAPS[1];
-  const pieces = stretches({ gaps: { A2: 'robot' }, adapted: {}, ends: {}, laid: {} }, 1);
+  const pieces = stretches({ gaps: { A2: 'robot' }, fitted: {}, ends: {}, laid: {} }, 1);
   assert.deepEqual(pieces.map(({ start, end, uneven }) => [start, end, uneven]), [
     [BELT.start, A.start, false],
     [A.end, B.start, false],
@@ -30,13 +30,13 @@ test('a belt is laid into some gaps so slowly that it is still far from across i
 });
 
 test('a closed gap and a gate join the belts, and the gate stands where the gap was', () => {
-  const pieces = stretches({ gaps: { A1: 'closed', B1: 'gate' }, adapted: { B1: 7 }, ends: {}, laid: {} }, 0);
+  const pieces = stretches({ gaps: { A1: 'closed', B1: 'gate' }, fitted: { B1: 7 }, ends: {}, laid: {} }, 0);
   const gate = { x: (GAPS[0].B.start + GAPS[0].B.end) / 2, fittedAt: 7 };
   assert.deepEqual(pieces.map(({ start, end, gates }) => [start, end, gates]), [[BELT.start, BELT.end, [gate]]]);
 });
 
 test('an even belt in the middle carries good and new boxes on a steady beat, with a box missing here and there', () => {
-  const stretch = stretches({ gaps: {}, adapted: {}, ends: {}, laid: {} }, 0)[0];
+  const stretch = stretches({ gaps: {}, fitted: {}, ends: {}, laid: {} }, 0)[0];
   const long = { ...stretch, start: 0, end: 100 };
   const boxes = boxesOn(long, 60);
   const offBeat = (box) => Math.abs(Math.round(box.x / SPACING) * SPACING - box.x) > 1e-9;
@@ -73,7 +73,7 @@ test('once a gate is fitted, only new boxes that reach it from then on pass, so 
   const { passed } = throughGate(30);
   const newOnes = passed.filter(({ look }) => look === 'new');
   assert.ok(newOnes.length > 0);
-  assert.ok(newOnes.every(({ x, time }) => time - (x - 15) / 2 >= 30));
+  assert.ok(newOnes.every(({ x, time }) => time - (x - 15) / SPEED >= 30));
 });
 
 test('IT lowers the adapter onto a gate in the seconds before it is fitted, and never onto one it has not fitted', () => {

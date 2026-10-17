@@ -22,11 +22,11 @@ export function cloud() {
 }
 
 // The racks in the cloud, `count` of them standing; the next one is rising, so the
-// cloud grows all through the film. The first `upgraded` carry a band in the color of
+// cloud grows all through the film. The first `fitted` carry a band in the color of
 // the new boxes: IT has fitted them for what the product now needs.
-export function cloudRacks(count, upgraded) {
+export function cloudRacks(count, fitted) {
   const racks = risingRacks(RACKS.map((x) => [CLOUD.x + x, CLOUD.y + TOP, CLOUD.z]), count, TALL);
-  racks.slice(0, Math.floor(upgraded)).forEach((standing) => standing.add(block([1.3, 0.35, 1.3], 'feature', [0, TALL - 0.5, 0])));
+  racks.slice(0, Math.floor(fitted)).forEach((standing) => standing.add(block([1.3, 0.35, 1.3], 'feature', [0, TALL - 0.5, 0])));
   return group(racks);
 }
 

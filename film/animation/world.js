@@ -12,7 +12,7 @@ import { newLane } from './new-lane.js';
 import { people as walkers } from './people.js';
 import { pull, wiring } from './wiring.js';
 import { BELT, GAPS, LANES, OUTPUT, OUTPUT_TESTS, middleOf } from './layout.js';
-import { beltsLaid, gapsLaid, hallBuilt, racksBuilt, racksUpgraded, roomRacksBuilt } from './schedule.js';
+import { beltsLaid, gapsLaid, hallBuilt, racksBuilt, racksFitted, roomRacksBuilt } from './schedule.js';
 
 const RELEASE = { spacing: 7, speed: 1.4 };
 const still = { key: null, parts: null };
@@ -26,7 +26,7 @@ const fixed = {};
 export function world(state, clock) {
   const { buildShare } = clock;
   const factory = {
-    ...state, buildShare, built: hallBuilt(buildShare), ends: beltsLaid(buildShare), laid: gapsLaid(buildShare), adapted: onLine(state.adapted, clock),
+    ...state, buildShare, built: hallBuilt(buildShare), ends: beltsLaid(buildShare), laid: gapsLaid(buildShare), fitted: onLine(state.fitted, clock),
   };
   const shown = layersShown(factory.reveal);
   const { building, machines, cables } = stillParts(factory);
@@ -34,7 +34,7 @@ export function world(state, clock) {
   fixed.office ??= office();
   fixed.serverRoom ??= serverRoom();
   fixed.cloud ??= group([cloud()]);
-  const sky = group([agents(clock.film), itDevelopers(clock.people), cloudRacks(racksBuilt(buildShare), racksUpgraded(buildShare)), factory.outage && alarm(clock.film)]);
+  const sky = group([agents(clock.film), itDevelopers(clock.people), cloudRacks(racksBuilt(buildShare), racksFitted(buildShare)), factory.outage && alarm(clock.film)]);
   [fixed.cloud, sky].forEach((part) => { part.position.y = (1 - shown.cloud) * 40; });
   const work = group([site(factory.built, clock.film)]);
   [building, work, fixed.office].forEach((part) => risen(part, shown.hall));
@@ -51,8 +51,8 @@ export function world(state, clock) {
 
 // The times when gates were fitted, from the film's clock to the line's. The line's clock
 // only falls behind during the outage, before any gate is fitted.
-function onLine(adapted, { film, line }) {
-  return Object.fromEntries(Object.entries(adapted).map(([key, at]) => [key, at - (film - line)]));
+function onLine(fitted, { film, line }) {
+  return Object.fromEntries(Object.entries(fitted).map(([key, at]) => [key, at - (film - line)]));
 }
 
 // A part of the opening that rises out of the floor as its layer is revealed.

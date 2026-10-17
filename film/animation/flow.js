@@ -14,7 +14,7 @@ const IDLE = 0.2;
 // check until IT has fitted it for them.
 const NEW = 0.15;
 // IT lowers the adapter onto a gate over the seconds before the gate is fitted.
-const FITTING_SECONDS = 2;
+export const FITTING_SECONDS = 2;
 
 export function gapMode(state, gap, laneIndex) {
   return state.gaps[gapKey(gap, laneIndex)] ?? 'open';
@@ -23,13 +23,13 @@ export function gapMode(state, gap, laneIndex) {
 // The pieces of a lane that boxes ride without help. A lane is cut where a gap is still
 // carried, by hand or by a robot, and ends early where its belt is not finished; boxes
 // after a hand-carried gap come unevenly. Each gate knows from what time on the line's
-// clock IT has fitted it for new boxes (`adapted`; never, if it is not listed).
+// clock IT has fitted it for new boxes (`fitted`; never, if it is not listed).
 export function stretches(state, laneIndex) {
   const result = [];
   let current = { start: BELT.start, uneven: false, missing: MISSING, gates: [] };
   Object.entries(GAPS[laneIndex]).forEach(([gap, whole]) => {
     const mode = gapMode(state, gap, laneIndex);
-    if (mode === 'gate') current.gates.push({ x: middleOf(whole), fittedAt: state.adapted[gapKey(gap, laneIndex)] ?? Infinity });
+    if (mode === 'gate') current.gates.push({ x: middleOf(whole), fittedAt: state.fitted[gapKey(gap, laneIndex)] ?? Infinity });
     if (!CARRIED.includes(mode)) return;
     const span = carriedSpan(state, gap, laneIndex);
     result.push({ ...current, end: span.start });
@@ -96,10 +96,10 @@ function passes({ x, look }, { x: gateX, fittedAt }, { time, speed }) {
   return look === 'good' || (look === 'new' && time - (x - gateX) / speed >= fittedAt);
 }
 
-// A gate shows red while a damaged box is pushed off at it, and amber while a new box
-// it cannot check is.
+// A gate shows red while a damaged box it has pushed off lies at it, and amber while a
+// new box it cannot check waits there.
 export function gateSignal(boxes, gateX) {
-  const held = boxes.filter(({ x, side }) => x === gateX && side > 0 && side < 1.6);
+  const held = boxes.filter(({ x, side }) => x === gateX && side > 0);
   if (held.some(({ look }) => look !== 'new')) return 'stop';
   return held.length ? 'wait' : 'ok';
 }

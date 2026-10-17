@@ -35,7 +35,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `caption.js`       | The caption at the bottom of the picture, with balanced line wrapping (R3)          |
 | `score.js`         | Pure: what sounds at a moment of the clocks: the levels of the hum, music and alarms, and the notes, clicks and thuds that start (R11) |
 | `sound.js`         | Plays the score with the Web Audio API, and stops when the film is paused or the sound is off (ADR 0005) |
-| `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state, fades and whether the music halts; throws on a missing ID; the line's and the people's clocks (R2, R8, R9) |
+| `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state, fades and whether the music halts; throws on a missing ID; the line's and the people's clocks; which gates are fitted for new boxes and when, and who talks in the gate scene (R2, R8, R9, R13) |
 | `flow.js`          | Pure: where boxes, carriers and robots are at a time, which boxes are new, and what a gate stops or, once IT has fitted it, lets pass (R12, R13) |
 | `wander.js`        | Pure: where a person who works here and there is at a time                          |
 | `layout.js`        | Pure: the positions shared by every scene, in metres, and repeatable noise          |
@@ -48,7 +48,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `new-lane.js`      | The sixth lane, laid during the film, with its test stations                        |
 | `wiring.js`        | Every cable, from the cloud or the server room, how far it is pulled in, and red while the cloud is down |
 | `people.js`        | Who walks about where, by role, and the Users at the dock                           |
-| `lanes.js`         | Each lane: two small belts and their joiner, the belt with its gaps, flowing boxes, carriers, test stations, gates, the belt still being laid and the builds that crawl |
+| `lanes.js`         | Each lane: two small belts and their joiner, the belt with its gaps, flowing boxes, carriers, test stations, gates with the adapter being lowered onto them, the belt still being laid and the builds that crawl |
 | `machines.js`      | Belts, gates with the adapter IT fits them with, test stations, joiners, the assembly machine and the output to the dock |
 | `cloud.js`         | IT: the cloud with its growing and upgraded server racks, IT developers and AI agents, cables, and the alarm when it fails |
 | `figures.js`       | People by role, robots, boxes and wordless speech bubbles                           |
