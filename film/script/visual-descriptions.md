@@ -42,10 +42,9 @@ speech bubbles that hold a small picture, never words. Flow always goes left to 
   long as it takes to read (two seconds plus a third of a second per word, fades
   included) and fades out, over about half a second each way, so the rest of the scene is picture only. No
   decoration.
-- The closing caption, in the last scene, is the film's key message: bold, about twice
-  the size, light cyan like the digital lines, in the middle of the picture with no band
-  behind it, only a soft shadow around the letters, and it stays until it fades out with
-  the picture.
+- The closing caption, in the last scene, is the film's key message: at the bottom
+  like the others, but bold, about twice the size and light cyan like the digital lines,
+  and it stays until it fades out with the picture.
 
 ## Continuity
 
