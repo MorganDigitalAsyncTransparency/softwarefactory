@@ -50,8 +50,8 @@ Gates stop broken parts, and step by step automation replaces manual work.
   carries the film.
 - *Shift left* gets its own caption.
 - The film is one continuous picture with captions at the bottom, not cut by black title
-  cards, which broke its flow. The last caption is the exception: it is the film's
-  closing message, so it stands out (see [captions](script/visual-descriptions.md#captions)).
+  cards, which broke its flow. The last caption is the film's closing message, so it
+  stands out (see [captions](script/visual-descriptions.md#captions)).
 - Captions are short, plain English that the audience reads easily. They describe what
   is on screen, or explain it where the picture alone does not, without history or
   absolute words such as *always* or *every* unless the picture shows exactly that.
