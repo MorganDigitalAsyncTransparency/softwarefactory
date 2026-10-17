@@ -14,6 +14,11 @@ const RACKS_BUILT = [2.6, 7.6];
 const ROOM_RACKS_BUILT = [1, 2.7];
 // The sixth lane is laid in order: its small belts, the joiner, then its belt.
 const NEW_LANE_LAID = { intake: [0, 0.42], joiner: [0.42, 0.5], middle: [0.5, 1.15] };
+// Builds in the lines that crawl, beside the ones above that finish fast: how much of a
+// carried gap is laid with belt, and how far a gate has risen, from the first frame to
+// the last.
+const SLOW_BELTS = { A1: [0.05, 0.3], B5: [0.1, 0.32] };
+const CRAWLING_GATE_RISEN = [0.2, 0.45];
 // Test stations built during the film, by `kind laneIndex index`, one after the other.
 const STATIONS_BUILT = {
   'intake 1 1': [-0.1, 0.08], 'middle 0 1': [-0.06, 0.12], 'intake 2 2': [0.02, 0.19],
@@ -37,7 +42,7 @@ export function hallBuilt(buildShare) {
 // Where each unfinished belt ends.
 export function beltsLaid(buildShare) {
   return Object.fromEntries(Object.entries(BELTS_LAID).map(([laneIndex, laid]) => (
-    [laneIndex, GAPS.B.end + (BELT.end - GAPS.B.end) * grown(laid, buildShare)]
+    [laneIndex, GAPS[laneIndex].B.end + (BELT.end - GAPS[laneIndex].B.end) * grown(laid, buildShare)]
   )));
 }
 
@@ -47,6 +52,16 @@ export function racksBuilt(buildShare) {
 
 export function roomRacksBuilt(buildShare) {
   return grown(ROOM_RACKS_BUILT, buildShare);
+}
+
+// The share of each slowly laid gap, by `gapKey` in layout.js, that is laid with belt.
+export function gapsLaid(buildShare) {
+  return Object.fromEntries(Object.entries(SLOW_BELTS).map(([key, laid]) => [key, grown(laid, buildShare)]));
+}
+
+// How far the posts of the crawling gate (CRAWLING_GATE in layout.js) have risen.
+export function gateRisen(buildShare) {
+  return grown(CRAWLING_GATE_RISEN, buildShare);
 }
 
 export function stationBuilt(key, buildShare) {

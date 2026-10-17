@@ -36,7 +36,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `score.js`         | Pure: what sounds at a moment of the clocks: the levels of the hum, music and alarms, and the notes, clicks and thuds that start (R11) |
 | `sound.js`         | Plays the score with the Web Audio API, and stops when the film is paused or the sound is off (ADR 0005) |
 | `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state, fades and whether the music halts; throws on a missing ID; the line's and the people's clocks (R2, R8, R9) |
-| `flow.js`          | Pure: where boxes, carriers and robots are at a time, and what a gate stops         |
+| `flow.js`          | Pure: where boxes, carriers and robots are at a time, and what a gate stops (R12)   |
 | `wander.js`        | Pure: where a person who works here and there is at a time                          |
 | `layout.js`        | Pure: the positions shared by every scene, in metres, and repeatable noise          |
 | `schedule.js`      | Pure: when each part of the factory is built, and how far it has come (R10)         |
@@ -48,9 +48,9 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `new-lane.js`      | The sixth lane, laid during the film, with its test stations                        |
 | `wiring.js`        | Every cable, from the cloud or the server room, how far it is pulled in, and red while the cloud is down |
 | `people.js`        | Who walks about where, by role, and the Users at the dock                           |
-| `lanes.js`         | Each lane: two small belts and their joiner, the belt with its gaps, flowing boxes, carriers, test stations, gates and the belt still being laid |
+| `lanes.js`         | Each lane: two small belts and their joiner, the belt with its gaps, flowing boxes, carriers, test stations, gates, the belt still being laid and the builds that crawl |
 | `machines.js`      | Belts, gates, test stations, joiners, the assembly machine and the output to the dock |
-| `cloud.js`         | IT: the cloud with its growing server racks and AI agents, cables, and the alarm when it fails |
+| `cloud.js`         | IT: the cloud with its growing server racks, IT developers and AI agents, cables, and the alarm when it fails |
 | `figures.js`       | People by role, robots and boxes                                                    |
 | `panels.js`        | The three close-ups where factory, IT and product do not fit                        |
 | `shapes.js`        | Meshes from shared geometries                                                       |

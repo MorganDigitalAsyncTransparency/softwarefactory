@@ -9,7 +9,15 @@ export const PAIR = 0.75;
 export const INTAKE = { start: -40, end: -14, width: 0.9 };
 export const JOINER = { start: -14, end: -12 };
 export const BELT = { start: -12, end: 12, width: 1.6, height: 1 };
-export const GAPS = { A: { start: -6, end: -2 }, B: { start: 3, end: 7 } };
+// The two gaps in the middle of each lane, carried by hand until they are closed. They
+// lie and measure a little differently on every lane, as on a real floor.
+export const GAPS = [
+  { A: { start: -6, end: -2.5 }, B: { start: 2, end: 6.5 } },
+  { A: { start: -5.5, end: -2 }, B: { start: 3, end: 7 } },
+  { A: { start: -6.5, end: -3 }, B: { start: 3.5, end: 8 } },
+  { A: { start: -5, end: -1 }, B: { start: 2.5, end: 5.5 } },
+  { A: { start: -6, end: -3.5 }, B: { start: 1.5, end: 6 } },
+];
 // The third station on each pair of small belts is built during the film.
 export const INTAKE_TESTS = [-26, -19, -22.5];
 export const INTAKE_SPAN = 2 * PAIR + INTAKE.width + 0.4;
@@ -35,6 +43,10 @@ export const SERVER_ROOM = {
 export const NEW_LANE = { index: 5, z: 8.7 };
 export const ALL_LANES = [...LANES, NEW_LANE.z];
 export const SPEED = 2;
+// Crews work on the side of a belt away from the boxes piled at its gaps.
+export const CREW_SIDE = 1.05;
+// A gate that rises very slowly over a running belt all through the film.
+export const CRAWLING_GATE = { lane: 3, x: 7.4 };
 // Where people walk about and work: rectangles of floor between the desks and machines,
 // among them the walkways between the five belts, past their first test stations and
 // short of the joiners and of the piles at the gaps.

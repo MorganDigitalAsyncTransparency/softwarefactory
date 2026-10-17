@@ -65,3 +65,5 @@ We are building gates at every step and automating the manual steps away.
   why, keep working and run about to find the fault: the film shows how much the whole
   line depends on IT.
 - People work here and there on the floor, not only along the belts.
+- The middle is uneven, not a neat grid: gaps differ from belt to belt, the flow has holes,
+  and some builds in the lines crawl while others finish fast, so viewers see both.

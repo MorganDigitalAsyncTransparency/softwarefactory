@@ -82,7 +82,8 @@ roles and their colors, the captions and the continuity.
 - **then** at least one and at most three test stations are being built, no more than
   two of them begun before the film; about half of all test stations are built during
   the film; and the hall, the IT, some belts and some stations are still unfinished in
-  the last frame.
+  the last frame. Beside these, a few builds in the lines crawl: each moves on all film
+  long and covers less than half of its way.
 
 ### R11: The film sounds like its picture
 
@@ -92,3 +93,11 @@ roles and their colors, the captions and the continuity.
 - **then** it sounds as [the sound description](../film/script/visual-descriptions.md#sound)
   says: the music and the station clicks stop with the belts while the alarm sounds,
   the sound fades with the picture, and a paused film is silent.
+
+### R12: The middle is uneven
+
+- **Given** the five belts in the middle,
+- **when** any frame is drawn,
+- **then** their gaps lie and measure differently on each belt, a few boxes are missing
+  on their even stretches while the small belts and the release belt keep an even
+  pace, and a person carrying now and then rests for a whole round.

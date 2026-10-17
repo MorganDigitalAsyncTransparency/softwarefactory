@@ -30,11 +30,16 @@ function leg(x, z) {
 // it stops.
 export function gate(x, z, signal) {
   return group([
-    ...[-1, 1].map((side) => block([0.22, 2.6, 0.22], 'machine', [x, 1.3, z + side * 1.05])),
+    ...gatePosts(x, z, 2.6),
     block([0.5, 0.4, 2.4], 'machine', [x, 2.7, z]),
     sphere(0.22, light(signal), [x, 3.1, z]),
     slab([x - 0.6, z + 1.05], [x + 0.6, z + 2.05], [0, 0.5], 'machine'),
   ]);
+}
+
+// The two posts of a gate, `height` tall.
+export function gatePosts(x, z, height) {
+  return [-1, 1].map((side) => block([0.22, height, 0.22], 'machine', [x, height / 2, z + side * 1.05]));
 }
 
 // A test station: a tunnel over the belt with a screen and a light that turns green as

@@ -25,7 +25,7 @@ color: Product developers wear purple; Software factory developers wear yellow w
 hard hats; IT developers wear the blue of IT; Users wear warm orange. AI agents are
 small identical rounded white robots with a single soft blue light. Test stations
 are grey tunnels over the belts with a blue screen and a small light. Above the
-factory floats a white cloud carrying dark blue server racks and AI robots, with long
+factory floats a white cloud carrying tall dark blue server racks, IT developers and AI robots, with long
 blue cables hanging down to stations in the factory. Flow always goes left to right.
 ```
 
@@ -56,6 +56,8 @@ blue cables hanging down to stations in the factory. Flow always goes left to ri
   racks rise in the cloud and in the server room, new test stations rise one after the
   other with a Software factory developer and an IT developer at each, a sixth lane is
   laid in front, and two belts in the middle are still being laid in the last frame.
+  A few builds in the lines crawl all film long, each with a Software factory
+  developer at it: a belt creeps into two of the gaps and a gate rises over a belt.
 
 ## Scene prompts
 
@@ -89,9 +91,9 @@ station.
 ### S04
 
 ```text
-Camera rises to the white cloud above the factory: dark blue server racks, a new rack
-rising at the end of the row, small white robots walking between them, and long blue
-cables hanging down to the stations. Below, IT developers in blue pull new cables to
+Camera rises to the white cloud above the factory: the server racks, a new rack rising
+at the end of the row, IT developers at work by them, small white robots walking
+between them, and long blue cables hanging down to the stations. Below, IT developers in blue pull new cables to
 half-built stations. In the front corner of the hall a small server room with one
 rack standing and an IT developer installing a second has cables of its own to the
 stations nearby and up to the cloud.

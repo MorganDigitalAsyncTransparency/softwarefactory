@@ -1,6 +1,6 @@
 import { hall, site, standingBays } from './building.js';
 import { assembly, output } from './machines.js';
-import { agents, alarm, cable, cloud, cloudRacks } from './cloud.js';
+import { agents, alarm, cable, cloud, cloudRacks, itDevelopers } from './cloud.js';
 import { box, facingTurn, person, robot } from './figures.js';
 import { group, slab } from './shapes.js';
 import { boxesOn } from './flow.js';
@@ -12,7 +12,7 @@ import { newLane } from './new-lane.js';
 import { people as walkers } from './people.js';
 import { pull, wiring } from './wiring.js';
 import { BELT, GAPS, LANES, OUTPUT, OUTPUT_TESTS, middleOf } from './layout.js';
-import { beltsLaid, hallBuilt, racksBuilt, roomRacksBuilt } from './schedule.js';
+import { beltsLaid, gapsLaid, hallBuilt, racksBuilt, roomRacksBuilt } from './schedule.js';
 
 const RELEASE = { spacing: 7, speed: 1.4 };
 const still = { key: null, parts: null };
@@ -25,14 +25,14 @@ const fixed = {};
 // robots stop, and the people hurry about.
 export function world(state, clock) {
   const { buildShare } = clock;
-  const factory = { ...state, buildShare, built: hallBuilt(buildShare), ends: beltsLaid(buildShare) };
+  const factory = { ...state, buildShare, built: hallBuilt(buildShare), ends: beltsLaid(buildShare), laid: gapsLaid(buildShare) };
   const shown = layersShown(factory.reveal);
   const { building, machines, cables } = stillParts(factory);
   fixed.ground ??= ground();
   fixed.office ??= office();
   fixed.serverRoom ??= serverRoom();
   fixed.cloud ??= group([cloud()]);
-  const sky = group([agents(clock.film), cloudRacks(racksBuilt(buildShare)), factory.outage && alarm(clock.film)]);
+  const sky = group([agents(clock.film), itDevelopers(clock.people), cloudRacks(racksBuilt(buildShare)), factory.outage && alarm(clock.film)]);
   [fixed.cloud, sky].forEach((part) => { part.position.y = (1 - shown.cloud) * 40; });
   const work = group([site(factory.built, clock.film)]);
   [building, work, fixed.office].forEach((part) => risen(part, shown.hall));
@@ -86,7 +86,7 @@ function moving(state, { line: time, people }) {
   return group([
     ...LANES.map((_, laneIndex) => laneMotion(state, { line: time, people }, laneIndex)),
     construction(state),
-    work && cable({ x: middleOf(GAPS[work.gap]), y: 3.3, z: LANES[work.lane] }, work.share),
+    work && cable({ x: middleOf(GAPS[work.lane][work.gap]), y: 3.3, z: LANES[work.lane] }, work.share),
     ...releases(state, time),
     walkers(people),
     ...state.crew.map((member, index) => crewMember(member, time, index)),
@@ -94,7 +94,7 @@ function moving(state, { line: time, people }) {
 }
 
 function releases(state, time) {
-  const stretch = { start: OUTPUT.start + 1, end: OUTPUT.end, uneven: false, gates: [] };
+  const stretch = { start: OUTPUT.start + 1, end: OUTPUT.end, uneven: false, missing: 0, gates: [] };
   const boxes = boxesOn(stretch, time, RELEASE);
   const place = (x, index) => ({ x, z: OUTPUT.z, span: 3.8, clear: 3.1, key: `output 0 ${index}` });
   return [
