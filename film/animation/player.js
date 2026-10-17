@@ -132,7 +132,7 @@ function render({ scene, progress }) {
   return { shot, clock, fade: picture };
 }
 
-// The last scene's caption is the film's closing message, shown large in the middle.
+// The last scene's caption is the film's closing message.
 function showSceneCaption(scene, seconds) {
   const closing = scene === playback.scenes.at(-1);
   const span = captionSpan(scene.caption, scene.end - scene.start, closing);

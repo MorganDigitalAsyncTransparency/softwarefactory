@@ -85,7 +85,7 @@ drawing a second world.
 ### Tests
 
 Node's built-in test runner runs `tests/`: the parser, the timeline, the motion of
-boxes and people, the line's and the people's clocks, the score, caption wrapping, that every scene has a drawing
+boxes and people, the line's and the people's clocks, the score, caption wrapping and when a caption shows, that every scene has a drawing
 and continues the camera of the one before, that the layout gives every running belt two test
 stations, one of them working from the start, that the schedule spreads the building over
 the whole film and never finishes it (R10), that an access change stops one station at a time outside the outage (R14), and that the script itself keeps its timing rules.

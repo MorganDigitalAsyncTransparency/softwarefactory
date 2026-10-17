@@ -11,7 +11,7 @@ it is in the [contributing guide](../docs/01-CONTRIBUTING.md#watching-the-animat
 
 | Question         | Decision                                                                                 |
 | ---------------- | ---------------------------------------------------------------------------------------- |
-| Audience         | Employees, with a message from senior management. No IT knowledge assumed.               |
+| Audience         | Employees, with a message from senior management. No IT knowledge assumed; many read English as a second language. |
 | Purpose          | Explain the current state, so that viewers understand it.                                |
 | Length           | 90–150 seconds.                                                                          |
 | Form             | Animated silent film in a modern style. No voices; captions, music and the sounds of the factory. |
@@ -50,12 +50,13 @@ Gates stop broken parts, and step by step automation replaces manual work.
   carries the film.
 - *Shift left* gets its own caption.
 - The film is one continuous picture with captions at the bottom, not cut by black title
-  cards, which broke its flow. The last caption is the exception: the film's closing
-  message, large in the middle of the picture.
-- Captions are short, plain English that Swedish viewers read easily. They describe what
-  is on screen, without history or absolute words such as *always* or *every* unless the
-  picture shows exactly that, and each one leaves the picture once it is read, so the
-  viewer watches the film and its details rather than the text.
+  cards, which broke its flow. The last caption is the exception: it is the film's
+  closing message, so it stands out (see [captions](script/visual-descriptions.md#captions)).
+- Captions are short, plain English that the audience reads easily. They describe what
+  is on screen, or explain it where the picture alone does not, without history or
+  absolute words such as *always* or *every* unless the picture shows exactly that.
+  Each one leaves the picture once it is read, so the viewer watches the film and its
+  details rather than the text.
 - The factory is never finished: about half of it is built while the film runs, spread
   over the whole film and not only at the start, and the hall, the IT, some belts and
   some test stations are still being built when it ends.

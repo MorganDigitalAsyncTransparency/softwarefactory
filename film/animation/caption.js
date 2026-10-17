@@ -3,9 +3,9 @@ const DELAY_SECONDS = 1;
 const READING_BASE_SECONDS = 2;
 const READING_SECONDS_PER_WORD = 1 / 3;
 
-// When in its scene a caption shows. It waits a moment for the camera to settle, stays
-// as long as it takes to read and then leaves the picture to the viewer; the closing
-// caption stays to the end of the film.
+// When a caption shows within its scene. It waits a moment for the camera to settle,
+// stays as long as it takes to read and then leaves the picture to the viewer; the
+// closing caption stays to the end of its scene.
 export function captionSpan(text, length, closing) {
   return { start: DELAY_SECONDS, end: closing ? length : DELAY_SECONDS + readingSeconds(text) };
 }

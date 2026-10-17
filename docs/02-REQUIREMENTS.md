@@ -29,9 +29,8 @@ roles and their colors, the captions and the continuity.
 - **Given** a scene with a caption,
 - **when** it is shown,
 - **then** it follows the [captions](../film/script/visual-descriptions.md#captions)
-  rules, with long text wrapped onto balanced lines: it appears after a short delay,
-  stays for its reading time and leaves the picture, except the last scene's caption,
-  which stays large in the middle to the end.
+  rules: when it appears and leaves, how the closing caption looks, and long text
+  wrapped onto balanced lines.
 
 ### R4: The viewer controls playback
 
