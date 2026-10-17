@@ -54,6 +54,18 @@ main {
   background: none;
 }
 
+/* The closing message: in the middle, larger, in the cyan of the digital lines, with no
+   band behind it so the factory stays in view. */
+#caption.closing {
+  top: 0;
+  justify-content: center;
+  background: none;
+  color: #59E3FF;
+  font-size: 8cqh;
+  font-weight: bold;
+  text-shadow: 0 0 1.5cqh rgb(0 0 0 / 0.9), 0 0.3cqh 0.6cqh rgb(0 0 0 / 0.8);
+}
+
 .controls {
   display: flex;
   align-items: center;

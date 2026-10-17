@@ -1,14 +1,14 @@
 import { parseScript } from './script-parser.js';
 import { duration, fade, frameAt, share, startTimeFrom } from './timeline.js';
 import { checkDrawings, draw, lineTime, peopleTime } from './scenes.js';
-import { showCaption } from './caption.js';
+import { captionSpan, showCaption } from './caption.js';
 import { createStage } from './stage.js';
 import { createSound } from './sound.js';
 import { events, levels } from './score.js';
 
 const SCRIPT_URL = 'script/script.md';
-// The picture fades from and to black only where a scene asks for it; captions fade at
-// every scene's edges.
+// The picture fades from and to black only where a scene asks for it; captions fade in
+// and out over their own span.
 const FADE_SECONDS = 0.8;
 const CAPTION_FADE_SECONDS = 0.6;
 // A frame later than this, as when the tab was hidden, starts the sound afresh like a jump.
@@ -125,11 +125,19 @@ function render({ scene, progress }) {
   const fadeOut = fades.includes('out') ? share(length - seconds, 0, FADE_SECONDS) : 1;
   const picture = Math.min(fadeIn, fadeOut);
   canvas.style.opacity = picture;
-  showCaption(caption, scene.caption, fade(seconds, length, CAPTION_FADE_SECONDS));
+  showSceneCaption(scene, seconds);
   const { scenes, time } = playback;
   const clock = { film: time, line: lineTime(scenes, time), people: peopleTime(scenes, time) };
   stage.render(shot, { ...clock, buildShare: time / duration(scenes) });
   return { shot, clock, fade: picture };
+}
+
+// The last scene's caption is the film's closing message.
+function showSceneCaption(scene, seconds) {
+  const closing = scene === playback.scenes.at(-1);
+  const span = captionSpan(scene.caption, scene.end - scene.start, closing);
+  caption.classList.toggle('closing', closing);
+  showCaption(caption, scene.caption, fade(seconds - span.start, span.end - span.start, CAPTION_FADE_SECONDS));
 }
 
 function formatClock(seconds) {

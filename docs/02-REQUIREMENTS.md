@@ -29,7 +29,8 @@ roles and their colors, the captions and the continuity.
 - **Given** a scene with a caption,
 - **when** it is shown,
 - **then** it follows the [captions](../film/script/visual-descriptions.md#captions)
-  rules, with long text wrapped onto balanced lines.
+  rules: when it appears and leaves, how the closing caption looks, and long text
+  wrapped onto balanced lines.
 
 ### R4: The viewer controls playback
 
@@ -58,7 +59,7 @@ roles and their colors, the captions and the continuity.
 - **Given** any scene,
 - **when** it is drawn,
 - **then** the picture contains no words, symbols of a brand or national markers; the
-  caption over its bottom edge is the only text.
+  caption over it is the only text.
 
 ### R8: The film is one continuous picture
 

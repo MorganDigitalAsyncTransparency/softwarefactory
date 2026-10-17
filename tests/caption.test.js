@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { wrap } from '../film/animation/caption.js';
+import { captionSpan, wrap } from '../film/animation/caption.js';
 
 test('keeps a short caption on one line', () => {
   assert.deepEqual(wrap('A factory.'), ['A factory.']);
@@ -19,4 +19,12 @@ test('never leaves a single word alone on the last line when it can be avoided',
 
 test('an empty caption has no lines, so no band is shown', () => {
   assert.deepEqual(wrap(''), []);
+});
+
+test('a caption waits a second, stays as long as it takes to read and then goes', () => {
+  assert.deepEqual(captionSpan('One two three four five six.', 12, false), { start: 1, end: 5 });
+});
+
+test('the closing caption stays to the end of its scene', () => {
+  assert.deepEqual(captionSpan('One two three.', 6, true), { start: 1, end: 6 });
 });
