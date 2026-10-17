@@ -113,3 +113,14 @@ roles and their colors, the captions and the continuity.
   and only new boxes that reach the gate after that pass it, so none jumps out of the
   bin; one of the gates added in the last scenes is still not fitted; and racks in the cloud
   are upgraded in the same color one after the other.
+
+### R14: Communication is access controlled
+
+- **Given** the film,
+- **when** it plays,
+- **then** every test station with a cable has a lock on top whose dot shows green with
+  access, red when denied and nothing while it waits; a few times an access is changed
+  and one station at a time, never during the cloud outage, stops testing while a
+  Product developer waits at it until an IT developer comes; some stations built during
+  the film wait for their first access; a card reader by the server room lets IT
+  developers in and no one else; and each release is sealed after its last test station.

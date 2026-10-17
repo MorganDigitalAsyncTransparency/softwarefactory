@@ -67,6 +67,10 @@ We are building gates at every step and automating the manual steps away.
   why, keep working and run about to find the fault: the film shows how much the whole
   line depends on IT.
 - People work here and there on the floor, not only along the belts.
+- Security shows as access control, quietly: locks on the cables, a card reader at the
+  server room and a sealed release. When an access is changed, one station stops until
+  IT puts it right, small and local, unlike the cloud outage that stops every belt. No
+  caption names it, and the details are meant to be found by watching again.
 - The middle is uneven, not a neat grid: gaps differ from belt to belt, the flow has holes,
   and some builds in the lines crawl while others finish fast, so viewers see both.
 - IT has to adapt when the product needs something new: boxes with a new color band

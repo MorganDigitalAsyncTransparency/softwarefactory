@@ -1,4 +1,5 @@
-import { bareBelt, belt, gate, gatePosts, joiner, tester } from './machines.js';
+import { bareBelt, belt, gate, gatePosts, joiner, lock, tester } from './machines.js';
+import { accessAt, cabledStations, deniedCrew } from './access.js';
 import { box, facingTurn, person, robot } from './figures.js';
 import { group } from './shapes.js';
 import { CARRIED, boxesOn, carriedSpan, carrierAt, gapMode, fitting, gateSignal, laneFlows } from './flow.js';
@@ -12,6 +13,8 @@ const GATE_HEIGHT = 2.6;
 const BIN_EDGE = 1.05;
 const SMALL = { scale: 0.6, spacing: 1.8 };
 const INTAKE_STRETCH = { start: INTAKE.start, end: INTAKE.end, uneven: false, missing: 0, gates: [] };
+const LOCK_LIGHTS = { granted: 'ok', denied: 'stop', waiting: null };
+const CABLED = cabledStations();
 
 // The parts of a lane that only change when the state does: the two small belts and
 // their joiner, the belt pieces and the bridged gaps. An unfinished lane's last piece
@@ -74,16 +77,30 @@ export function signal({ outage }, busy) {
 
 // A test station, or one still being built: a Software factory developer builds it and
 // an IT developer connects its new cable.
-export function station({ key, ...place }, { buildShare }, light) {
-  const built = stationBuilt(key, buildShare);
+export function station({ key, ...place }, state, light) {
+  const built = stationBuilt(key, state.buildShare);
   if (built === 0) return null;
-  if (built === 1) return tester(place, light);
+  if (built === 1) return finished({ key, ...place }, state, light);
   const side = place.z + place.span / 2 + 0.2;
   const seed = Math.round(Math.abs(place.x));
   return group([
     tester({ ...place, built }),
     group([person('factory', { seed })], { position: [place.x - 1, 0, side], turn: 0 }),
     group([person('it', { seed: seed + 1 })], { position: [place.x + 1, 0, side], turn: Math.PI }),
+  ]);
+}
+
+// A finished station tests only while it has access; while the cloud is down its light
+// shows red like every other.
+function finished({ key, ...place }, { buildShare, outage }, light) {
+  const access = accessAt(key, buildShare);
+  const side = place.z + place.span / 2 + 0.3;
+  return group([
+    tester(place, access === 'granted' || outage ? light : null),
+    CABLED.has(key) && lock(place, LOCK_LIGHTS[access]),
+    ...deniedCrew(key, buildShare).map((role, index) => (
+      group([person(role, { seed: index + 2 })], { position: [place.x + index * 1.2 - 0.6, 0, side], turn: Math.PI / 2 })
+    )),
   ]);
 }
 

@@ -25,7 +25,9 @@ Simple stylised characters with minimal facial detail, diverse, gender-neutral s
 color: Product developers wear purple; Software factory developers wear yellow with
 hard hats; IT developers wear the blue of IT; Users wear warm orange. AI agents are
 small identical rounded white robots with a single soft blue light. Test stations
-are grey tunnels over the belts with a blue screen and a small light. Above the
+are grey tunnels over the belts with a blue screen and a small light; where a cable
+comes in, a small blue lock plate sits on top with a dot that is green while the
+station has access, red when it is denied and dark while it waits. Above the
 factory floats a white cloud carrying tall dark blue server racks, IT developers and AI robots, with long
 blue cables hanging down to stations in the factory. People sometimes talk in white
 speech bubbles that hold a small picture, never words. Flow always goes left to right.
@@ -53,6 +55,13 @@ speech bubbles that hold a small picture, never words. Flow always goes left to 
   a station that is still being built has its cable pulled in as it is built. While the cloud
   fails in S11 every cable turns red together with a light on the cloud and every
   station light; the belts stop, but the people keep working.
+- Communication is access controlled, and the details are small, spread out and found
+  by watching again. Three times, in S03, S07–S08 and S15, an access is changed and one
+  station's lock turns red: that station alone stops testing, a Product developer waits
+  at it and an IT developer comes to put it right. Two stations finished during the
+  film wait a while with a dark lock before their first access. A card reader by the
+  server room lets an IT developer in and turns a Product developer away. Every
+  release gets a strap after its last test station, before it leaves for the dock.
 - The factory is never finished, and something is being built in every scene. The back
   wall rises bay by bay, a yellow tower crane behind the hall keeps lifting panels, new
   racks rise in the cloud and in the server room, new test stations rise one after the
@@ -90,7 +99,8 @@ developers walk between the desks.
 Camera follows the belts into the hall to the back wall, which is still being built.
 Software factory developers in yellow with hard hats work on scaffolding, a tower crane
 lifts a wall panel, and others lay the frame of a new belt section and raise the walls of a half-built test
-station.
+station. On one of the belts a station's lock turns red and its light goes dark; a
+Product developer waits at it until an IT developer arrives.
 ```
 
 ### S04
@@ -101,7 +111,9 @@ at the end of the row, IT developers at work by them, small white robots walking
 between them, and long blue cables hanging down to the stations. Below, IT developers in blue pull new cables to
 half-built stations. In the front corner of the hall a small server room with one
 rack standing and an IT developer installing a second has cables of its own to the
-stations nearby and up to the cloud.
+stations nearby and up to the cloud. By the room's side wall, an IT developer holds a
+card to a small reader and its light turns green; a Product developer tries next and
+it turns red.
 ```
 
 ### S05
@@ -127,8 +139,9 @@ glows as each box is checked. Smooth, orderly, rhythmic motion.
 
 ```text
 Camera pans right along the front of the factory to the loading dock. One large neat
-box passes a test station and a half-built one, rolls out of the door and is received
-by a few Users.
+box passes a test station and a half-built one, gets a strap round it, rolls out of
+the door and is received by a few Users. One of the stations by the server room has a
+red lock and a dark light, with a Product developer and an IT developer at it.
 Calm, satisfying, orderly.
 ```
 
@@ -212,7 +225,8 @@ becomes one larger glowing cube. Keep layout identical, only the material change
 The picture turns physical again as the camera pulls back to the same wide view as
 the opening. Some of the gaps in the middle are now closed with belts and gates,
 others still have Product developers carrying boxes by hand. Software factory
-developers and IT developers work side by side, the cloud above with its cables. Boxes
+developers and IT developers work side by side, the cloud above with its cables. On
+the left, one station's lock is red while an IT developer puts its access right. Boxes
 keep flowing out to users on the right. Calm, ongoing, unfinished.
 ```
 
