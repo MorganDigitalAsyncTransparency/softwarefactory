@@ -13,7 +13,9 @@ become five, and five become one:
 - **Far left:** an open office where Product developers write and test the product.
   Each finished part leaves a desk as a small box on one of ten belts into the hall.
 - **Left:** each pair of belts is joined by a machine into one belt with larger boxes.
-- **Middle:** five belts, with gaps where people carry boxes by hand.
+- **Middle:** five belts, with gaps where people carry boxes by hand. No two belts
+  look alike: the gaps lie and measure differently on each, boxes are missing here and
+  there, and now and then the person carrying stops for a round.
 - **Right:** one machine joins the five into one belt, which carries one large,
   finished box out to the loading dock.
 - **Everywhere:** every running belt has at least two test stations, at least one of
@@ -25,11 +27,14 @@ become five, and five become one:
 - **All through the film:** the factory is built while it runs, a piece at a time
   from the first scene to the last (see [the brief](../README.md#decisions)): test
   stations rise and are connected, belts are laid, and IT adds racks in the cloud and
-  in the server room.
+  in the server room. Beside the builds that finish fast, a few in the lines crawl:
+  belts reach slowly into two of the gaps and a gate rises over a belt, and none of them
+  is near done in the last frame.
 - **Around it:** the hall itself is being built all through the film. Walls rise bay
   by bay, a crane lifts panels and Software factory developers work on scaffolding. It
   is never finished.
-- **Above:** the cloud, with servers and AI robots, and long cables down to the
+- **Above:** the cloud, with tall server racks, IT developers working by them, AI
+  robots, and long cables down to the
   stations. The cloud grows too: new racks rise and new cables are pulled in. When
   something in the cloud fails, every belt stops.
 
@@ -61,7 +66,7 @@ Each role wears its own color, defined in the
 | S01 | 0:00–0:09 | The camera descends over the factory as it appears one layer at a time: the hall, the belts, the boxes, and last the cloud with its cables.                                                                                                | A software factory. It delivers while it is built up and modified. Let's get into the details. |
 | S02 | 0:09–0:17 | The camera glides to the open office. Product developers work at their desks, and small boxes leave the desks on belts into the hall.                                                                                                      | Product developers (purple) write and test the product.  |
 | S03 | 0:17–0:25 | The camera follows the belts to the back wall, where Software factory developers build on scaffolding, lay a new belt and raise a half-built test station while the crane lifts a panel.                                                   | Software factory developers (yellow) build the factory around it. |
-| S04 | 0:25–0:33 | The camera rises to the cloud, where a new rack rises among the servers and AI robots. Below, IT developers pull new cables to stations that are still being built, and in the server room in the corner, which talks to the stations and the cloud, a second rack is installed. | IT developers (blue) run the cloud and the server room.  |
+| S04 | 0:25–0:33 | The camera rises to the cloud, where a new rack rises among the servers, IT developers and AI robots. Below, IT developers pull new cables to stations that are still being built, and in the server room in the corner, which talks to the stations and the cloud, a second rack is installed. | IT developers (blue) run the cloud and the server room.  |
 | S05 | 0:33–0:41 | The camera settles over the whole factory. Ten belts become five and five become one; a large box leaves at the dock.                                                                                                                      | Many parts in. One product out.                          |
 
 ## Act 2: The ends work (0:41–1:02), level 2

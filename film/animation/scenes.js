@@ -18,7 +18,7 @@ const MIDDLE_CLOSE = [[0, 10, 14], [0, 1, -1.5]];
 const MIDDLE_HIGH = [[1, 17, 22], [1, 1, -2]];
 const OUTAGE_VIEW = [[-2, 40, 52], [-2, 8, -4]];
 const FAREWELL = [[-14, 66, 92], [-6, 9, -3]];
-const GATE = { x: middleOf(GAPS.B), z: LANES[1] };
+const GATE = { x: middleOf(GAPS[1].B), z: LANES[1] };
 const GATE_WIDE = [[GATE.x + 7, 7, GATE.z + 13], [GATE.x - 0.5, 1.3, GATE.z]];
 const GATE_CLOSE = [[GATE.x + 5, 6, GATE.z + 11], [GATE.x - 0.5, 1.3, GATE.z]];
 // Crews work on the side of a belt away from the boxes piled at its gaps.
@@ -30,9 +30,9 @@ const TODAY = {
   ...START,
   gaps: { ...AUTOMATED.gaps, B1: 'gate', A4: 'closed', B4: 'gate' },
   crew: [
-    { role: 'factory', x: middleOf(GAPS.B) - 1, z: LANES[2] - CREW_SIDE, facing: 1 },
-    { role: 'factory', x: middleOf(GAPS.B) + 1, z: LANES[2] - CREW_SIDE, facing: -1 },
-    { role: 'it', x: middleOf(GAPS.B), z: LANES[2] - CREW_SIDE, facing: 0 },
+    { role: 'factory', x: middleOf(GAPS[2].B) - 1, z: LANES[2] - CREW_SIDE, facing: 1 },
+    { role: 'factory', x: middleOf(GAPS[2].B) + 1, z: LANES[2] - CREW_SIDE, facing: -1 },
+    { role: 'it', x: middleOf(GAPS[2].B), z: LANES[2] - CREW_SIDE, facing: 0 },
   ],
 };
 // While the cloud is down, in this share of the outage scene, the line stands still
@@ -124,10 +124,10 @@ function stepsAutomated({ progress }) {
   const bridged = share(progress, 0.05, 0.45);
   const handedOver = progress > 0.5;
   const gaps = { ...GATED.gaps, ...(bridged === 1 && { A2: 'closed' }), ...(handedOver && { A3: 'robot' }) };
-  const developers = [GAPS.A.start + 0.8, GAPS.A.end - 0.8].map((x, index) => (
+  const developers = [GAPS[1].A.start + 0.8, GAPS[1].A.end - 0.8].map((x, index) => (
     { role: 'factory', x, z: LANES[1] - CREW_SIDE, facing: index ? -1 : 1 }
   ));
-  const robot = { role: 'robot', x: middleOf(GAPS.A), z: between(LANES[2] - CREW_SIDE, LANES[2], share(progress, 0.3, 0.5)) };
+  const robot = { role: 'robot', x: middleOf(GAPS[2].A), z: between(LANES[2] - CREW_SIDE, LANES[2], share(progress, 0.3, 0.5)) };
   const carrier = { role: 'product', walking: true, ...walkOff(share(progress, 0.55, 1)) };
   const crew = [...(bridged < 1 ? developers : []), handedOver ? carrier : robot];
   const growing = bridged < 1 && { gap: 'A', lane: 1, share: bridged };
@@ -136,7 +136,7 @@ function stepsAutomated({ progress }) {
 
 // The Product developer who handed a stretch to a robot walks off toward the office.
 function walkOff(walked) {
-  const from = { x: GAPS.A.end + 0.6, z: LANES[2] + 1.05 };
-  const to = { x: GAPS.A.start - 1.5, z: LANES[2] + 1.05 };
+  const from = { x: GAPS[2].A.end + 0.6, z: LANES[2] + 1.05 };
+  const to = { x: GAPS[2].A.start - 1.5, z: LANES[2] + 1.05 };
   return { x: between(from.x, to.x, walked), z: between(from.z, to.z, walked), facing: -1 };
 }

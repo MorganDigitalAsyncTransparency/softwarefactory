@@ -1,6 +1,6 @@
 import { hall, site, standingBays } from './building.js';
 import { assembly, output } from './machines.js';
-import { agents, alarm, cable, cloud, cloudRacks } from './cloud.js';
+import { agents, alarm, cable, cloud, cloudRacks, itDevelopers } from './cloud.js';
 import { box, facingTurn, person, robot } from './figures.js';
 import { group, slab } from './shapes.js';
 import { boxesOn } from './flow.js';
@@ -32,7 +32,7 @@ export function world(state, clock) {
   fixed.office ??= office();
   fixed.serverRoom ??= serverRoom();
   fixed.cloud ??= group([cloud()]);
-  const sky = group([agents(clock.film), cloudRacks(racksBuilt(buildShare)), factory.outage && alarm(clock.film)]);
+  const sky = group([agents(clock.film), itDevelopers(clock.people), cloudRacks(racksBuilt(buildShare)), factory.outage && alarm(clock.film)]);
   [fixed.cloud, sky].forEach((part) => { part.position.y = (1 - shown.cloud) * 40; });
   const work = group([site(factory.built, clock.film)]);
   [building, work, fixed.office].forEach((part) => risen(part, shown.hall));
@@ -86,7 +86,7 @@ function moving(state, { line: time, people }) {
   return group([
     ...LANES.map((_, laneIndex) => laneMotion(state, { line: time, people }, laneIndex)),
     construction(state),
-    work && cable({ x: middleOf(GAPS[work.gap]), y: 3.3, z: LANES[work.lane] }, work.share),
+    work && cable({ x: middleOf(GAPS[work.lane][work.gap]), y: 3.3, z: LANES[work.lane] }, work.share),
     ...releases(state, time),
     walkers(people),
     ...state.crew.map((member, index) => crewMember(member, time, index)),

@@ -48,9 +48,9 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `new-lane.js`      | The sixth lane, laid during the film, with its test stations                        |
 | `wiring.js`        | Every cable, from the cloud or the server room, how far it is pulled in, and red while the cloud is down |
 | `people.js`        | Who walks about where, by role, and the Users at the dock                           |
-| `lanes.js`         | Each lane: two small belts and their joiner, the belt with its gaps, flowing boxes, carriers, test stations, gates and the belt still being laid |
+| `lanes.js`         | Each lane: two small belts and their joiner, the belt with its gaps, flowing boxes, carriers, test stations, gates, the belt still being laid and the builds that crawl |
 | `machines.js`      | Belts, gates, test stations, joiners, the assembly machine and the output to the dock |
-| `cloud.js`         | IT: the cloud with its growing server racks and AI agents, cables, and the alarm when it fails |
+| `cloud.js`         | IT: the cloud with its growing server racks, IT developers and AI agents, cables, and the alarm when it fails |
 | `figures.js`       | People by role, robots and boxes                                                    |
 | `panels.js`        | The three close-ups where factory, IT and product do not fit                        |
 | `shapes.js`        | Meshes from shared geometries                                                       |

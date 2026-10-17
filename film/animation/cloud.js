@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { block, group, slab, sphere, tube } from './shapes.js';
-import { robot } from './figures.js';
+import { person, robot } from './figures.js';
 import { CLOUD, noise } from './layout.js';
 
 const PUFFS = Array.from({ length: 18 }, (_, index) => ({
@@ -9,6 +9,11 @@ const PUFFS = Array.from({ length: 18 }, (_, index) => ({
 }));
 const RACKS = [-10.5, -7.5, -4.5, -1.5, 1.5, 4.5, 7.5, 10.5];
 const TOP = 2.2;
+// The racks in the cloud stand tall, so they read as servers from far below.
+const TALL = 4.5;
+// The IT developers up there are drawn a little larger, for the same reason.
+const SEEN_FROM_BELOW = 1.3;
+const ROOM_HEIGHT = 2.5;
 
 // IT infrastructure: the cloud, with a platform for its server racks.
 export function cloud() {
@@ -20,13 +25,13 @@ export function cloud() {
 // The racks in the cloud, `count` of them standing; the next one is rising, so the
 // cloud grows all through the film.
 export function cloudRacks(count) {
-  return group(risingRacks(RACKS.map((x) => [CLOUD.x + x, CLOUD.y + TOP, CLOUD.z]), count));
+  return group(risingRacks(RACKS.map((x) => [CLOUD.x + x, CLOUD.y + TOP, CLOUD.z]), count, TALL));
 }
 
 // Racks at `positions`, `count` of them standing and the next one rising.
-export function risingRacks(positions, count) {
+export function risingRacks(positions, count, height = ROOM_HEIGHT) {
   return positions.slice(0, Math.ceil(count)).map((position, index) => {
-    const standing = rack(position);
+    const standing = rack(position, height);
     standing.scale.y = Math.min(1, count - index);
     return standing;
   });
@@ -35,6 +40,19 @@ export function risingRacks(positions, count) {
 // The AI agents walking between the racks, relative to the cloud.
 export function agents(time) {
   return group([-3, 3, 6].map((x, index) => walker(x, time, index)));
+}
+
+// IT developers in blue at work by the racks, each pacing to and fro in front of one.
+export function itDevelopers(time) {
+  return group([-9, 0, 9].map((x, index) => {
+    const walked = Math.sin(time * 0.35 + index * 1.7) * 1.6;
+    const speed = Math.cos(time * 0.35 + index * 1.7);
+    const developer = group([person('it', { seed: index, walked: Math.abs(speed) > 0.3 ? walked : 0 })], {
+      position: [CLOUD.x + x + walked, CLOUD.y + TOP, CLOUD.z + 1.9], turn: speed > 0 ? 0 : Math.PI,
+    });
+    developer.scale.setScalar(SEEN_FROM_BELOW);
+    return developer;
+  }));
 }
 
 // A red light on the cloud, blinking while a service in it has failed. Relative to the cloud.
@@ -46,9 +64,9 @@ export function alarm(time) {
 }
 
 // A server rack standing at `position`, in the cloud or in the server room.
-export function rack(position) {
-  const lights = [0.5, 1, 1.5, 2].map((y) => block([0.9, 0.08, 0.05], 'it', [0, y, 0.62]));
-  return group([block([1.2, 2.5, 1.2], 'rack', [0, 1.25, 0]), ...lights], { position });
+function rack(position, height) {
+  const lights = [0.2, 0.4, 0.6, 0.8].map((share) => block([0.9, 0.08, 0.05], 'it', [0, height * share, 0.62]));
+  return group([block([1.2, height, 1.2], 'rack', [0, height / 2, 0]), ...lights], { position });
 }
 
 function walker(x, time, index) {

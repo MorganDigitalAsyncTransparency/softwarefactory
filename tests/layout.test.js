@@ -4,7 +4,7 @@ import {
   ASSEMBLY, BELT, BELT_WORKERS, GAPS, INTAKE, INTAKE_TESTS, LANES, NEW_LANE, OUTPUT, OUTPUT_TESTS, SERVER_ROOM, TESTS,
 } from '../film/animation/layout.js';
 import {
-  beltsLaid, hallBuilt, middleTests, newLaneLaid, racksBuilt, roomRacksBuilt, stationBuilt, stationsBuiltDuringFilm,
+  beltsLaid, hallBuilt, middleTests, newLaneLaid, racksBuilt, roomRacksBuilt, slowGates, stationBuilt, stationsBuiltDuringFilm,
 } from '../film/animation/schedule.js';
 
 const inside = (x, { start, end }) => x > start && x < end;
@@ -24,7 +24,7 @@ const shares = Array.from({ length: 101 }, (_, step) => step / 100);
 
 test('the stations are placed on the belts they test', () => {
   assert.ok(INTAKE_TESTS.every((x) => inside(x, INTAKE)) && OUTPUT_TESTS.every((x) => inside(x, OUTPUT)));
-  assert.ok(TESTS.every((x) => inside(x, BELT)) && TESTS.every((x) => !inside(x, GAPS.A) && !inside(x, GAPS.B)));
+  assert.ok(TESTS.every((x) => inside(x, BELT)) && TESTS.every((x) => GAPS.every(({ A, B }) => !inside(x, A) && !inside(x, B))));
 });
 
 test('a belt still being laid has stations only where it is laid from the first frame', () => {
@@ -79,4 +79,11 @@ test('the factory is never finished: the hall, the IT and some belts and station
   });
   assert.ok(newLaneLaid(1).middle < BELT.end);
   assert.ok(stationsBuiltDuringFilm().some((key) => stationBuilt(key, 1) < 1));
+});
+
+test('a gate that crawls rises all film long and is less than half up in the last frame', () => {
+  const lane = LANES.findIndex((_, laneIndex) => slowGates(laneIndex, 0).length > 0);
+  const [first, middle, last] = [0, 0.5, 1].map((buildShare) => slowGates(lane, buildShare)[0]);
+  assert.ok(first.built > 0 && first.built < middle.built && middle.built < last.built && last.built < 0.5);
+  assert.ok(!inside(first.x, GAPS[lane].A) && !inside(first.x, GAPS[lane].B) && TESTS.every((x) => Math.abs(x - first.x) > 1.2));
 });
