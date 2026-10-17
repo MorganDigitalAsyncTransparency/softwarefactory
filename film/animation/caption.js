@@ -1,6 +1,20 @@
 const MAX_LINE_CHARACTERS = 44;
+const DELAY_SECONDS = 1;
+const READING_BASE_SECONDS = 2;
+const READING_SECONDS_PER_WORD = 1 / 3;
 
-// Shows a scene's caption at the bottom of the picture. The lines are rebuilt only when
+// When in its scene a caption shows. It waits a moment for the camera to settle, stays
+// as long as it takes to read and then leaves the picture to the viewer; the closing
+// caption stays to the end of the film.
+export function captionSpan(text, length, closing) {
+  return { start: DELAY_SECONDS, end: closing ? length : DELAY_SECONDS + readingSeconds(text) };
+}
+
+function readingSeconds(text) {
+  return READING_BASE_SECONDS + text.split(/\s+/).length * READING_SECONDS_PER_WORD;
+}
+
+// Shows a scene's caption over the picture. The lines are rebuilt only when
 // the text changes, so a screen reader announces each caption once.
 export function showCaption(element, text, opacity) {
   element.style.opacity = opacity;

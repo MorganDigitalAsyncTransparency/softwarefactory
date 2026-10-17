@@ -17,9 +17,9 @@ Read `film/README.md` first: the brief decides audience, length, tone and langua
   replace any found elsewhere with a description.
 - Time ranges follow each other with no gap or overlap, and the last one ends within
   the length in the brief.
-- A caption is short, plain English that a non-technical viewer understands, and its
-  scene lasts long enough to read it: about one second per three words plus two
-  seconds.
+- A caption follows the caption decision in the brief, and its scene lasts long enough
+  for the delay and reading time in the
+  [caption rules](../../../film/script/visual-descriptions.md#captions); a test checks it.
 - Keep the film one continuous picture, as the
   [continuity](../../../film/script/visual-descriptions.md#continuity) rules say.
 - Matter-of-fact tone: describe how it is. No humor, no selling, no brand.

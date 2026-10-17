@@ -8,7 +8,7 @@ How the code in this repository is built. What it must do is in
 
 A static page, `film/index.html`, loads plain ES modules from `film/animation/` and
 draws a 3D scene with three.js into one canvas with a 16:9 frame. Each scene's caption
-is HTML text at the bottom of the canvas. There is no framework and no build step;
+is HTML text over the canvas. There is no framework and no build step;
 three.js comes from a CDN through the page's import map (ADR 0004).
 
 ```text
@@ -32,7 +32,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `script-parser.js` | Pure: turns the script's scene tables into a list of scenes (R1)                    |
 | `timeline.js`      | Pure: finds the scene and its progress at a time, fades, and parses `?t=` (R5)      |
 | `player.js`        | Loads the script, runs the clock, wires the controls and shows each frame (R4)      |
-| `caption.js`       | The caption at the bottom of the picture, with balanced line wrapping (R3)          |
+| `caption.js`       | The caption over the picture: when in its scene it shows, and balanced line wrapping (R3) |
 | `score.js`         | Pure: what sounds at a moment of the clocks: the levels of the hum, music and alarms, and the notes, clicks and thuds that start (R11) |
 | `sound.js`         | Plays the score with the Web Audio API, and stops when the film is paused or the sound is off (ADR 0005) |
 | `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state, fades and whether the music halts; throws on a missing ID; the line's and the people's clocks; which gates are fitted for new boxes and when, and who talks in the gate scene (R2, R8, R9, R13) |

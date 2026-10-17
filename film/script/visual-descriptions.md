@@ -38,7 +38,13 @@ speech bubbles that hold a small picture, never words. Flow always goes left to 
 - White text in a clean sans-serif, centered at the bottom of the picture over a soft
   dark gradient, never on a black card.
 - Large enough to read in a small browser window: about 4–5 % of the frame height.
-- Fades in and out with its scene, over about half a second. No decoration.
+- Fades in about a second after its scene starts, when the camera has settled, stays as
+  long as it takes to read (two seconds plus a third of a second per word) and fades
+  out, over about half a second each way, so the rest of the scene is picture only. No
+  decoration.
+- The closing caption, in the last scene, is the film's key message: bold, about twice
+  the size, light cyan like the digital lines, in the middle of the picture with no band
+  behind it, only a soft shadow around the letters, and it stays to the end.
 
 ## Continuity
 
