@@ -90,14 +90,14 @@ export function station({ key, ...place }, state, light) {
   ]);
 }
 
-// A finished station tests only while it has access; while the cloud is down its light
-// shows red like every other.
-function finished({ key, ...place }, { buildShare, outage }, light) {
+// A finished station tests only while it has access.
+function finished({ key, ...place }, state, light) {
+  const { buildShare } = state;
   const access = accessAt(key, buildShare);
   const side = place.z + place.span / 2 + 0.3;
   return group([
-    tester(place, access === 'granted' || outage ? light : null),
-    CABLED.has(key) && lock(place, LOCK_LIGHTS[access]),
+    tester(place, access === 'granted' ? light : null),
+    CABLED.has(key) && lock(place, signal(state, LOCK_LIGHTS[access])),
     ...deniedCrew(key, buildShare).map((role, index) => (
       group([person(role, { seed: index + 2 })], { position: [place.x + index * 1.2 - 0.6, 0, side], turn: Math.PI / 2 })
     )),

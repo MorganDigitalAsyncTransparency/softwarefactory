@@ -54,9 +54,9 @@ speech bubbles that hold a small picture, never words. Flow always goes left to 
 - The cables from the cloud and from the server room always run to the same stations;
   a station that is still being built has its cable pulled in as it is built. While the cloud
   fails in S11 every cable turns red together with a light on the cloud and every
-  station light; the belts stop, but the people keep working.
+  station light and lock; the belts stop, but the people keep working.
 - Communication is access controlled, and the details are small, spread out and found
-  by watching again. Three times, in S03, S07–S08 and S15, an access is changed and one
+  by watching again. Three times, in S03, S08 and S15, an access is changed and one
   station's lock turns red: that station alone stops testing, a Product developer waits
   at it and an IT developer comes to put it right. Two stations finished during the
   film wait a while with a dark lock before their first access. A card reader by the
@@ -140,8 +140,7 @@ glows as each box is checked. Smooth, orderly, rhythmic motion.
 ```text
 Camera pans right along the front of the factory to the loading dock. One large neat
 box passes a test station and a half-built one, gets a strap round it, rolls out of
-the door and is received by a few Users. One of the stations by the server room has a
-red lock and a dark light, with a Product developer and an IT developer at it.
+the door and is received by a few Users.
 Calm, satisfying, orderly.
 ```
 
@@ -149,7 +148,9 @@ Calm, satisfying, orderly.
 
 ```text
 Camera moves from the dock back to the middle of the factory floor. The five belts
-end abruptly with gaps between them.
+end abruptly with gaps between them. On the back belt, one station's lock turns red and
+its light goes dark while boxes pass it; a Product developer waits at it until an IT
+developer arrives.
 ```
 
 ### S09

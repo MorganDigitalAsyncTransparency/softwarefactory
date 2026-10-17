@@ -119,8 +119,9 @@ roles and their colors, the captions and the continuity.
 - **Given** the film,
 - **when** it plays,
 - **then** every test station with a cable has a lock on top whose dot shows green with
-  access, red when denied and nothing while it waits; a few times an access is changed
-  and one station at a time, never during the cloud outage, stops testing while a
+  access, red when denied or while the cloud is down, and nothing while it waits; a few
+  times an access is changed and one station at a time, never during the cloud outage,
+  stops testing, so boxes pass it unchecked, while a
   Product developer waits at it until an IT developer comes; some stations built during
   the film wait for their first access; a card reader by the server room lets IT
   developers in and no one else; and each release is sealed after its last test station.

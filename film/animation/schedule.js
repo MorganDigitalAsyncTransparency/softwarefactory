@@ -79,7 +79,6 @@ export function stationsBuiltDuringFilm() {
   return Object.keys(STATIONS_BUILT);
 }
 
-// When a station built during the film stands finished.
 export function stationReady(key) {
   return STATIONS_BUILT[key][1];
 }

@@ -11,6 +11,8 @@ const length = scenes.at(-1).end;
 const shares = Array.from({ length: 1501 }, (_, step) => step / 1500);
 const stations = [...cabledStations()];
 const denied = (buildShare) => stations.filter((key) => accessAt(key, buildShare) === 'denied');
+// The scene that shows each access change, as visual-descriptions.md says.
+const SHOWN_IN = { 'middle 0 0': 'S03', 'middle 0 1': 'S08', 'intake 2 0': 'S15' };
 const outage = scenes.filter((scene) => draw({ scene, progress: 0 }).halts).map(({ start, end }) => [start / length, end / length]);
 
 test('an access change stops one station at a time, a few times, never during the cloud outage', () => {
@@ -40,8 +42,20 @@ test('a Product developer waits at a denied station until an IT developer comes 
   });
 });
 
+test('each access change, IT developer and all, falls in the scene that shows it', () => {
+  stations.forEach((key) => shares.forEach((buildShare) => {
+    if (!deniedCrew(key, buildShare).length) return;
+    const scene = scenes.find(({ id }) => id === SHOWN_IN[key]);
+    assert.ok(scene && buildShare >= scene.start / length && buildShare < scene.end / length, `${key} at ${buildShare}`);
+  }));
+  Object.entries(SHOWN_IN).forEach(([key, id]) => {
+    const { start, end } = scenes.find((scene) => scene.id === id);
+    assert.ok(shares.some((buildShare) => buildShare >= start / length && buildShare < end / length && deniedCrew(key, buildShare).includes('it')), key);
+  });
+});
+
 test('the card reader lets IT developers into the server room and nobody else', () => {
   const visits = shares.map(readerVisit).filter((visit) => visit?.light);
-  assert.ok(visits.some(({ role }) => role !== 'it'));
+  assert.ok(visits.some(({ role }) => role === 'it') && visits.some(({ role }) => role !== 'it'));
   visits.forEach(({ role, light }) => assert.equal(light, role === 'it' ? 'ok' : 'stop'));
 });

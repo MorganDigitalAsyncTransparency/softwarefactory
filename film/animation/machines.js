@@ -63,9 +63,7 @@ export function tester({ x, z, span, clear = 1.55, built = 1 }, signal) {
   ]);
 }
 
-// The lock where a station's cable comes in, on top of the station beside its light: a
-// small blue plate whose dot shows green while the station has access, red when it is
-// denied, and nothing while it waits for its first access.
+// Where a station's cable comes in, a lock shows whether the station has access.
 export function lock({ x, z, clear = 1.55 }, signal) {
   const top = clear + 0.65;
   return group([block([0.42, 0.12, 0.42], 'it', [x - 0.38, top + 0.06, z]), sphere(0.09, light(signal), [x - 0.38, top + 0.2, z])]);

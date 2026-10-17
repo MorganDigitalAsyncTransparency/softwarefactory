@@ -28,11 +28,9 @@ become five, and five become one:
   office into the hall and its belt across the middle, with no boxes on it yet.
 - **Front right corner:** a small server room, with cables to some of the stations and
   up to the cloud, and a card reader that lets only IT developers in.
-- **Access:** the cable to a test station ends in a small lock. Now and then an access
-  is changed and one station stops testing until an IT developer puts it right; some
-  new stations wait for their first access after they are built. Every release is
-  sealed with a strap before it leaves. These details are spread out and may take more
-  than one viewing to notice.
+- **Access:** communication is access controlled, quietly, as
+  [the brief](../README.md#decisions) decides: now and then one station stops testing
+  until an IT developer puts its access right, and some new stations wait for theirs.
 - **All through the film:** the factory is built while it runs, a piece at a time
   from the first scene to the last (see [the brief](../README.md#decisions)): test
   stations rise and are connected, belts are laid, and IT adds racks in the cloud and
