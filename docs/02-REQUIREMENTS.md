@@ -101,3 +101,15 @@ roles and their colors, the captions and the continuity.
 - **then** their gaps lie and measure differently on each belt, a few boxes are missing
   on their even stretches while the small belts and the release belt keep an even
   pace, and a person carrying now and then rests for a whole round.
+
+### R13: IT adapts to what the product needs
+
+- **Given** the product, which now and then needs something new,
+- **when** the film plays,
+- **then** some boxes all through it carry a band in a color of their own; a gate that
+  IT has not fitted for them pushes them off with an amber light, while it still stops
+  damaged boxes with a red one; in the gate scene a Product developer and the IT
+  developer talk in wordless speech bubbles before IT lowers an adapter onto the gate,
+  and only new boxes that reach the gate after that pass it, so none jumps out of the
+  bin; one of the gates added in the last scenes is still not fitted; and racks in the cloud
+  are upgraded in the same color one after the other.

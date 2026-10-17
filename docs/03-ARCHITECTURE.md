@@ -35,23 +35,23 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `caption.js`       | The caption at the bottom of the picture, with balanced line wrapping (R3)          |
 | `score.js`         | Pure: what sounds at a moment of the clocks: the levels of the hum, music and alarms, and the notes, clicks and thuds that start (R11) |
 | `sound.js`         | Plays the score with the Web Audio API, and stops when the film is paused or the sound is off (ADR 0005) |
-| `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state, fades and whether the music halts; throws on a missing ID; the line's and the people's clocks (R2, R8, R9) |
-| `flow.js`          | Pure: where boxes, carriers and robots are at a time, and what a gate stops (R12)   |
+| `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state, fades and whether the music halts; throws on a missing ID; the line's and the people's clocks; which gates are fitted for new boxes and when, and who talks in the gate scene (R2, R8, R9, R13) |
+| `flow.js`          | Pure: where boxes, carriers and robots are at a time, which boxes are new, and what a gate stops or, once IT has fitted it, lets pass (R12, R13) |
 | `wander.js`        | Pure: where a person who works here and there is at a time                          |
 | `layout.js`        | Pure: the positions shared by every scene, in metres, and repeatable noise          |
-| `schedule.js`      | Pure: when each part of the factory is built, and how far it has come (R10)         |
+| `schedule.js`      | Pure: when each part of the factory is built, and how far it has come, and how many racks are upgraded (R10, R13) |
 | `stage.js`         | The renderer, camera and light; draws the factory or the split panels               |
-| `world.js`         | Puts the factory together and shows its layers one by one in the opening           |
+| `world.js`         | Puts the factory together, with the crew of a scene and their speech bubbles, and shows its layers one by one in the opening |
 | `building.js`      | The hall: floor, walls, windows and roof, and the site where it is still being built: the rising bay, scaffolding and crane |
 | `office.js`        | The open office left of the hall, with a desk at the start of every small belt     |
 | `server-room.js`   | The small server room in the corner of the hall, and its racks as they are installed |
 | `new-lane.js`      | The sixth lane, laid during the film, with its test stations                        |
 | `wiring.js`        | Every cable, from the cloud or the server room, how far it is pulled in, and red while the cloud is down |
 | `people.js`        | Who walks about where, by role, and the Users at the dock                           |
-| `lanes.js`         | Each lane: two small belts and their joiner, the belt with its gaps, flowing boxes, carriers, test stations, gates, the belt still being laid and the builds that crawl |
-| `machines.js`      | Belts, gates, test stations, joiners, the assembly machine and the output to the dock |
-| `cloud.js`         | IT: the cloud with its growing server racks, IT developers and AI agents, cables, and the alarm when it fails |
-| `figures.js`       | People by role, robots and boxes                                                    |
+| `lanes.js`         | Each lane: two small belts and their joiner, the belt with its gaps, flowing boxes, carriers, test stations, gates with the adapter being lowered onto them, the belt still being laid and the builds that crawl |
+| `machines.js`      | Belts, gates with the adapter IT fits them with, test stations, joiners, the assembly machine and the output to the dock |
+| `cloud.js`         | IT: the cloud with its growing and upgraded server racks, IT developers and AI agents, cables, and the alarm when it fails |
+| `figures.js`       | People by role, robots, boxes and wordless speech bubbles                           |
 | `panels.js`        | The three close-ups where factory, IT and product do not fit                        |
 | `shapes.js`        | Meshes from shared geometries                                                       |
 | `materials.js`     | One material per surface, each with a physical and a digital look                   |

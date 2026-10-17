@@ -1,4 +1,5 @@
 import { BELT, GAPS, SPEED, gapKey, middleOf, noise } from './layout.js';
+import { share } from './timeline.js';
 
 // Pure motion: every position is computed from the clock, never stored, so any time can
 // be drawn directly (R5).
@@ -9,6 +10,11 @@ const REJECTED_FOR = 4;
 // carries nothing.
 const MISSING = 0.08;
 const IDLE = 0.2;
+// The share of boxes that carry something new the product needs, which a gate cannot
+// check until IT has fitted it for them.
+const NEW = 0.15;
+// IT lowers the adapter onto a gate over the seconds before the gate is fitted.
+export const FITTING_SECONDS = 2;
 
 export function gapMode(state, gap, laneIndex) {
   return state.gaps[gapKey(gap, laneIndex)] ?? 'open';
@@ -16,19 +22,27 @@ export function gapMode(state, gap, laneIndex) {
 
 // The pieces of a lane that boxes ride without help. A lane is cut where a gap is still
 // carried, by hand or by a robot, and ends early where its belt is not finished; boxes
-// after a hand-carried gap come unevenly.
+// after a hand-carried gap come unevenly. Each gate knows from what time on the line's
+// clock IT has fitted it for new boxes (`fitted`; never, if it is not listed).
 export function stretches(state, laneIndex) {
   const result = [];
   let current = { start: BELT.start, uneven: false, missing: MISSING, gates: [] };
   Object.entries(GAPS[laneIndex]).forEach(([gap, whole]) => {
     const mode = gapMode(state, gap, laneIndex);
-    if (mode === 'gate') current.gates.push(middleOf(whole));
+    if (mode === 'gate') current.gates.push({ x: middleOf(whole), fittedAt: state.fitted[gapKey(gap, laneIndex)] ?? Infinity });
     if (!CARRIED.includes(mode)) return;
     const span = carriedSpan(state, gap, laneIndex);
     result.push({ ...current, end: span.start });
     current = { start: span.end, uneven: mode === 'open', missing: MISSING, gates: [] };
   });
   return [...result, { ...current, end: state.ends[laneIndex] ?? BELT.end }];
+}
+
+// The boxes on each stretch of a middle belt.
+export function laneFlows(state, time, laneIndex) {
+  return stretches(state, laneIndex).map((stretch) => (
+    { stretch, boxes: boxesOn(stretch, time, { seed: laneIndex * 1000, origin: BELT.start }) }
+  ));
 }
 
 // The part of a gap that is still carried: a belt is being laid slowly into some gaps
@@ -40,7 +54,8 @@ export function carriedSpan({ laid }, gap, laneIndex) {
 
 // Boxes on a stretch. Each box is counted from where the lane starts (`origin`), so a
 // box keeps its place when a gap closes. A stretch may miss a share of its boxes; an
-// uneven stretch misses more, and has random timing and quality; a gate pushes every box that is not good off the belt.
+// uneven stretch misses more, and has random timing and quality. Now and then a box is
+// new. A gate pushes every box it cannot pass off the belt.
 export function boxesOn(stretch, time, { seed = 0, spacing = SPACING, speed = SPEED, origin = stretch.start } = {}) {
   const motion = { stretch, time, speed, origin, period: spacing / speed };
   const first = Math.floor((time - (stretch.end - origin) / speed) / motion.period) - 1;
@@ -58,25 +73,40 @@ function boxAt({ stretch, time, speed, origin, period }, index, seed) {
   const x = origin + (time - index * period - late) * speed;
   if (x < stretch.start || x > stretch.end) return null;
   if (noise(seed + 0.5) < (stretch.uneven ? 0.25 : stretch.missing)) return null;
-  return gated({ x, side: 0, look: lookOf(stretch, seed) }, stretch.gates);
+  return gated({ x, side: 0, look: lookOf(stretch, seed) }, stretch.gates, { time, speed });
 }
 
 function lookOf({ uneven }, seed) {
   const chance = noise(seed + 0.25);
+  if (noise(seed + 0.95) < NEW) return 'new';
   if (!uneven || chance > 0.3) return 'good';
   return chance < 0.18 ? 'dented' : 'wrong';
 }
 
-function gated(box, gates) {
-  const gate = gates.find((x) => box.look !== 'good' && box.x > x);
+function gated(box, gates, motion) {
+  const gate = gates.find((candidate) => box.x > candidate.x && !passes(box, candidate, motion));
   if (gate === undefined) return box;
-  if (box.x - gate > REJECTED_FOR) return null;
-  return { ...box, x: gate, side: Math.min(box.x - gate, 1.6) };
+  if (box.x - gate.x > REJECTED_FOR) return null;
+  return { ...box, x: gate.x, side: Math.min(box.x - gate.x, 1.6) };
 }
 
-// A gate shows red while a box that is not good is at it.
-export function gateStops(boxes, gateX) {
-  return boxes.some(({ x, side, look }) => look !== 'good' && Math.abs(x - gateX) < 1.2 && side < 1.6);
+// A good box passes every gate; a new one only a gate that IT had fitted for it by the
+// time the box got there.
+function passes({ x, look }, { x: gateX, fittedAt }, { time, speed }) {
+  return look === 'good' || (look === 'new' && time - (x - gateX) / speed >= fittedAt);
+}
+
+// A gate shows red while a damaged box it has pushed off lies at it, and amber while a
+// new box it cannot check waits there.
+export function gateSignal(boxes, gateX) {
+  const held = boxes.filter(({ x, side }) => x === gateX && side > 0);
+  if (held.some(({ look }) => look !== 'new')) return 'stop';
+  return held.length ? 'wait' : 'ok';
+}
+
+// How far IT has lowered the adapter onto a gate, from 0 to 1.
+export function fitting({ fittedAt }, time) {
+  return fittedAt === Infinity ? 0 : share(time, fittedAt - FITTING_SECONDS, fittedAt);
 }
 
 // Someone carrying boxes across a gap: a robot keeps a steady beat, a person waits a

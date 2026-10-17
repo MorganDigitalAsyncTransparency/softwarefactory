@@ -11,6 +11,9 @@ import { BELT, GAPS, INTAKE, JOINER, NEW_LANE, TESTS } from './layout.js';
 const HALL_BUILT = [0.15, 0.95];
 const BELTS_LAID = { 0: [0.1, 0.65], 4: [0.02, 0.6] };
 const RACKS_BUILT = [2.6, 7.6];
+// How many racks in the cloud IT has fitted for the new boxes, one after the other, from
+// the time the viewer has seen what the pink band means.
+const RACKS_FITTED = { from: 0.4, count: 3 };
 const ROOM_RACKS_BUILT = [1, 2.7];
 // The sixth lane is laid in order: its small belts, the joiner, then its belt.
 const NEW_LANE_LAID = { intake: [0, 0.42], joiner: [0.42, 0.5], middle: [0.5, 1.15] };
@@ -48,6 +51,10 @@ export function beltsLaid(buildShare) {
 
 export function racksBuilt(buildShare) {
   return grown(RACKS_BUILT, buildShare);
+}
+
+export function racksFitted(buildShare) {
+  return RACKS_FITTED.count * share(buildShare, RACKS_FITTED.from, 1);
 }
 
 export function roomRacksBuilt(buildShare) {

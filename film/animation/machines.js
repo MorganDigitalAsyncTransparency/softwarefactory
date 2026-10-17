@@ -27,14 +27,21 @@ function leg(x, z) {
 }
 
 // A quality gate: a frame over the belt with a light, and a bin beside it for the boxes
-// it stops.
-export function gate(x, z, signal) {
+// it stops. On top, the adapter IT fits so the gate can check new boxes, `fitted` of the
+// way in.
+export function gate(x, z, signal, fitted = 0) {
   return group([
     ...gatePosts(x, z, 2.6),
     block([0.5, 0.4, 2.4], 'machine', [x, 2.7, z]),
     sphere(0.22, light(signal), [x, 3.1, z]),
     slab([x - 0.6, z + 1.05], [x + 0.6, z + 2.05], [0, 0.5], 'machine'),
+    fitted > 0 && group([adapter()], { position: [x, 2.9 + 1.5 * (1 - fitted), z - 0.75] }),
   ]);
+}
+
+// An IT part for something new the product needs: blue, with a band in the new color.
+export function adapter() {
+  return group([block([0.5, 0.36, 0.7], 'it', [0, 0.18, 0]), block([0.52, 0.1, 0.72], 'feature', [0, 0.2, 0])]);
 }
 
 // The two posts of a gate, `height` tall.

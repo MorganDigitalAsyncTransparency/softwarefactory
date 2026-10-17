@@ -36,6 +36,8 @@ We are building gates at every step and automating the manual steps away.
 | Conveyor belts                           | The CI/CD pipeline                             |
 | Carrying boxes by hand between belts     | Manual hand-offs between pipeline stages       |
 | Gates that stop damaged boxes            | Quality gates                                  |
+| A box with a pink band                   | A change that needs something new              |
+| An adapter or rack with the same band    | IT adapting its services for that change       |
 | Long cables to the stations              | Integrations, tested at every step             |
 | The cloud and the server room            | IT services, in the cloud and run in-house     |
 | Robots                                   | Automation and AI agents                       |
@@ -67,3 +69,8 @@ We are building gates at every step and automating the manual steps away.
 - People work here and there on the floor, not only along the belts.
 - The middle is uneven, not a neat grid: gaps differ from belt to belt, the flow has holes,
   and some builds in the lines crawl while others finish fast, so viewers see both.
+- IT has to adapt when the product needs something new: boxes with a new color band
+  wait at a gate until IT has fitted it, a Product developer and an IT developer talk
+  about it in speech bubbles without words, and racks in the cloud are upgraded in the
+  same color. The film holds such details on purpose: it is meant to be stopped, wound
+  back and talked about.
