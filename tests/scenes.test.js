@@ -37,6 +37,15 @@ test('the gate that is built stays in the factory for the rest of the film', () 
     .forEach((scene) => assert.equal(draw({ scene, progress: 0.5 }).state.gaps.B2, 'gate', scene.id));
 });
 
+test('in the gate scene a Product developer asks, the IT developer answers, and only then is the gate fitted for new boxes', () => {
+  const scene = scenes.find((candidate) => draw({ scene: candidate, progress: 1 }).state?.gaps.B2 === 'gate');
+  const steps = Array.from({ length: 101 }, (_, step) => step / 100);
+  const firstSaying = (subject) => steps.find((progress) => draw({ scene, progress }).state.crew.some(({ says }) => says === subject));
+  const fittedAt = draw({ scene, progress: 1 }).state.adapted.B2;
+  const [asked, answered] = [firstSaying('new'), firstSaying('adapter')].map((progress) => scene.start + progress * (scene.end - scene.start));
+  assert.ok(asked < answered && answered < fittedAt && fittedAt < scene.end);
+});
+
 test('while the cloud is down the line stands still and the people hurry, and both go on from there', () => {
   const outage = scenes.filter((scene) => [0, 0.25, 0.5, 0.75, 1].some((progress) => draw({ scene, progress }).state?.outage));
   assert.equal(outage.length, 1);

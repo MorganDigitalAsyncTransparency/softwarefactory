@@ -10,13 +10,15 @@ export function facingTurn(facing) {
   return TURNS[facing];
 }
 
-// The product. A dented box is darker and squashed; a box of the wrong size is larger.
+// The product. A dented box is darker and squashed; a box of the wrong size is larger; a
+// new box has a band in the color of something new the product needs.
 export function box(look = 'good', { scale = 1 } = {}) {
   const size = scale * (look === 'wrong' ? 1.45 : 1);
   const surface = look === 'dented' ? 'dented' : 'box';
   const shape = group([
     block([BOX, BOX, BOX], surface, [0, BOX / 2, 0]),
     block([BOX + 0.01, 0.02, 0.14], 'tape', [0, BOX + 0.005, 0]),
+    look === 'new' && block([BOX + 0.02, 0.16, BOX + 0.02], 'feature', [0, BOX / 2, 0]),
   ], { scale: size });
   if (look === 'dented') {
     shape.scale.y *= 0.72;
@@ -50,6 +52,15 @@ function hardHat() {
     sphere(0.2, 'factory', [0, 0, 0]),
     cylinder([0.26, 0.03], 'factory', [0, -0.02, 0]),
   ], { position: [0, 1.7, 0] });
+}
+
+// A speech bubble with no words, high over the head of someone talking so a gate in
+// front does not hide it: it holds a small picture of what they talk about.
+export function bubble(subject) {
+  const tail = [[0.12, -0.5, 0.08], [0.2, -0.8, 0.06], [0.26, -1.05, 0.045]].map(([x, y, radius]) => sphere(radius, 'bubble', [x, y, 0]));
+  const shape = sphere(0.45, 'bubble', [0, 0, 0]);
+  shape.scale.set(1, 0.75, 0.6);
+  return group([shape, ...tail, group([subject], { position: [0, -0.12, 0.3], scale: 0.45 })], { position: [0, 3.3, 0] });
 }
 
 export function robot({ carrying = false, time = 0 } = {}) {

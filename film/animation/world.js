@@ -1,7 +1,7 @@
 import { hall, site, standingBays } from './building.js';
-import { assembly, output } from './machines.js';
+import { adapter, assembly, output } from './machines.js';
 import { agents, alarm, cable, cloud, cloudRacks, itDevelopers } from './cloud.js';
-import { box, facingTurn, person, robot } from './figures.js';
+import { box, bubble, facingTurn, person, robot } from './figures.js';
 import { group, slab } from './shapes.js';
 import { boxesOn } from './flow.js';
 import { share } from './timeline.js';
@@ -12,7 +12,7 @@ import { newLane } from './new-lane.js';
 import { people as walkers } from './people.js';
 import { pull, wiring } from './wiring.js';
 import { BELT, GAPS, LANES, OUTPUT, OUTPUT_TESTS, middleOf } from './layout.js';
-import { beltsLaid, gapsLaid, hallBuilt, racksBuilt, roomRacksBuilt } from './schedule.js';
+import { beltsLaid, gapsLaid, hallBuilt, racksBuilt, racksUpgraded, roomRacksBuilt } from './schedule.js';
 
 const RELEASE = { spacing: 7, speed: 1.4 };
 const still = { key: null, parts: null };
@@ -25,14 +25,16 @@ const fixed = {};
 // robots stop, and the people hurry about.
 export function world(state, clock) {
   const { buildShare } = clock;
-  const factory = { ...state, buildShare, built: hallBuilt(buildShare), ends: beltsLaid(buildShare), laid: gapsLaid(buildShare) };
+  const factory = {
+    ...state, buildShare, built: hallBuilt(buildShare), ends: beltsLaid(buildShare), laid: gapsLaid(buildShare), adapted: onLine(state.adapted, clock),
+  };
   const shown = layersShown(factory.reveal);
   const { building, machines, cables } = stillParts(factory);
   fixed.ground ??= ground();
   fixed.office ??= office();
   fixed.serverRoom ??= serverRoom();
   fixed.cloud ??= group([cloud()]);
-  const sky = group([agents(clock.film), itDevelopers(clock.people), cloudRacks(racksBuilt(buildShare)), factory.outage && alarm(clock.film)]);
+  const sky = group([agents(clock.film), itDevelopers(clock.people), cloudRacks(racksBuilt(buildShare), racksUpgraded(buildShare)), factory.outage && alarm(clock.film)]);
   [fixed.cloud, sky].forEach((part) => { part.position.y = (1 - shown.cloud) * 40; });
   const work = group([site(factory.built, clock.film)]);
   [building, work, fixed.office].forEach((part) => risen(part, shown.hall));
@@ -45,6 +47,12 @@ export function world(state, clock) {
     risen(newLane(factory), shown.machines),
     shown.product > 0 && moving(factory, clock),
   ]);
+}
+
+// The times when gates were fitted, from the film's clock to the line's. The line's clock
+// only falls behind during the outage, before any gate is fitted.
+function onLine(adapted, { film, line }) {
+  return Object.fromEntries(Object.entries(adapted).map(([key, at]) => [key, at - (film - line)]));
 }
 
 // A part of the opening that rises out of the floor as its layer is revealed.
@@ -103,7 +111,9 @@ function releases(state, time) {
   ];
 }
 
-function crewMember({ role, x, z, facing, walking }, time, index) {
+// A crew member may be talking, with a bubble that shows a new box or an IT adapter.
+function crewMember({ role, x, z, facing, walking, says }, time, index) {
   const figure = role === 'robot' ? robot({ time }) : person(role, { seed: index, walked: walking ? x : 0 });
-  return group([figure], { position: [x, 0, z], turn: facingTurn(facing) });
+  const talk = says && group([bubble(says === 'new' ? box('new') : adapter())], { position: [x, 0, z] });
+  return group([group([figure], { position: [x, 0, z], turn: facingTurn(facing) }), talk]);
 }

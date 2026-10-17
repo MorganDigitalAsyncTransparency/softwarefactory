@@ -4,7 +4,7 @@ import {
   ASSEMBLY, BELT, BELT_WORKERS, CRAWLING_GATE, GAPS, INTAKE, INTAKE_TESTS, LANES, NEW_LANE, OUTPUT, OUTPUT_TESTS, SERVER_ROOM, TESTS,
 } from '../film/animation/layout.js';
 import {
-  beltsLaid, hallBuilt, middleTests, newLaneLaid, racksBuilt, roomRacksBuilt, gateRisen, stationBuilt, stationsBuiltDuringFilm,
+  beltsLaid, hallBuilt, middleTests, newLaneLaid, racksBuilt, racksUpgraded, roomRacksBuilt, gateRisen, stationBuilt, stationsBuiltDuringFilm,
 } from '../film/animation/schedule.js';
 
 const inside = (x, { start, end }) => x > start && x < end;
@@ -86,4 +86,10 @@ test('a gate that crawls rises all film long and is less than half up in the las
   const { lane, x } = CRAWLING_GATE;
   assert.ok(first > 0 && first < middle && middle < last && last < 0.5);
   assert.ok(!inside(x, GAPS[lane].A) && !inside(x, GAPS[lane].B) && TESTS.every((test) => Math.abs(test - x) > 1.2));
+});
+
+test('IT upgrades racks in the cloud for the new boxes one after the other, only racks that stand', () => {
+  const upgraded = [0, 0.5, 1].map(racksUpgraded);
+  assert.ok(upgraded[0] < 1 && upgraded[0] < upgraded[1] && upgraded[1] < upgraded[2] && upgraded[2] >= 3);
+  [0, 0.25, 0.5, 0.75, 1].forEach((share) => assert.ok(Math.floor(racksUpgraded(share)) <= Math.floor(racksBuilt(share))));
 });

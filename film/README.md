@@ -67,3 +67,8 @@ We are building gates at every step and automating the manual steps away.
 - People work here and there on the floor, not only along the belts.
 - The middle is uneven, not a neat grid: gaps differ from belt to belt, the flow has holes,
   and some builds in the lines crawl while others finish fast, so viewers see both.
+- IT has to adapt when the product needs something new: boxes with a new color band
+  wait at a gate until IT has fitted it, a Product developer and an IT developer talk
+  about it in speech bubbles without words, and racks in the cloud are upgraded in the
+  same color. The film holds such details on purpose: it is meant to be stopped, wound
+  back and talked about.

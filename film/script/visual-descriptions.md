@@ -19,14 +19,15 @@ Clean modern 3D animation, simple solid shapes with soft daylight and shadows, c
 muted palette, no text, no logos, no brand colors, no flags, neutral global setting.
 Smooth, steady camera. Four layers that never share a color: the building has
 sand-colored walls with windows; the machines are steel grey with black belts; the
-product is plain cardboard boxes; IT is blue. Simple stylised characters with
+product is plain cardboard boxes, some with a pink band for something new; IT is blue. Simple stylised characters with
 minimal facial detail, diverse, gender-neutral silhouettes. Each role wears its own
 color: Product developers wear purple; Software factory developers wear yellow with
 hard hats; IT developers wear the blue of IT; Users wear warm orange. AI agents are
 small identical rounded white robots with a single soft blue light. Test stations
 are grey tunnels over the belts with a blue screen and a small light. Above the
 factory floats a white cloud carrying tall dark blue server racks, IT developers and AI robots, with long
-blue cables hanging down to stations in the factory. Flow always goes left to right.
+blue cables hanging down to stations in the factory. People sometimes talk in white
+speech bubbles that hold a small picture, never words. Flow always goes left to right.
 ```
 
 ## Captions
@@ -58,6 +59,9 @@ blue cables hanging down to stations in the factory. Flow always goes left to ri
   laid in front, and two belts in the middle are still being laid in the last frame.
   A few builds in the lines crawl all film long, each with a Software factory
   developer at it: a belt creeps into two of the gaps and a gate rises over a belt.
+- Boxes with a pink band come all through the film. From S12 on the gate built there
+  lets them pass; one of the gates added in S15 is not yet fitted and still holds them
+  with an amber light. Racks in the cloud get a pink band one after the other.
 
 ## Scene prompts
 
@@ -174,7 +178,11 @@ camera glides down to the middle of the floor.
 Software factory developers in yellow install a gate between two conveyor belts. A
 dented box arrives and the gate stops it with a red light; an intact box arrives and
 passes through with a green light. An IT developer in blue connects a long cable from
-the cloud into the gate. Clear, deliberate, satisfying.
+the cloud into the gate. Then a box with a pink band arrives and the gate pushes it off
+with an amber light. A Product developer in purple walks over; a white speech bubble
+over them shows the banded box, and one over the IT developer shows a small blue
+adapter with the same pink band. The adapter is lowered onto the gate, and the next
+banded box passes with a green light. Clear, deliberate, satisfying.
 ```
 
 ### S13

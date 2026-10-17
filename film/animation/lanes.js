@@ -1,7 +1,7 @@
 import { bareBelt, belt, gate, gatePosts, joiner, tester } from './machines.js';
 import { box, facingTurn, person, robot } from './figures.js';
 import { group } from './shapes.js';
-import { CARRIED, boxesOn, carriedSpan, carrierAt, gapMode, gateStops, stretches } from './flow.js';
+import { CARRIED, boxesOn, carriedSpan, carrierAt, gapMode, fitting, gateSignal, laneFlows } from './flow.js';
 import {
   BELT, BELT_WORKERS, CRAWLING_GATE, CREW_SIDE, GAPS, INTAKE, INTAKE_SPAN, INTAKE_TESTS, LANES, TEST_SPAN, middleOf, smallLanes,
 } from './layout.js';
@@ -35,15 +35,13 @@ export function laneBelts(state, laneIndex) {
 export function laneMotion(state, clock, laneIndex) {
   const time = clock.line;
   const z = LANES[laneIndex];
-  const flows = stretches(state, laneIndex).map((stretch) => (
-    { stretch, boxes: boxesOn(stretch, time, { seed: laneIndex * 1000, origin: BELT.start }) }
-  ));
+  const flows = laneFlows(state, time, laneIndex);
   const boxes = flows.flatMap((flow) => flow.boxes);
   const light = (busy) => signal(state, busy);
   return group([
     intake({ state, time, laneIndex }, light),
     ...boxes.map((item) => placedBox(item, z)),
-    ...flows.flatMap((flow) => flow.stretch.gates.map((x) => gate(x, z, light(gateStops(flow.boxes, x) ? 'stop' : 'ok')))),
+    ...flows.flatMap((flow) => flow.stretch.gates.map((item) => gate(item.x, z, light(gateSignal(flow.boxes, item.x)), fitting(item, time)))),
     ...middleTests(laneIndex).map((x, index) => station({ x, z, span: TEST_SPAN, key: `middle ${laneIndex} ${index}` }, state, light(tested(boxes, x)))),
     ...Object.keys(GAPS[laneIndex]).filter((gap) => gapMode(state, gap, laneIndex) === 'open' && !underWork(state, gap, laneIndex))
       .map((gap) => slowlyLaid(state, gap, laneIndex)),
@@ -61,7 +59,7 @@ function intake({ state, time, laneIndex }, light) {
     boxesOn(INTAKE_STRETCH, time, { seed: laneIndex * 100 + index * 50, spacing: SMALL.spacing }).map((item) => ({ ...item, z: small }))
   ));
   return group([
-    ...boxes.map(({ x, z: small }) => group([box('good', { scale: SMALL.scale })], { position: [x, BELT.height, small] })),
+    ...boxes.map(({ x, z: small, look }) => group([box(look, { scale: SMALL.scale })], { position: [x, BELT.height, small] })),
     ...INTAKE_TESTS.map((x, index) => (
       station({ x, z, span: INTAKE_SPAN, key: `intake ${laneIndex} ${index}` }, state, light(tested(boxes, x)))
     )),

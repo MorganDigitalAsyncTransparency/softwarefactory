@@ -16,6 +16,10 @@ become five, and five become one:
 - **Middle:** five belts, with gaps where people carry boxes by hand. No two belts
   look alike: the gaps lie and measure differently on each, boxes are missing here and
   there, and now and then the person carrying stops for a round.
+- **New needs:** now and then a box carries a pink band: the product needs something
+  new. A gate that IT has not yet fitted for it cannot check it and pushes it off with
+  an amber light, and racks in the cloud are upgraded with the same pink one after the
+  other.
 - **Right:** one machine joins the five into one belt, which carries one large,
   finished box out to the loading dock.
 - **Everywhere:** every running belt has at least two test stations, at least one of
@@ -89,7 +93,7 @@ Each role wears its own color, defined in the
 
 | ID  | Time      | Scene                                                                                                                                                                        | Caption                             |
 | --- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| S12 | 1:41–1:53 | Software factory developers install a gate between two belts. A dented box is stopped, an intact one passes. An IT developer connects a cable from the cloud to the gate.    | We build gates at every step.       |
+| S12 | 1:41–1:53 | Software factory developers install a gate between two belts. A dented box is stopped, an intact one passes. An IT developer connects a cable from the cloud to the gate. A box with a pink band waits at the new gate with an amber light; a Product developer walks over and shows the IT developer the new box in a speech bubble, the IT developer answers with an adapter in one, lowers it onto the gate, and the next banded box passes. | We build gates at every step.       |
 | S13 | 1:53–2:05 | A gap between two belts is closed. An AI robot takes over a stretch that was carried by hand, and the Product developer who carried it walks off toward the office.          | And automate the manual steps away. |
 | S14 | 2:05–2:15 | The picture turns digital: boxes become code changes, belts become pipeline stages, gates become quality gates, cables become integrations, the large box becomes a release. | In software: our CI/CD pipeline.    |
 

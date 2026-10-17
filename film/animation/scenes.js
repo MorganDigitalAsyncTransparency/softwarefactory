@@ -21,12 +21,15 @@ const FAREWELL = [[-14, 66, 92], [-6, 9, -3]];
 const GATE = { x: middleOf(GAPS[1].B), z: LANES[1] };
 const GATE_WIDE = [[GATE.x + 7, 7, GATE.z + 13], [GATE.x - 0.5, 1.3, GATE.z]];
 const GATE_CLOSE = [[GATE.x + 5, 6, GATE.z + 11], [GATE.x - 0.5, 1.3, GATE.z]];
-const START = { gaps: {}, reveal: 1, digital: 0, crew: [] };
-const GATED = { ...START, gaps: { B2: 'gate' } };
-const AUTOMATED = { ...START, gaps: { ...GATED.gaps, A2: 'closed', A3: 'robot' } };
+const START = { gaps: {}, adapted: {}, reveal: 1, digital: 0, crew: [] };
+// Gates fitted for new boxes, by the film time from which they pass them.
+const GATED = { ...START, gaps: { B2: 'gate' }, adapted: { B2: 0 } };
+const AUTOMATED = { ...GATED, gaps: { ...GATED.gaps, A2: 'closed', A3: 'robot' } };
 const TODAY = {
   ...START,
   gaps: { ...AUTOMATED.gaps, B1: 'gate', A4: 'closed', B4: 'gate' },
+  // One of the new gates is not yet fitted for new boxes: IT is always catching up.
+  adapted: { ...GATED.adapted, B1: 0 },
   crew: [
     { role: 'factory', x: middleOf(GAPS[2].B) - 1, z: LANES[2] - CREW_SIDE, facing: 1 },
     { role: 'factory', x: middleOf(GAPS[2].B) + 1, z: LANES[2] - CREW_SIDE, facing: -1 },
@@ -37,6 +40,8 @@ const TODAY = {
 // and the people hurry about, this many times their usual pace, to find out why.
 const OUTAGE = [0.2, 0.7];
 const RUSH = 2.5;
+// The share of the gate scene by which IT has fitted the new gate for new boxes.
+const FITTED = 0.8;
 
 // Each drawing returns the shot for one frame: a camera path, the world's state and
 // whether the picture fades from or to black at the scene's edges.
@@ -107,15 +112,30 @@ function cloudFails(progress) {
   return shot([OUTAGE_VIEW, GATE_WIDE], share(progress, 0.75, 1), state);
 }
 
-function gateInstalled({ progress }) {
+// The gate is installed, but it cannot check the new boxes: they wait at it with an
+// amber light. A Product developer comes over and asks the IT developer, who answers and
+// fits the gate with an adapter, and from then on new boxes pass.
+function gateInstalled({ scene, progress }) {
   const installed = progress > 0.4;
   const crew = [
     { role: 'factory', x: GATE.x - 1.6, z: GATE.z - CREW_SIDE, facing: 1 },
     { role: 'factory', x: GATE.x + 1.6, z: GATE.z - CREW_SIDE, facing: -1 },
-    { role: 'it', x: GATE.x - 0.5, z: GATE.z - CREW_SIDE, facing: 0 },
+    { role: 'it', x: GATE.x - 0.5, z: GATE.z - CREW_SIDE, facing: 0, ...(talking(progress, 0.6, 0.7) && { says: 'adapter' }) },
   ];
-  const state = installed ? { ...GATED, crew } : { ...START, crew, installing: { gap: 'B', lane: 1, share: share(progress, 0, 0.4) } };
+  if (!installed) return shot([GATE_WIDE, GATE_CLOSE], progress, { ...START, crew, installing: { gap: 'B', lane: 1, share: share(progress, 0, 0.4) } });
+  const asker = { role: 'product', ...askerAt(share(progress, 0.4, 0.48)), ...(talking(progress, 0.5, 0.6) && { says: 'new' }) };
+  const state = { ...GATED, crew: [...crew, asker], adapted: { B2: scene.start + FITTED * (scene.end - scene.start) } };
   return shot([GATE_WIDE, GATE_CLOSE], progress, state);
+}
+
+function talking(progress, from, to) {
+  return progress >= from && progress < to;
+}
+
+// The Product developer walks up beside the IT developer at the gate.
+function askerAt(walked) {
+  const x = between(GATE.x + 4, GATE.x + 0.5, walked);
+  return { x, z: GATE.z - CREW_SIDE - 0.6, facing: -1, walking: walked < 1 };
 }
 
 function stepsAutomated({ progress }) {
@@ -129,7 +149,7 @@ function stepsAutomated({ progress }) {
   const carrier = { role: 'product', walking: true, ...walkOff(share(progress, 0.55, 1)) };
   const crew = [...(bridged < 1 ? developers : []), handedOver ? carrier : robot];
   const growing = bridged < 1 && { gap: 'A', lane: 1, share: bridged };
-  return shot([GATE_CLOSE, MIDDLE], progress, { ...START, gaps, crew, growing });
+  return shot([GATE_CLOSE, MIDDLE], progress, { ...GATED, gaps, crew, growing });
 }
 
 // The Product developer who handed a stretch to a robot walks off toward the office.
