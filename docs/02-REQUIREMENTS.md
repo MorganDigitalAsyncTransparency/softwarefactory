@@ -73,10 +73,10 @@ roles and their colors, the captions and the continuity.
 - **Given** a scene where a service in the cloud fails,
 - **when** it plays,
 - **then** every belt, box and robot stands still while the cloud is down and goes on
-  from where it stopped when the cloud is back, while the people keep working and
+  from where it stopped when the cloud is back, while the other people keep working and
   those who walk about or carry boxes hurry, faster than before; every Software factory
   developer leaves their work and runs about near it, fast, stopping again and again to
-  inspect a machine, and is back at their work when the cloud is back; the same time
+  inspect what is near, and is back at their work when the cloud is back; the same time
   always shows the same frame.
 
 ### R10: The factory is built while it runs

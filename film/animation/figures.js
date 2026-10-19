@@ -43,7 +43,6 @@ export function person(role, { seed = 0, carrying = false, walked = 0, inspectin
     carrying && group([box()], { position: [0.42, 0.95, 0] }),
     inspecting && magnifier(),
   ], { position: [0, -HIP, 0] });
-  // The upper body bends at the hip.
   const body = group([upper], { position: [0, HIP, 0] });
   body.rotation.z = inspecting ? -LEAN : 0;
   return group([leg(-0.13, swing), leg(0.13, -swing), body]);
@@ -53,7 +52,8 @@ export function person(role, { seed = 0, carrying = false, walked = 0, inspectin
 // their work, within `area`, by default to and fro along their side of the machine, to
 // find the fault (troubleshoot.js).
 export function developer({ x, y = 0, z, turn = 0, seed }, outage, area = { x: [-Infinity, Infinity], z: [z, z] }) {
-  const at = rushAt({ x, z, turn, walked: 0 }, { area, seed }, outage);
+  // Their lane sets the run too, so crews with the same seeds do not move in step.
+  const at = rushAt({ x, z, turn, walked: 0 }, { area, seed: seed + z }, outage);
   return group([person('factory', { seed, walked: at.walked, inspecting: at.inspecting })], { position: [at.x, y, at.z], turn: at.turn });
 }
 

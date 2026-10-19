@@ -96,4 +96,7 @@ test('while the cloud is down the line stands still and the people hurry, and bo
   assert.ok(Math.abs(film - lineTime(scenes, film) - (halted.at(-1) - halted[0])) < 0.3);
   const [first, last] = [halted[0], halted.at(-1)];
   assert.ok(peopleTime(scenes, last) - peopleTime(scenes, first) > 2 * (last - first));
+  const at = (time) => draw({ scene, progress: (time - scene.start) / (scene.end - scene.start) }).state.outage;
+  assert.ok(Math.abs(at(last).seconds - (last - first)) < 1e-9 && at(first).seconds === 0);
+  assert.ok(Math.abs(at(first).length - (last - first)) < 0.11);
 });

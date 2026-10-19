@@ -85,7 +85,8 @@ export function station({ key, ...place }, state, light) {
   const seed = Math.round(Math.abs(place.x));
   return group([
     tester({ ...place, built }),
-    developer({ x: place.x - 1, z: side, seed }, state.outage),
+    // The builder runs only on their own side of the IT developer.
+    developer({ x: place.x - 1, z: side, seed }, state.outage, { x: [-Infinity, place.x], z: [side, side] }),
     group([person('it', { seed: seed + 1 })], { position: [place.x + 1, 0, side], turn: Math.PI }),
   ]);
 }

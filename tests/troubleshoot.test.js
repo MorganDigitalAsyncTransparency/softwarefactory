@@ -35,7 +35,9 @@ test('while the cloud is down they run fast within their area, never jump, and s
   });
 });
 
-test('they are back at their work when the cloud is back', () => {
-  const end = rushAt(HOME, { area: AREA, seed: 1 }, { seconds: LENGTH, length: LENGTH });
-  assert.deepEqual([end.x, end.z], [HOME.x, HOME.z]);
+test('they are back at their work just before the cloud is back', () => {
+  [1, 2, 3, 4].forEach((seed) => {
+    const end = rushAt(HOME, { area: AREA, seed }, { seconds: LENGTH - STEP, length: LENGTH });
+    assert.deepEqual([end.x, end.z, end.inspecting], [HOME.x, HOME.z, false]);
+  });
 });

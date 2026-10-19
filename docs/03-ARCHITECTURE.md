@@ -78,8 +78,8 @@ factory is built. The line's clock is the film's clock minus the seconds the lin
 stood still while the cloud was down; it drives the belts, the boxes and the robots on
 the floor, so they stop and go on from where they were. The people's clock runs faster
 while the line stands still, so they hurry about (R9); the Software factory developers
-leave their work and run about it, stopping to inspect, by the seconds of the outage
-the scene's state carries. The sound follows the same
+leave their work and run about near it, stopping to inspect. During the outage the
+scene's state carries `outage: { seconds, length }`, how far into it the frame is. The sound follows the same
 clocks: the music and the station clicks the line's, the hum, the crane and the alarms
 the film's. Each frame the player asks `score.js` for the sound between the frame
 before and this one, so a jump plays nothing it skipped. The digital look blends every material between its two looks instead of
