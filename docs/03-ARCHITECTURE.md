@@ -20,7 +20,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
                                                                    ▼
                                      stage ─▶ world ─┬─ building, office
                                        │             ├─ lanes ─▶ machines, flow
-                                       │             ├─ people ─▶ wander
+                                       │             ├─ people ─▶ wander, troubleshoot
                                        │             ├─ cloud, wiring, server-room, new-lane
                                        │             └─ figures
                                        └─▶ panels
@@ -38,6 +38,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state, fades and whether the music halts; throws on a missing ID; the line's and the people's clocks; which gates are fitted for new boxes and when, and who talks in the gate scene (R2, R8, R9, R13) |
 | `flow.js`          | Pure: where boxes, carriers and robots are at a time, which boxes are new, and what a gate stops or, once IT has fitted it, lets pass (R12, R13) |
 | `wander.js`        | Pure: where a person who works here and there is at a time                          |
+| `troubleshoot.js`  | Pure: where a Software factory developer runs and stops to inspect while the cloud is down (R9) |
 | `layout.js`        | Pure: the positions shared by every scene, in metres, and repeatable noise          |
 | `access.js`        | Pure: which stations have a cable, when a station's access is denied or still awaited, who waits at it, and who tries the server room's card reader (R14) |
 | `schedule.js`      | Pure: when each part of the factory is built, and how far it has come, and how many racks are upgraded (R10, R13) |
@@ -52,7 +53,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `lanes.js`         | Each lane: two small belts and their joiner, the belt with its gaps, flowing boxes, carriers, test stations that test only with access and the people waiting at a denied one, gates with the adapter being lowered onto them, the belt still being laid and the builds that crawl |
 | `machines.js`      | Belts, gates with the adapter IT fits them with, test stations and their locks, joiners, the assembly machine and the output to the dock |
 | `cloud.js`         | IT: the cloud with its growing and upgraded server racks, IT developers and AI agents, cables, and the alarm when it fails |
-| `figures.js`       | People by role, robots, boxes, sealed or not, and wordless speech bubbles           |
+| `figures.js`       | People by role, a Software factory developer who runs about while the cloud is down, robots, boxes, sealed or not, and wordless speech bubbles |
 | `panels.js`        | The three close-ups where factory, IT and product do not fit                        |
 | `shapes.js`        | Meshes from shared geometries                                                       |
 | `materials.js`     | One material per surface, each with a physical and a digital look                   |
@@ -76,7 +77,9 @@ clock drives the camera, the crane, the cloud's robots and alarm, and how far th
 factory is built. The line's clock is the film's clock minus the seconds the line has
 stood still while the cloud was down; it drives the belts, the boxes and the robots on
 the floor, so they stop and go on from where they were. The people's clock runs faster
-while the line stands still, so they hurry about (R9). The sound follows the same
+while the line stands still, so they hurry about (R9); the Software factory developers
+leave their work and run about it, stopping to inspect, by the seconds of the outage
+the scene's state carries. The sound follows the same
 clocks: the music and the station clicks the line's, the hum, the crane and the alarms
 the film's. Each frame the player asks `score.js` for the sound between the frame
 before and this one, so a jump plays nothing it skipped. The digital look blends every material between its two looks instead of

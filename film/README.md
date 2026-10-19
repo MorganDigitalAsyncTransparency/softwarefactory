@@ -70,7 +70,8 @@ Gates stop broken parts, and step by step automation replaces manual work.
 - The parts come from an open office where Product developers work, so viewers see
   where the product starts.
 - When a service in the cloud fails, every belt stops while the people, who do not know
-  why, keep working and run about to find the fault: the film shows how much the whole
+  why, keep working and run about to find the fault (the Software factory developers
+  most of all, inspecting the machines): the film shows how much the whole
   line depends on IT.
 - People work here and there on the floor, not only along the belts.
 - Security shows as access control, quietly: locks on the cables, a card reader at the

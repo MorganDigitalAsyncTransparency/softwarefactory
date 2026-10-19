@@ -59,7 +59,7 @@ const DRAWINGS = {
   S08: ({ progress }) => shot([DOCK_VIEW, DOOR_VIEW, MIDDLE], progress, START),
   S09: ({ progress }) => ({ ...shot([MIDDLE, MIDDLE_CLOSE], progress, START), fades: ['out'], uneven: true }),
   S10: ({ progress }) => ({ split: true, progress, fades: ['in', 'out'] }),
-  S11: ({ progress }) => ({ ...cloudFails(progress), fades: ['in'], halts: OUTAGE }),
+  S11: ({ scene, progress }) => ({ ...cloudFails(progress, scene.end - scene.start), fades: ['in'], halts: OUTAGE }),
   S12: gateInstalled,
   S13: stepsAutomated,
   S14: ({ progress }) => shot([MIDDLE, MIDDLE_HIGH], progress, { ...AUTOMATED, digital: share(progress, 0, 0.7) }),
@@ -109,8 +109,11 @@ function shot(path, progress, state) {
 }
 
 // The overview while a service in the cloud fails and comes back, then down to the gate.
-function cloudFails(progress) {
-  const state = { ...START, outage: progress >= OUTAGE[0] && progress < OUTAGE[1] };
+// While it is down, the state says how many seconds into the outage of how many it is.
+function cloudFails(progress, length) {
+  const down = progress >= OUTAGE[0] && progress < OUTAGE[1];
+  const outage = down && { seconds: (progress - OUTAGE[0]) * length, length: (OUTAGE[1] - OUTAGE[0]) * length };
+  const state = { ...START, outage };
   if (progress < 0.75) return shot([OVERVIEW, OUTAGE_VIEW], progress / 0.75, state);
   return shot([OUTAGE_VIEW, GATE_WIDE], share(progress, 0.75, 1), state);
 }

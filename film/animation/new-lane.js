@@ -1,5 +1,5 @@
 import { belt, joiner } from './machines.js';
-import { person } from './figures.js';
+import { developer } from './figures.js';
 import { group } from './shapes.js';
 import { signal, station } from './lanes.js';
 import { BELT_WORKERS, HALL, INTAKE, INTAKE_SPAN, INTAKE_TESTS, JOINER, NEW_LANE, TEST_SPAN, smallLanes } from './layout.js';
@@ -21,11 +21,11 @@ export function newLane(state) {
   const light = signal(state, null);
   return group([
     ...smallLanes(index).map((small) => intake > INTAKE.start && belt(INTAKE.start, intake, small, INTAKE.width)),
-    intake < INTAKE.end && crew(intake),
+    intake < INTAKE.end && crew(intake, state.outage),
     joined > 0 && rising,
-    joined > 0 && joined < 1 && crew(JOINER.end),
+    joined > 0 && joined < 1 && crew(JOINER.end, state.outage),
     middle > JOINER.end && belt(JOINER.end, middle, z),
-    middle > JOINER.end && crew(middle),
+    middle > JOINER.end && crew(middle, state.outage),
     ...INTAKE_TESTS.map((x, at) => station({ x, z, span: INTAKE_SPAN, key: `intake ${index} ${at}` }, state, light)),
     ...middleTests(index).map((x, at) => station({ x, z, span: TEST_SPAN, key: `middle ${index} ${at}` }, state, light)),
   ]);
@@ -33,8 +33,8 @@ export function newLane(state) {
 
 // Two developers past the tip of a belt; none are drawn near the hall's wall, where
 // they would stand in it.
-function crew(tip) {
+function crew(tip, outage) {
   if (Math.abs(tip - HALL.left) < WALL_CLEARANCE) return null;
-  const at = (dx, seed) => group([person('factory', { seed: seed + 2 })], { position: [tip + dx, 0, NEW_LANE.z + CREW_DISTANCE] });
+  const at = (dx, seed) => developer({ x: tip + dx, z: NEW_LANE.z + CREW_DISTANCE, seed: seed + 2 }, outage);
   return group(BELT_WORKERS.map(at));
 }

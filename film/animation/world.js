@@ -25,7 +25,8 @@ const fixed = {};
 // peopleTime). What changes only with the state is built once and kept. The hall, the
 // cloud, the server room, a sixth lane, some belts and some stations are built as the
 // film runs (schedule.js) and are never finished. When the cloud fails the belts and
-// robots stop, and the people hurry about.
+// robots stop, the people hurry about and the Software factory developers run about to
+// find the fault.
 export function world(state, clock) {
   const { buildShare } = clock;
   const factory = {
@@ -39,7 +40,7 @@ export function world(state, clock) {
   fixed.cloud ??= group([cloud()]);
   const sky = group([agents(clock.film), itDevelopers(clock.people), cloudRacks(racksBuilt(buildShare), racksFitted(buildShare)), factory.outage && alarm(clock.film)]);
   [fixed.cloud, sky].forEach((part) => { part.position.y = (1 - shown.cloud) * 40; });
-  const work = group([site(factory.built, clock.film)]);
+  const work = group([site(factory, clock.film)]);
   [building, work, fixed.office].forEach((part) => risen(part, shown.hall));
   risen(machines, shown.machines);
   risen(fixed.serverRoom, shown.cloud);
@@ -100,7 +101,7 @@ function moving(state, { line: time, people }) {
     construction(state),
     work && cable({ x: middleOf(GAPS[work.lane][work.gap]), y: 3.3, z: LANES[work.lane] }, work.share),
     ...releases(state, time),
-    walkers(people),
+    walkers(people, state.outage),
     ...state.crew.map((member, index) => crewMember(member, time, index)),
   ]);
 }
