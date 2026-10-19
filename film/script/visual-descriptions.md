@@ -60,7 +60,8 @@ speech bubbles that hold a small picture, never words. Flow always goes left to 
 - The cables from the cloud and from the server room always run to the same stations;
   a station that is still being built has its cable pulled in as it is built. While the cloud
   fails in S11 every cable turns red together with a light on the cloud and every
-  station light and lock; the belts stop, but the people keep working.
+  station light and lock; the belts stop, but the people keep working, and the Software
+  factory developers run about inspecting.
 - Communication is access controlled, and the details are small, spread out and found
   by watching again. Three times, in S03, S08 and S15, an access is changed and one
   station's lock turns red: that station alone stops testing, a Product developer waits
@@ -187,7 +188,9 @@ do not fit. End each panel with a soft red warning light.
 Wide view of the whole factory. A red light on the cloud starts to blink and every
 cable from the cloud turns red. All belts and the robots on the floor stop at once, every test station light
 turns red and boxes stand still mid-belt. The people do not know why: they keep
-working and hurry about, some running between the stations to find the fault. Then
+working and hurry about. Every Software factory developer, on the floor, at the
+stations and up on the scaffolding, drops their work and runs about like mad, stops,
+leans forward with a magnifying glass, and runs on. Then
 the light goes out, the cables turn blue and the belts move again from where they
 stopped. The
 camera glides down to the middle of the floor.

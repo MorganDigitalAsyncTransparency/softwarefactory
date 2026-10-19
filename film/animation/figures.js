@@ -1,9 +1,12 @@
 import { block, capsule, cylinder, group, sphere } from './shapes.js';
+import { rushAt } from './troubleshoot.js';
 
 const BOX = 0.6;
 const SKIN_TONES = ['skin0', 'skin1', 'skin2', 'skin3'];
 const STRIDE = 1.4;
 const TURNS = { 1: 0, 0: -Math.PI / 2, '-1': Math.PI };
+const LEAN = 0.45;
+const HIP = 0.76;
 
 // How far to turn a figure that faces +x (1), the camera (0) or -x (-1).
 export function facingTurn(facing) {
@@ -30,21 +33,38 @@ export function box(look = 'good', { scale = 1, sealed = false } = {}) {
 }
 
 // A person in the color of their role: 'product', 'factory' (with a hard hat), 'it' or
-// 'user'.
-export function person(role, { seed = 0, carrying = false, walked = 0 } = {}) {
+// 'user'. Someone inspecting a machine leans over it with a magnifying glass.
+export function person(role, { seed = 0, carrying = false, walked = 0, inspecting = false } = {}) {
   const swing = Math.sin((walked / STRIDE) * Math.PI * 2) * 0.45;
-  return group([
-    leg(-0.13, swing),
-    leg(0.13, -swing),
+  const upper = group([
     capsule([0.24, 0.45], role, [0, 1.12, 0]),
     sphere(0.18, SKIN_TONES[seed % SKIN_TONES.length], [0, 1.62, 0]),
     role === 'factory' && hardHat(),
     carrying && group([box()], { position: [0.42, 0.95, 0] }),
-  ]);
+    inspecting && magnifier(),
+  ], { position: [0, -HIP, 0] });
+  const body = group([upper], { position: [0, HIP, 0] });
+  body.rotation.z = inspecting ? -LEAN : 0;
+  return group([leg(-0.13, swing), leg(0.13, -swing), body]);
+}
+
+// A Software factory developer at work. While the cloud is down they run about near
+// their work, within `area`, by default to and fro along their side of the machine, to
+// find the fault (troubleshoot.js).
+export function developer({ x, y = 0, z, turn = 0, seed }, outage, area = { x: [-Infinity, Infinity], z: [z, z] }) {
+  // Their lane sets the run too, so crews with the same seeds do not move in step.
+  const at = rushAt({ x, z, turn, walked: 0 }, { area, seed: seed + z }, outage);
+  return group([person('factory', { seed, walked: at.walked, inspecting: at.inspecting })], { position: [at.x, y, at.z], turn: at.turn });
+}
+
+function magnifier() {
+  const lens = cylinder([0.13, 0.03], 'glass', [0, 0, 0]);
+  lens.rotation.z = Math.PI / 2;
+  return group([lens, block([0.04, 0.22, 0.04], 'steel', [0, -0.22, 0])], { position: [0.45, 1.2, 0] });
 }
 
 function leg(z, swing) {
-  const result = group([capsule([0.1, 0.55], 'trousers', [0, -0.38, 0])], { position: [0, 0.76, z] });
+  const result = group([capsule([0.1, 0.55], 'trousers', [0, -0.38, 0])], { position: [0, HIP, z] });
   result.rotation.z = swing;
   return result;
 }

@@ -1,6 +1,6 @@
 import { bareBelt, belt, gate, gatePosts, joiner, lock, tester } from './machines.js';
 import { accessAt, cabledStations, deniedCrew } from './access.js';
-import { box, facingTurn, person, robot } from './figures.js';
+import { box, developer, facingTurn, person, robot } from './figures.js';
 import { group } from './shapes.js';
 import { CARRIED, boxesOn, carriedSpan, carrierAt, gapMode, fitting, gateSignal, laneFlows } from './flow.js';
 import {
@@ -49,8 +49,8 @@ export function laneMotion(state, clock, laneIndex) {
     ...Object.keys(GAPS[laneIndex]).filter((gap) => gapMode(state, gap, laneIndex) === 'open' && !underWork(state, gap, laneIndex))
       .map((gap) => slowlyLaid(state, gap, laneIndex)),
     ...Object.keys(GAPS[laneIndex]).map((gap) => carrier(state, clock, { gap, laneIndex })),
-    laneIndex === CRAWLING_GATE.lane && gateCrawling(z, gateRisen(state.buildShare)),
-    laneIndex in state.ends && unfinished(GAPS[laneIndex].B.end, state.ends[laneIndex], z),
+    laneIndex === CRAWLING_GATE.lane && gateCrawling(z, state),
+    laneIndex in state.ends && unfinished(GAPS[laneIndex].B.end, state.ends[laneIndex], { z, outage: state.outage }),
   ]);
 }
 
@@ -85,7 +85,8 @@ export function station({ key, ...place }, state, light) {
   const seed = Math.round(Math.abs(place.x));
   return group([
     tester({ ...place, built }),
-    group([person('factory', { seed })], { position: [place.x - 1, 0, side], turn: 0 }),
+    // The builder runs only on their own side of the IT developer.
+    developer({ x: place.x - 1, z: side, seed }, state.outage, { x: [-Infinity, place.x], z: [side, side] }),
     group([person('it', { seed: seed + 1 })], { position: [place.x + 1, 0, side], turn: Math.PI }),
   ]);
 }
@@ -127,28 +128,28 @@ function slowlyLaid(state, gap, laneIndex) {
   const whole = GAPS[laneIndex][gap];
   const { start } = carriedSpan(state, gap, laneIndex);
   if (start === whole.start) return pile(start, z);
-  return group([belt(whole.start, start, z), pile(start, z), worker(start, z - CREW_SIDE, laneIndex)]);
+  return group([belt(whole.start, start, z), pile(start, z), worker({ x: start, z: z - CREW_SIDE, seed: laneIndex }, state.outage)]);
 }
 
 // A gate rising very slowly over a running belt, with a Software factory developer at
 // it: only its posts stand so far, so the boxes pass between them.
-function gateCrawling(z, risen) {
+function gateCrawling(z, { buildShare, outage }) {
   const { x } = CRAWLING_GATE;
-  return group([...gatePosts(x, z, GATE_HEIGHT * risen), worker(x + 0.6, z - CREW_SIDE, 2)]);
+  return group([...gatePosts(x, z, GATE_HEIGHT * gateRisen(buildShare)), worker({ x: x + 0.6, z: z - CREW_SIDE, seed: 2 }, outage)]);
 }
 
-function worker(x, z, seed) {
-  return group([person('factory', { seed })], { position: [x, 0, z], turn: facingTurn(0) });
+function worker(place, outage) {
+  return developer({ ...place, turn: facingTurn(0) }, outage);
 }
 
 // A belt that is still being laid: Software factory developers on one side of the bare
 // frame, and boxes piling up on the other.
-function unfinished(from, end, z) {
+function unfinished(from, end, { z, outage }) {
   return group([
     belt(from, end, z),
     bareBelt(end, BELT.end, z),
     pile(end, z),
-    ...BELT_WORKERS.map((dx, seed) => group([person('factory', { seed })], { position: [end + dx, 0, z - 1.2], turn: -Math.PI / 2 })),
+    ...BELT_WORKERS.map((dx, seed) => developer({ x: end + dx, z: z - 1.2, turn: -Math.PI / 2, seed }, outage)),
   ]);
 }
 
