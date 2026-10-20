@@ -69,9 +69,8 @@ Gates stop broken parts, and step by step automation replaces manual work.
   and IT developers each wear their own color, so they are always told apart (see
   [roles](script/script.md#roles)). The captions name each color in words, so the voice
   says it too.
-- The Software factory developers build with walls, belts and cranes, but what they
-  build is software: they talk about code in speech bubbles, and when the picture turns
-  digital they hold laptops.
+- The Software factory developers build with walls, belts and cranes, but the film
+  shows that what they build is software ([R16](../docs/02-REQUIREMENTS.md)).
 - IT is both the cloud and a small server room in the factory, and it grows during the
   film like everything else.
 - The parts come from an open office where Product developers work, so viewers see

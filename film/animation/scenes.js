@@ -46,8 +46,7 @@ const RUSH = 2.5;
 const FITTED = 0.8;
 const TALK = { walk: [7.3, 4.8], ask: [4.1, 3.4], answer: [3.4, FITTED + FITTING_SECONDS] };
 // A Software factory developer talks about code, </>, in this share of the scene, to
-// show that what they build is software: on the scaffolding in S03, and at the gate
-// while it is installed in S12.
+// show that what they build is software.
 const CODE_TALK = { S03: [0.5, 0.95], S12: [0.08, 0.36] };
 
 // Each drawing returns the shot for one frame: a camera path, the world's state and
@@ -129,7 +128,7 @@ function gateInstalled({ scene, progress }) {
   const installed = progress > 0.4;
   const left = (1 - progress) * (scene.end - scene.start);
   const crew = [
-    codeTalk({ role: 'factory', x: GATE.x - 1.6, z: GATE.z - CREW_SIDE, facing: 1 }, 'S12', progress),
+    { role: 'factory', x: GATE.x - 1.6, z: GATE.z - CREW_SIDE, facing: 1, ...(talksCode('S12', progress) && { says: 'code' }) },
     { role: 'factory', x: GATE.x + 1.6, z: GATE.z - CREW_SIDE, facing: -1 },
     { role: 'it', x: GATE.x - 0.5, z: GATE.z - CREW_SIDE, facing: 0, ...(talking(left, TALK.answer) && { says: 'adapter' }) },
   ];
@@ -143,10 +142,6 @@ function gateInstalled({ scene, progress }) {
 // seconds before it ends.
 function done(left, [from, to]) {
   return share(from - left, 0, from - to);
-}
-
-function codeTalk(member, sceneId, progress) {
-  return talksCode(sceneId, progress) ? { ...member, says: 'code' } : member;
 }
 
 function talksCode(sceneId, progress) {

@@ -46,9 +46,8 @@ const SKY = { physical: new THREE.Color('#DCE3E6'), digital: new THREE.Color('#0
 
 const MATERIALS = Object.fromEntries(Object.entries(LOOKS).map(([name, look]) => [name, create(look)]));
 
-function create({ physical, glow, metal, appear }) {
+function create({ physical, glow, metal }) {
   return new THREE.MeshStandardMaterial({
-    visible: !appear,
     color: physical,
     roughness: metal ? 0.5 : 0.85,
     metalness: metal ? 0.15 : 0,

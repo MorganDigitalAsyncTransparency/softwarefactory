@@ -229,8 +229,8 @@ digital version: boxes become plain glowing warm-white cubes without any marks,
 conveyor belts become luminous pipeline lanes, gates become checkpoints with a green
 light, cables from the cloud become glowing cyan integration lines, the large box
 becomes one larger glowing cube. The Software factory developers in yellow now hold
-open laptops with glowing cyan screens. Keep layout identical, only the material
-changes.
+open laptops with glowing cyan screens. Keep layout identical: only the material
+changes, and the laptops appear.
 ```
 
 ### S15
