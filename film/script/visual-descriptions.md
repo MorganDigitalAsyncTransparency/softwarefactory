@@ -23,11 +23,13 @@ product is plain cardboard boxes; IT is blue. The one shared color is a pink ban
 for something new the product needs: on some boxes, and on the IT parts made for it.
 Simple stylised characters with minimal facial detail, diverse, gender-neutral silhouettes. Each role wears its own
 color: Product developers wear purple; Software factory developers wear yellow with
-hard hats; IT developers wear the blue of IT; Users wear warm orange. AI agents are
+hard hats; IT developers wear the blue of IT, and IT security developers, who belong to
+IT, wear it with a deep red cap, darker than any warning light; Users wear warm orange. AI agents are
 small identical rounded white robots with a single soft blue light. Test stations
 are grey tunnels over the belts with a blue screen and a small light; where a cable
 comes in, a small blue lock plate sits on top with a dot that is green while the
-station has access, red when it is denied and dark while it waits. Above the
+station has access, red when it is denied and dark while it waits. A firewall is a low
+wall of deep red bricks, the red of the security caps. Above the
 factory floats a white cloud carrying tall dark blue server racks, IT developers and AI robots, with long
 blue cables hanging down to stations in the factory. People sometimes talk in white
 speech bubbles that hold a small picture, never words. Flow always goes left to right.
@@ -63,12 +65,16 @@ speech bubbles that hold a small picture, never words. Flow always goes left to 
   station light and lock; the belts stop, but the people keep working, and the Software
   factory developers run about inspecting.
 - Communication is access controlled, and the details are small, spread out and found
-  by watching again. Three times, in S03, S08 and S15, an access is changed and one
-  station's lock turns red: that station alone stops testing, a Product developer waits
-  at it and an IT developer comes to put it right. Two stations finished during the
-  film wait a while with a dark lock before their first access. A card reader by the
-  server room lets an IT developer in and turns a Product developer away. Every
-  release gets a strap after its last test station, before it leaves for the dock.
+  by watching again. IT security developers walk about the hall and work in the cloud.
+  Three times, in S03, S08 and S15, one of them changes an access at a lock and it
+  turns red: that station alone stops testing, a Product developer waits at it and an
+  IT developer comes to put it right. In S05 one of them raises a firewall on the server
+  room's link to the cloud, and the release's stations stop until IT opens the way; the
+  firewall stays. Two stations finished during the film wait a while with a dark lock
+  before their first access. A card reader with a keypad by the server room lets an IT
+  developer in after a second step, its light amber and then green, and turns a Product
+  developer away. Every release gets a strap after its last test station, before it
+  leaves for the dock, where an IT security developer watches over it.
 - The factory is never finished, and something is being built in every scene. The back
   wall rises bay by bay, a yellow tower crane behind the hall keeps lifting panels, new
   racks rise in the cloud and in the server room, new test stations rise one after the
@@ -107,8 +113,9 @@ Camera follows the belts into the hall to the back wall, which is still being bu
 Software factory developers in yellow with hard hats work on scaffolding, a tower crane
 lifts a wall panel, and others lay the frame of a new belt section and raise the walls of a half-built test
 station. On the scaffolding, a Software factory developer talks in a white speech
-bubble that shows the sign for code, </>. On one of the belts a station's lock turns red and its light goes dark; a
-Product developer waits at it until an IT developer arrives.
+bubble that shows the sign for code, </>. On one of the belts an IT developer with a
+red cap works at a station's lock, the lock turns red and the station's light goes
+dark; a Product developer waits at it until an IT developer arrives.
 ```
 
 ### S04
@@ -120,14 +127,18 @@ between them, and long blue cables hanging down to the stations. Below, IT devel
 half-built stations. In the front corner of the hall a small server room with one
 rack standing and an IT developer installing a second has cables of its own to the
 stations nearby and up to the cloud. By the room's side wall, an IT developer holds a
-card to a small reader and its light turns green; a Product developer tries next and
-it turns red.
+card to a small reader with a keypad, its light turns amber, then green after a second
+step; a Product developer tries next and it turns red.
 ```
 
 ### S05
 
 ```text
-Wide, steady view of the whole factory and the office. Ten narrow belts of small boxes
+Camera glides down past the small server room in the front corner, where an IT
+developer in blue with a red cap raises a low wall of deep red bricks on the room's
+link to the cloud. The locks on the stations of the release belt turn red and their
+lights go dark for a moment, then green again. The camera rises to a wide, steady
+view of the whole factory and the office. Ten narrow belts of small boxes
 are joined in pairs into five belts of larger boxes, which a large machine joins into
 one belt carrying one large box out to the loading dock. People in their role colors
 walk about and work here and there.
@@ -147,8 +158,8 @@ glows as each box is checked. Smooth, orderly, rhythmic motion.
 
 ```text
 Camera pans right along the front of the factory to the loading dock. One large neat
-box passes a test station and a half-built one, gets a strap round it, rolls out of
-the door and is received by a few Users.
+box passes a test station and a half-built one, gets a strap round it while an IT
+developer with a red cap watches, rolls out of the door and is received by a few Users.
 Calm, satisfying, orderly.
 ```
 
@@ -156,9 +167,9 @@ Calm, satisfying, orderly.
 
 ```text
 Camera moves from the dock back to the middle of the factory floor. The five belts
-end abruptly with gaps between them. On the back belt, one station's lock turns red and
-its light goes dark while boxes pass it; a Product developer waits at it until an IT
-developer arrives.
+end abruptly with gaps between them. On the back belt, an IT developer with a red cap
+works at one station's lock, it turns red and the light goes dark while boxes pass it;
+a Product developer waits at it until an IT developer arrives.
 ```
 
 ### S09
@@ -240,7 +251,8 @@ The picture turns physical again as the camera pulls back to the same wide view 
 the opening. Some of the gaps in the middle are now closed with belts and gates,
 others still have Product developers carrying boxes by hand. Software factory
 developers and IT developers work side by side, the cloud above with its cables. On
-the left, one station's lock is red while an IT developer puts its access right. Boxes
+the left, an IT developer with a red cap stands at a station whose lock is red while
+another IT developer puts its access right. Boxes
 keep flowing out to users on the right. Calm, ongoing, unfinished.
 ```
 

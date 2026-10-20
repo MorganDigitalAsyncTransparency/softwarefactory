@@ -131,11 +131,15 @@ roles and their colors, the captions and the continuity.
 - **when** it plays,
 - **then** every test station with a cable has a lock on top whose dot shows green with
   access, red when denied or while the cloud is down, and nothing while it waits; a few
-  times an access is changed and one station at a time, never during the cloud outage,
-  stops testing, so boxes pass it unchecked, while a
-  Product developer waits at it until an IT developer comes; some stations built during
-  the film wait for their first access; a card reader by the server room lets IT
-  developers in and no one else; and each release is sealed after its last test station.
+  times an IT security developer changes an access and one station at a time, never
+  during the cloud outage, stops testing, so boxes pass it unchecked, while the IT
+  security developer works at its lock and a Product developer waits at it until an IT
+  developer comes; in the scene that introduces IT security developers one of them
+  raises a firewall on the server room's link to the cloud, which stays, and the
+  server room's finished stations stop together until IT opens the way; some stations
+  built during the film wait for their first access; a card reader by the server room
+  lets IT developers in after a second step, and no one else; and each release is
+  sealed after its last test station, where an IT security developer watches.
 
 ### R15: A voice reads the captions
 
@@ -155,3 +159,11 @@ roles and their colors, the captions and the continuity.
 - **then** one of them talks in a speech bubble with the sign for code, </>, in the
   scene that introduces them and while the gate is installed in the gate scene, and
   each of them holds a laptop while the picture is digital, and only then.
+
+### R17: IT security developers secure the factory
+
+- **Given** IT, which also secures the factory,
+- **when** the film plays,
+- **then** IT security developers wear the blue of IT with a red cap, darker than any
+  warning light, walk about the hall and work in the cloud, and do the security work
+  that R14 describes.
