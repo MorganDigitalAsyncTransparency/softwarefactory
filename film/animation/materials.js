@@ -36,6 +36,8 @@ const LOOKS = {
   product: { physical: '#8E6CC0', digital: '#8E6CC0' },
   factory: { physical: '#E3B23C', digital: '#E3B23C' },
   user: { physical: '#E07A3F', digital: '#E07A3F' },
+  // Deeper than the red lights, which glow, so a red hat is never read as a warning.
+  security: { physical: '#9C2236', digital: '#9C2236' },
   trousers: { physical: '#3A3F47', digital: '#3A3F47' },
   skin0: { physical: '#8D5524', digital: '#8D5524' },
   skin1: { physical: '#C68642', digital: '#C68642' },

@@ -50,7 +50,7 @@ export function itDevelopers(time) {
   return group([-9.5, 4, 8.5].map((x, index) => {
     const walked = Math.sin(time * 0.35 + index * 1.7);
     const speed = Math.cos(time * 0.35 + index * 1.7);
-    const developer = group([person('it', { seed: index, walked })], {
+    const developer = group([person(index === 1 ? 'security' : 'it', { seed: index, walked })], {
       position: [CLOUD.x + x + walked, CLOUD.y + TOP, CLOUD.z + 1.9], turn: speed > 0 ? 0 : Math.PI,
     });
     developer.scale.setScalar(SEEN_FROM_BELOW);

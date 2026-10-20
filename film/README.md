@@ -68,7 +68,7 @@ Gates stop broken parts, and step by step automation replaces manual work.
 - The film introduces the people first: Product developers, Software factory developers
   and IT developers each wear their own color, so they are always told apart (see
   [roles](script/script.md#roles)). The captions name each color in words, so the voice
-  says it too.
+  says it too. IT security developers belong to IT.
 - The Software factory developers build with walls, belts and cranes, but the film
   shows that what they build is software ([R16](../docs/02-REQUIREMENTS.md)).
 - IT is both the cloud and a small server room in the factory, and it grows during the
@@ -80,11 +80,14 @@ Gates stop broken parts, and step by step automation replaces manual work.
   most of all, inspecting): the film shows how much the whole
   line depends on IT.
 - People work here and there on the floor, not only along the belts.
-- Security shows as access control, quietly: locks on the cables, a card reader at the
-  server room and a sealed release. When an access is changed, one station stops testing,
-  and boxes pass it unchecked, until IT puts it right: small and local, unlike the cloud
-  outage that stops every belt. No
-  caption names it, and the details are meant to be found by watching again.
+- Security is the work of IT security developers, who secure the factory in the
+  background: a firewall, locks on the cables, a card reader with a second step at the
+  server room and a sealed release. Their work can stop parts of the factory: when they
+  change an access, one station stops testing, and boxes pass it unchecked, until IT
+  puts it right; when they raise the firewall, the release's stations stop for a while.
+  These stops are small and local, unlike the cloud outage that stops every belt. One
+  caption introduces them and says so; the details are meant to be found by watching
+  again.
 - The middle is uneven, not a neat grid: gaps differ from belt to belt, the flow has holes,
   and some builds in the lines crawl while others finish fast, so viewers see both.
 - IT has to adapt when the product needs something new: boxes with a new color band
