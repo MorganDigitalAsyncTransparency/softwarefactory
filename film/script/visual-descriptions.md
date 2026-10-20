@@ -218,10 +218,9 @@ camera glides down to the middle of the floor.
 ```text
 Software factory developers in yellow install a gate between two conveyor belts; a
 white speech bubble over one of them shows the sign for code, </>. A
-dented box arrives and the gate stops it with a red light; an intact box arrives and
-passes through with a green light. Later a box that looks whole passes the gate's
-glowing curtain, turns see-through with a red glow inside and is pushed off with a red
-light. An IT developer in blue connects a long cable from
+box that looks whole reaches the gate's glowing curtain, turns see-through with a red
+glow inside and is pushed off with a red light; an intact box arrives and passes
+through with a green light. An IT developer in blue connects a long cable from
 the cloud into the gate. A Product developer in purple walks over to them. Then a box
 with a pink band arrives and the gate pushes it off with an amber light; a white speech
 bubble over the Product developer shows the banded box, and one over the IT developer shows a small blue

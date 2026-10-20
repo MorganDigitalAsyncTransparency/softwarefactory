@@ -109,7 +109,8 @@ function tested(boxes, x) {
   return boxes.some((item) => Math.abs(item.x - x) < 0.4) && 'ok';
 }
 
-// A gate that stops an unsafe box shows it seen through.
+// A box beside the belt (`side`) was pushed off by a gate; an unsafe one is shown as the
+// gate saw it, see-through.
 function placedBox({ x, side, look }, z) {
   const height = side > BIN_EDGE ? 0.5 : BELT.height;
   return group([box(look, { seen: look === 'unsafe' && side > 0 })], { position: [x, height, z + side] });

@@ -74,8 +74,8 @@ roles and their colors, the captions and the continuity.
 - **Given** a scene where a service in the cloud fails,
 - **when** it plays,
 - **then** every belt, box and robot stands still while the cloud is down and goes on
-  from where it stopped when the cloud is back, while an IT developer works at the failed
-  service in the cloud, the other people keep working and
+  from where it stopped when the cloud is back; an IT developer works at the failed
+  service in the cloud meanwhile; the other people keep working, and
   those who walk about or carry boxes hurry, faster than before; every Software factory
   developer leaves their work and runs about near it, fast, stopping again and again to
   inspect what is near, and is back at their work when the cloud is back; the same time
@@ -174,7 +174,12 @@ roles and their colors, the captions and the continuity.
 - **when** the film plays,
 - **then** IT security developers wear the blue of IT with a red hat, as the
   [style block](../film/script/visual-descriptions.md#style-block) says, walk about the
-  hall and work in the cloud, and do the security work that R14 describes; and every
-  gate looks through the boxes and stops, with a red light, a box that looked whole on
-  the belt but is unsafe inside, showing it see-through with a red core, also in the gate
-  scene.
+  hall and work in the cloud, and do the security work that R14 describes.
+
+### R18: Gates check quality and security
+
+- **Given** the gates over the belts in the middle,
+- **when** a box that looks whole on the belt but is unsafe inside reaches one,
+- **then** the gate looks through it and pushes it off with a red light, showing it
+  see-through with a red core, and in the gate scene this happens while the caption that
+  names unsafe parts is shown.

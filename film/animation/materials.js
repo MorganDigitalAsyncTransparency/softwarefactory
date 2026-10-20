@@ -18,9 +18,10 @@ const LOOKS = {
   box: { physical: '#C99A64', digital: '#FFD58A', glow: 0.9 },
   tape: { physical: '#EEDDB5', digital: '#FFF1D1', glow: 0.9 },
   dented: { physical: '#8F6A45', digital: '#FF6B5E', glow: 0.9 },
-  // A gate looks through the boxes: a box it stops for what is inside is seen through.
-  seenThrough: { physical: '#E6CFAE', digital: '#FFD58A', glow: 0.4, see: true },
-  scan: { physical: '#9FE8FF', digital: '#59E3FF', glow: 1.2, see: true },
+  // See-through surfaces: the curtain in a gate that looks through each box, and a box
+  // the gate has stopped for what is inside. The curtain glows the same in both looks.
+  seenThrough: { physical: '#E6CFAE', digital: '#FFD58A', glow: 0.4, seeThrough: true },
+  scan: { physical: '#9FE8FF', digital: '#9FE8FF', glow: 1.2, seeThrough: true },
   feature: { physical: '#E8559A', digital: '#FFD58A', glow: 0.9 },
   cloud: { physical: '#FAFBFC', digital: '#1A3B5C' },
   rack: { physical: '#1D3A5C', digital: '#0E2C49' },
@@ -51,16 +52,16 @@ const SKY = { physical: new THREE.Color('#DCE3E6'), digital: new THREE.Color('#0
 
 const MATERIALS = Object.fromEntries(Object.entries(LOOKS).map(([name, look]) => [name, create(look)]));
 
-function create({ physical, glow, metal, see }) {
+function create({ physical, glow, metal, seeThrough }) {
   return new THREE.MeshStandardMaterial({
     color: physical,
     roughness: metal ? 0.5 : 0.85,
     metalness: metal ? 0.15 : 0,
     emissive: glow ? physical : '#000000',
     emissiveIntensity: 0,
-    transparent: Boolean(see),
-    opacity: see ? 0.35 : 1,
-    depthWrite: !see,
+    transparent: Boolean(seeThrough),
+    opacity: seeThrough ? 0.35 : 1,
+    depthWrite: !seeThrough,
   });
 }
 

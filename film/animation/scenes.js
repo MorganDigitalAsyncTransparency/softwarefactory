@@ -176,8 +176,10 @@ function stepsAutomated({ scene, progress }) {
   const carrier = { role: 'product', walking: true, ...walkOff(share(progress, 0.55, 1)) };
   const crew = [...(bridged < 1 ? developers : []), handedOver ? carrier : robot];
   const growing = bridged < 1 && { gap: 'A', lane: 1, share: bridged };
-  // The camera holds on the handover while the caption is read.
-  return shot([GATE_CLOSE, HANDOVER, HANDOVER, MIDDLE], progress, { ...GATED, gaps, crew, growing, fitted: { B2: scene.start - FITTED } });
+  const state = { ...GATED, gaps, crew, growing, fitted: { B2: scene.start - FITTED } };
+  // The camera holds on the handover while the caption is read and the developer walks off.
+  if (progress < 0.25) return shot([GATE_CLOSE, HANDOVER], progress / 0.25, state);
+  return shot([HANDOVER, MIDDLE], share(progress, 0.8, 1), state);
 }
 
 // The Product developer who handed a stretch to a robot walks off toward the office.
