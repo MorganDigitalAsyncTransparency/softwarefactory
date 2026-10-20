@@ -20,6 +20,8 @@ Read `film/README.md` first: the brief decides audience, length, tone and langua
 - A caption follows the caption decision in the brief, and its scene lasts long enough
   for the delay and reading time in the
   [caption rules](../../../film/script/visual-descriptions.md#captions); a test checks it.
+  The voice must also be done before the caption leaves (R15):
+  `scripts/voice/generate.sh` checks it, and CI runs it.
 - Keep the film one continuous picture, as the
   [continuity](../../../film/script/visual-descriptions.md#continuity) rules say.
 - Matter-of-fact tone: describe how it is. No humor, no selling, no brand.

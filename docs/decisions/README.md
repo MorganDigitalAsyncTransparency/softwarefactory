@@ -20,3 +20,4 @@ re-litigating settled questions.
 | 0003 | [The repository is text-only](0003-text-only-repository.md)                            |
 | 0004 | [The film animation is 3D, drawn with three.js by ES modules that read the script](0004-film-animation-in-3d.md) |
 | 0005 | [The film's sound is made in the browser from a score in code](0005-sound-made-in-the-browser.md) |
+| 0006 | [A voice reads the captions, made from the script with an open-source model at publishing](0006-voice-made-from-the-script-at-publishing.md) |

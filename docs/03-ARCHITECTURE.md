@@ -14,6 +14,7 @@ three.js comes from a CDN through the page's import map (ADR 0004).
 ```text
 film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player ─┬─▶ caption (HTML)
                                                                    ├─▶ score ─▶ sound (Web Audio)
+                                                                   ├─▶ voice (film/voice/*.mp3)
                                                                    │
                                           scenes (shot: camera + state)
                                                                    │
@@ -35,6 +36,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `caption.js`       | The caption over the picture: when in its scene it shows, and balanced line wrapping (R3) |
 | `score.js`         | Pure: what sounds at a moment of the clocks: the levels of the hum, music and alarms, and the notes, clicks and thuds that start (R11) |
 | `sound.js`         | Plays the score with the Web Audio API, and stops when the film is paused or the sound is off (ADR 0005) |
+| `voice.js`         | Plays each caption's recording from the caption's offset, and keeps it there through pauses and jumps (R15) |
 | `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state, fades and whether the music halts; throws on a missing ID; the line's and the people's clocks; which gates are fitted for new boxes and when, and who talks in the gate scene (R2, R8, R9, R13) |
 | `flow.js`          | Pure: where boxes, carriers and robots are at a time, which boxes are new, and what a gate stops or, once IT has fitted it, lets pass (R12, R13) |
 | `wander.js`        | Pure: where a person who works here and there is at a time                          |
@@ -82,8 +84,19 @@ leave their work and run about near it, stopping to inspect. During the outage t
 scene's state carries `outage: { seconds, length }`, how far into it the frame is. The sound follows the same
 clocks: the music and the station clicks the line's, the hum, the crane and the alarms
 the film's. Each frame the player asks `score.js` for the sound between the frame
-before and this one, so a jump plays nothing it skipped. The digital look blends every material between its two looks instead of
+before and this one, so a jump plays nothing it skipped. The voice follows the captions
+instead: each frame the player tells `voice.js` how far into its caption the scene is.
+The digital look blends every material between its two looks instead of
 drawing a second world.
+
+### The voice
+
+The voice's recordings are made, not kept (ADR 0006). `scripts/voice/generate.sh`
+downloads the Kokoro model once, checks it against `model.sha256`, and pipes the
+script's lines from `print-lines.js` (the words to say and the seconds each caption is
+shown, from `lines.js`) into `speak.py`, which writes `film/voice/<scene>.mp3` and
+fails when a recording is longer than its caption is shown. The `Checks` workflow runs
+it on every pull request and the `Publish the film` workflow before each publish.
 
 ### Tests
 
@@ -91,6 +104,6 @@ Node's built-in test runner runs `tests/`: the parser, the timeline, the motion 
 boxes and people, the line's and the people's clocks, the score, caption wrapping and when a caption shows, that every scene has a drawing
 and continues the camera of the one before, that the layout gives every running belt two test
 stations, one of them working from the start, that the schedule spreads the building over
-the whole film and never finishes it (R10), that an access change stops one station at a time outside the outage (R14), and that the script itself keeps its timing rules.
+the whole film and never finishes it (R10), what the voice says for each caption (R15), that an access change stops one station at a time outside the outage (R14), and that the script itself keeps its timing rules.
 None of them needs three.js. The drawings are checked by eye: open a frame with `?t=`
 per scene.

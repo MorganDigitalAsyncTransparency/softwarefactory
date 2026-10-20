@@ -8,7 +8,8 @@ says how to run the checks.
 Nothing to install: the film material is Markdown and the animation is plain HTML and
 JavaScript. The browser loads the one library, three.js, from a CDN when the page opens
 (ADR 0004), so watching needs network access. The checks need `git`, a POSIX shell and
-Node.js 22 or later.
+Node.js 22 or later; the voice also needs Python 3.10 to 3.13, `curl` and `sha256sum`, and a clone
+at a short path, since the speech library cannot load its data from a long one.
 
 ## Watching the animation
 
@@ -24,6 +25,16 @@ python3 -m http.server --directory film 8000
 # then open http://localhost:8000/
 ```
 
+The voice is not in the repository (ADR 0006). To hear it, make it once and again
+after a caption changes; it needs network access the first time, for the model:
+
+```sh
+scripts/voice/generate.sh   # writes film/voice/, which git ignores
+```
+
+Python's server does not answer range requests, so after a jump the voice may lag
+behind; a server that does, such as `npx http-server film -p 8000`, keeps it in step.
+
 Add `?t=<seconds>` to open a single frame, paused, for example
 `http://localhost:8000/?t=10`. Space plays and pauses. The sound starts after the first
 click or key press on the page; the speaker button turns it off and on.
@@ -38,6 +49,7 @@ scripts/check-text-only.sh   # no binary files (ADR 0003)
 scripts/check-english.sh     # no untranslated Swedish text (ADR 0001)
 scripts/check-file-size.sh   # no code file over the hard limit (AGENTS.md)
 npm test                     # unit tests, with Node's built-in test runner
+scripts/voice/generate.sh    # the voice fits its captions (R15)
 npx markdownlint-cli2@0.23.3 "**/*.md"
 ```
 

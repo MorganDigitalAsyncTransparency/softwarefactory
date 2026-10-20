@@ -1,7 +1,7 @@
 # AGENTS.md: softwarefactory
 
 This repository holds the material that explains the software factory: first a short
-animated silent film, later the code and documents that grow around it.
+animated film, later the code and documents that grow around it.
 
 This is the standing guide for everyone who works in the repository, human or AI agent.
 It is kept short on purpose: the workflow lives in the phase skills below and is read
