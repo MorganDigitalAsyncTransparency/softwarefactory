@@ -270,10 +270,9 @@ lane in front and some stations are still being built. Fade to black.
 The music is the theme of *In the Hall of the Mountain King*, from *Peer Gynt*, short
 and detached as plucked strings, played on a soft piano in a large hall. As in the
 original, it starts quietly and slowly and is played again and again, faster and louder
-as the factory grows, the first plays each adding the theme an octave higher. In S09 it turns uneven
-and halting, notes missing; in S11 it stops with the belts and starts again with them.
-Its closing chord rings as S16 begins. The music steps back while the voice reads a
-caption.
+as the factory grows, the first plays each adding the theme an octave higher. It plays
+the whole film without a pause, in the background, also while the voice reads and
+while the belts stand still in S11, and its closing chord rings as S16 begins.
 
 Under the music, the sounds of the factory: a low, soft hum of the running belts, a
 soft click at the belts' even pace, and a thud each time the crane sets a panel while
@@ -286,12 +285,14 @@ alarm the whole time the cloud is down in S11, while the belts fall quiet, and a
 warning beep while the panels of S10 show their red lights. All of it fades with the
 picture.
 
-Over it all, a voice reads each caption once while it is shown: a calm, friendly,
+The music, the factory sounds and the voice are three layers mixed together, so none
+of them stops or pauses the others. Over it all, a voice reads each caption once while
+it is shown: a calm, friendly,
 modern British English voice that sounds like a person. It says the caption as
 written, with one exception: it says "CI/CD" as "CI CD". The voice is made from the script when the
 film is published (ADR 0006).
 
 The animation makes the music and the factory sounds in the browser (ADR 0005), the
-music from the theme's notes (ADR 0007). A video made with other tools uses a
+music from the theme's notes (ADR 0007), and mixes the voice in with them (ADR 0008). A video made with other tools uses a
 public-domain recording of the same piece, and effects licensed for internal and web
 use.

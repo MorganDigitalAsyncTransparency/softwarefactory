@@ -1,5 +1,5 @@
 ---
-status: accepted
+status: accepted; the music's clock and its step back under the voice superseded by ADR 0008
 date: 2026-10-20
 decision-makers: the project owner
 consulted: the AI agent

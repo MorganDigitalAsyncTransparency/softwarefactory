@@ -23,7 +23,7 @@ function piano(voices, { pitch, seconds, level }) {
   }, voices.music));
 }
 
-function pluck({ context, master }, { type, frequency, to, level, seconds }, destination = master) {
+function pluck({ context, effects }, { type, frequency, to, level, seconds }, destination = effects) {
   const now = context.currentTime;
   const envelope = gainNode(context, 0, destination);
   envelope.gain.setValueAtTime(0, now);
