@@ -7,8 +7,8 @@ the text of each caption are in [script.md](script.md), under the same scene ID.
 ## How to use the prompts
 
 - Paste the [style block](#style-block) first in every prompt, then the scene's prompt.
-- Make the overview frame of S05 first and use it as an image reference for every other
-  scene, so the factory looks the same throughout.
+- Make the overview frame that ends S05 first and use it as an image reference for every
+  other scene, so the factory looks the same throughout.
 - Scenes longer than 6–8 seconds may need to be generated in two parts.
 - Captions are added in the editing tool, not generated: AI tools often distort text.
 
@@ -24,12 +24,12 @@ for something new the product needs: on some boxes, and on the IT parts made for
 Simple stylised characters with minimal facial detail, diverse, gender-neutral silhouettes. Each role wears its own
 color: Product developers wear purple; Software factory developers wear yellow with
 hard hats; IT developers wear the blue of IT, and IT security developers, who belong to
-IT, wear it with a deep red cap, darker than any warning light; Users wear warm orange. AI agents are
+IT, wear it with a deep red hat, darker than any warning light; Users wear warm orange. AI agents are
 small identical rounded white robots with a single soft blue light. Test stations
 are grey tunnels over the belts with a blue screen and a small light; where a cable
 comes in, a small blue lock plate sits on top with a dot that is green while the
 station has access, red when it is denied and dark while it waits. A firewall is a low
-wall of deep red bricks, the red of the security caps. Above the
+wall of deep red bricks, the red of the security hats. Above the
 factory floats a white cloud carrying tall dark blue server racks, IT developers and AI robots, with long
 blue cables hanging down to stations in the factory. People sometimes talk in white
 speech bubbles that hold a small picture, never words. Flow always goes left to right.
@@ -114,7 +114,7 @@ Software factory developers in yellow with hard hats work on scaffolding, a towe
 lifts a wall panel, and others lay the frame of a new belt section and raise the walls of a half-built test
 station. On the scaffolding, a Software factory developer talks in a white speech
 bubble that shows the sign for code, </>. On one of the belts an IT developer with a
-red cap works at a station's lock, the lock turns red and the station's light goes
+red hat works at a station's lock, the lock turns red and the station's light goes
 dark; a Product developer waits at it until an IT developer arrives.
 ```
 
@@ -135,9 +135,10 @@ step; a Product developer tries next and it turns red.
 
 ```text
 Camera glides down past the small server room in the front corner, where an IT
-developer in blue with a red cap raises a low wall of deep red bricks on the room's
-link to the cloud. The locks on the stations of the release belt turn red and their
-lights go dark for a moment, then green again. The camera rises to a wide, steady
+developer in blue with a red hat raises a short wall of deep red bricks beside the box
+where the room's link to the cloud leaves it. The locks on the stations of the release belt turn red and their
+lights go dark for a moment, until an IT developer comes to the box and they turn
+green again. The camera rises to a wide, steady
 view of the whole factory and the office. Ten narrow belts of small boxes
 are joined in pairs into five belts of larger boxes, which a large machine joins into
 one belt carrying one large box out to the loading dock. People in their role colors
@@ -159,7 +160,7 @@ glows as each box is checked. Smooth, orderly, rhythmic motion.
 ```text
 Camera pans right along the front of the factory to the loading dock. One large neat
 box passes a test station and a half-built one, gets a strap round it while an IT
-developer with a red cap watches, rolls out of the door and is received by a few Users.
+developer with a red hat watches, rolls out of the door and is received by a few Users.
 Calm, satisfying, orderly.
 ```
 
@@ -167,7 +168,7 @@ Calm, satisfying, orderly.
 
 ```text
 Camera moves from the dock back to the middle of the factory floor. The five belts
-end abruptly with gaps between them. On the back belt, an IT developer with a red cap
+end abruptly with gaps between them. On the back belt, an IT developer with a red hat
 works at one station's lock, it turns red and the light goes dark while boxes pass it;
 a Product developer waits at it until an IT developer arrives.
 ```
@@ -251,7 +252,7 @@ The picture turns physical again as the camera pulls back to the same wide view 
 the opening. Some of the gaps in the middle are now closed with belts and gates,
 others still have Product developers carrying boxes by hand. Software factory
 developers and IT developers work side by side, the cloud above with its cables. On
-the left, an IT developer with a red cap stands at a station whose lock is red while
+the left, an IT developer with a red hat stands at a station whose lock is red while
 another IT developer puts its access right. Boxes
 keep flowing out to users on the right. Calm, ongoing, unfinished.
 ```

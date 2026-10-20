@@ -58,7 +58,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `lanes.js`         | Each lane: two small belts and their joiner, the belt with its gaps, flowing boxes, carriers, test stations that test only with access and the people waiting at a denied one, gates with the adapter being lowered onto them, the belt still being laid and the builds that crawl |
 | `machines.js`      | Belts, gates with the adapter IT fits them with, test stations and their locks, joiners, the assembly machine and the output to the dock |
 | `cloud.js`         | IT: the cloud with its growing and upgraded server racks, IT developers and AI agents, cables, and the alarm when it fails |
-| `figures.js`       | People by role, IT security developers in red caps, a Software factory developer who runs about while the cloud is down, robots, boxes, sealed or not, the laptops Software factory developers hold while the picture is digital, and wordless speech bubbles, one with the sign for code |
+| `figures.js`       | People by role, IT security developers in red hats, a Software factory developer who runs about while the cloud is down, robots, boxes, sealed or not, the laptops Software factory developers hold while the picture is digital, and wordless speech bubbles, one with the sign for code |
 | `panels.js`        | The three close-ups where factory, IT and product do not fit                        |
 | `shapes.js`        | Meshes from shared geometries                                                       |
 | `materials.js`     | One material per surface, each with a physical and a digital look; some appear only in the digital one |

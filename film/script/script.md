@@ -70,7 +70,7 @@ Each role wears its own color, defined in the
   to the stations, the card reader and the seal on the release.
 - **Users** receive the finished box.
 
-## Act 1: Who is here (0:00–0:41), level 1 and 2
+## Act 1: Who is here (0:00–0:42), level 1 and 2
 
 | ID  | Time      | Scene                                                                                                                                                                                                                                      | Caption                                                  |
 | --- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- |
@@ -80,7 +80,7 @@ Each role wears its own color, defined in the
 | S04 | 0:25–0:33 | The camera rises to the cloud, where a new rack rises among the servers, IT developers and AI robots. Below, IT developers pull new cables to stations that are still being built, and in the server room in the corner, which talks to the stations and the cloud, a second rack is installed. | IT developers, dressed in blue, run the cloud and the server room. |
 | S05 | 0:33–0:42 | The camera glides down past the server room, where an IT security developer raises a firewall on its link to the cloud and the release's test stations stop for a moment, until IT opens the way. Then it settles over the whole factory. Ten belts become five and five become one; a large box leaves at the dock. | IT security developers, in red hats, secure the factory. That can stop parts of it. |
 
-## Act 2: The ends work (0:41–1:02), level 2
+## Act 2: The ends work (0:42–1:02), level 2
 
 | ID  | Time      | Scene                                                                                                                                   | Caption                                                 |
 | --- | --------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |

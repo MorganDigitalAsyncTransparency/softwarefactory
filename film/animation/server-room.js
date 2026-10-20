@@ -34,16 +34,16 @@ export function roomRacks(count) {
 }
 
 // A firewall of red bricks on the room's link to the cloud (`firewallAt` in access.js),
-// with the IT security developer who raises it.
-export function firewall({ risen, crewed }) {
+// with who is at it.
+export function firewall({ risen, crew }) {
   const { port } = SERVER_ROOM;
   const bricks = [[-0.4, 0], [0.4, 0], [0, 0.32], [-0.8, 0.32], [0.8, 0.32]]
     .map(([z, y]) => block([0.25, 0.28, 0.74], 'security', [0, y + 0.14, z]));
   const wall = group(bricks, { position: [port.x + 0.6, port.y, port.z] });
-  wall.scale.y = Math.max(0.01, risen);
+  wall.scale.y = risen;
   return group([
     risen > 0 && wall,
-    crewed && group([person('security', { seed: 2 })], { position: [port.x + 1.4, 0, port.z + 1.2], turn: Math.PI / 2 }),
+    ...crew.map((role, index) => group([person(role, { seed: index + 2 })], { position: [port.x - 0.8, 0, port.z + 0.9 + index], turn: 0 })),
   ]);
 }
 

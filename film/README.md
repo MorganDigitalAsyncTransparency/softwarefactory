@@ -68,7 +68,7 @@ Gates stop broken parts, and step by step automation replaces manual work.
 - The film introduces the people first: Product developers, Software factory developers
   and IT developers each wear their own color, so they are always told apart (see
   [roles](script/script.md#roles)). The captions name each color in words, so the voice
-  says it too. IT security developers belong to IT: they wear its blue, with red hats.
+  says it too. IT security developers belong to IT.
 - The Software factory developers build with walls, belts and cranes, but the film
   shows that what they build is software ([R16](../docs/02-REQUIREMENTS.md)).
 - IT is both the cloud and a small server room in the factory, and it grows during the

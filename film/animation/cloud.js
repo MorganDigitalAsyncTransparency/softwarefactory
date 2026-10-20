@@ -45,8 +45,7 @@ export function agents(time) {
 }
 
 // IT developers in blue at work by the racks, each pacing to and fro in front of one,
-// where the puffs in front are low enough to show them. The one in the middle is an IT
-// security developer.
+// where the puffs in front are low enough to show them.
 export function itDevelopers(time) {
   return group([-9.5, 4, 8.5].map((x, index) => {
     const walked = Math.sin(time * 0.35 + index * 1.7);

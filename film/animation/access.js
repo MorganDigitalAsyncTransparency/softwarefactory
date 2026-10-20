@@ -14,17 +14,19 @@ const CHANGES = {
   'middle 0 1': [0.417, 0.457],
   'intake 2 0': [0.907, 0.947],
 };
-// When the others come to a stop, as a share of it: a Product developer to wait, and an
-// IT developer for the last part.
-const ARRIVALS = { product: 0.25, it: 0.55 };
+// Who comes to a stop, in order, from which share of it: the IT security developer who
+// made it, a Product developer to wait, and an IT developer for the last part.
+const IT_COMES = 0.55;
+const ARRIVALS = [['security', 0], ['product', 0.25], ['it', IT_COMES]];
 // In the scene that introduces them, IT security developers raise a firewall by the
-// server room, and its finished stations are denied together until IT opens the way.
+// server room, and its finished stations are denied together until an IT developer
+// comes, for the last part, to open the way.
 const FIREWALL = { rises: [0.236, 0.246], denied: [0.243, 0.267] };
 // New stations that wait this long for their access after they are built.
 const WAITING = { 'middle 1 2': 0.06, 'middle 3 2': 0.09 };
 // Who tries the card reader by the server room, and when.
 const VISITS = [
-  { role: 'it', at: [0.165, 0.183] },
+  { role: 'it', at: [0.167, 0.183] },
   { role: 'product', at: [0.186, 0.208] },
 ];
 
@@ -47,14 +49,20 @@ export function accessAt(key, buildShare) {
 // a Product developer comes to wait, and later an IT developer comes to fix it.
 export function deniedCrew(key, buildShare) {
   if (!(key in CHANGES) || !inside(buildShare, CHANGES[key])) return [];
-  const done = share(buildShare, ...CHANGES[key]);
-  return ['security', ...Object.keys(ARRIVALS).filter((role) => done >= ARRIVALS[role])];
+  return arrived(share(buildShare, ...CHANGES[key]));
 }
 
-// How far the firewall by the server room has risen, and whether the IT security
-// developer who raised it is still at it.
+// How far the firewall by the server room has risen, and who is at it: the IT security
+// developer who raised it, and an IT developer for the last part of the stop.
 export function firewallAt(buildShare) {
-  return { risen: share(buildShare, ...FIREWALL.rises), crewed: inside(buildShare, [FIREWALL.rises[0], FIREWALL.denied[1]]) };
+  const crewed = inside(buildShare, [FIREWALL.rises[0], FIREWALL.denied[1]]);
+  const itCame = share(buildShare, ...FIREWALL.denied) >= IT_COMES;
+  const crew = crewed ? ['security', ...(itCame ? ['it'] : [])] : [];
+  return { risen: share(buildShare, ...FIREWALL.rises), crew };
+}
+
+function arrived(done) {
+  return ARRIVALS.filter(([, from]) => done >= from).map(([role]) => role);
 }
 
 // Who stands at the card reader, and what it shows once they have tried their card: it

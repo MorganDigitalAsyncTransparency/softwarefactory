@@ -32,21 +32,19 @@ export function box(look = 'good', { scale = 1, sealed = false } = {}) {
   return shape;
 }
 
-// IT security developers are IT developers, in the blue of IT with a red cap.
-const CLOTHES = { security: 'it' };
-
 // A person in the color of their role: 'product', 'factory' (with a hard hat), 'it',
-// 'security' or 'user'. Someone inspecting a machine leans over it with a magnifying glass. A Software
+// 'security' (IT developers who secure the factory, in the blue of IT with a red hat) or
+// 'user'. Someone inspecting a machine leans over it with a magnifying glass. A Software
 // factory developer holds a laptop that is seen only while the picture is digital, to
 // show that what they build is software.
 export function person(role, { seed = 0, carrying = false, walked = 0, inspecting = false } = {}) {
   const swing = Math.sin((walked / STRIDE) * Math.PI * 2) * 0.45;
   const upper = group([
-    capsule([0.24, 0.45], CLOTHES[role] ?? role, [0, 1.12, 0]),
+    capsule([0.24, 0.45], role === 'security' ? 'it' : role, [0, 1.12, 0]),
     sphere(0.18, SKIN_TONES[seed % SKIN_TONES.length], [0, 1.62, 0]),
     role === 'factory' && hardHat(),
     role === 'factory' && laptop(),
-    role === 'security' && cap(),
+    role === 'security' && redHat(),
     carrying && group([box()], { position: [0.42, 0.95, 0] }),
     inspecting && magnifier(),
   ], { position: [0, -HIP, 0] });
@@ -83,7 +81,7 @@ function laptop() {
   ], { position: [0.4, 1, 0] });
 }
 
-function cap() {
+function redHat() {
   return group([
     sphere(0.19, 'security', [0, 0, 0]),
     block([0.2, 0.03, 0.26], 'security', [0.17, -0.03, 0]),

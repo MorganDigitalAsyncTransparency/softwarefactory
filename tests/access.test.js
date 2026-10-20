@@ -23,7 +23,7 @@ const outage = scenes.filter((scene) => draw({ scene, progress: 0 }).halts).map(
 test('an access change stops one station at a time, a few times, never during the cloud outage', () => {
   const stops = new Set();
   shares.forEach((buildShare) => {
-    const keys = denied(buildShare).filter((key) => !SERVER_ROOM.stations.includes(key) || !inScene(buildShare, 'S05'));
+    const keys = denied(buildShare).filter((key) => !SERVER_ROOM.stations.includes(key) || !firewallAt(buildShare).crew.length);
     assert.ok(keys.length <= 1, `${keys} at ${buildShare}`);
     assert.ok(!keys.length || outage.every(([from, to]) => buildShare < from || buildShare >= to), `stop at ${buildShare}`);
     keys.forEach((key) => stops.add(key));
@@ -41,7 +41,8 @@ test('only a finished station with a cable has its access changed or waits for i
 test('the firewall raised in the scene that introduces IT security developers stops the server room\'s stations together for a while', () => {
   const stopped = shares.filter((buildShare) => denied(buildShare).some((key) => SERVER_ROOM.stations.includes(key)) && inScene(buildShare, 'S05'));
   assert.ok(stopped.length && stopped.every((buildShare) => denied(buildShare).length >= 2), 'stations stopped together');
-  assert.ok(stopped.every((buildShare) => firewallAt(buildShare).crewed));
+  assert.ok(stopped.every((buildShare) => firewallAt(buildShare).crew[0] === 'security'));
+  assert.deepEqual(firewallAt(stopped.at(-1)).crew, ['security', 'it'], 'an IT developer opens the way');
   const end = scenes.find(({ id }) => id === 'S05').end / length;
   assert.ok(!denied(end).length && firewallAt(end).risen === 1 && firewallAt(1).risen === 1, 'the firewall stays, the stop ends');
 });
