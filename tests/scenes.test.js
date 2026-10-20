@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { parseScript } from '../film/animation/script-parser.js';
 import { checkDrawings, draw, lineTime, peopleTime } from '../film/animation/scenes.js';
 import { FITTING_SECONDS, gateSignal, laneFlows } from '../film/animation/flow.js';
+import { captionSpan } from '../film/animation/caption.js';
 
 const scenes = parseScript(readFileSync('film/script/script.md', 'utf8'));
 
@@ -42,16 +43,30 @@ function gateScene() {
   return scenes.find((scene) => draw({ scene, progress: 1 }).state?.gaps.B2 === 'gate');
 }
 
-// The gate built in the gate scene at `time`, its signal and the new boxes past it, as
-// world.js draws them, with its fitting time moved to the line's clock.
+// The gate built in the gate scene at `time`, its signal, the new boxes past it and the
+// looks of the boxes it holds, as world.js draws them, with its fitting time moved to the
+// line's clock.
 function atGate(scene, time) {
   const { state } = draw({ scene, progress: (time - scene.start) / (scene.end - scene.start) });
   const line = lineTime(scenes, time);
   const fitted = Object.fromEntries(Object.entries(state.fitted).map(([key, at]) => [key, at - (time - line)]));
   const { stretch, boxes } = laneFlows({ ...state, fitted, ends: {}, laid: {} }, line, 1).find((flow) => flow.stretch.gates.length);
   const { x } = stretch.gates[0];
-  return { state, signal: gateSignal(boxes, x), passed: boxes.filter((box) => box.look === 'new' && box.x > x && box.side === 0) };
+  return {
+    state,
+    signal: gateSignal(boxes, x),
+    passed: boxes.filter((box) => box.look === 'new' && box.x > x && box.side === 0),
+    held: boxes.filter((box) => box.x === x && box.side > 0).map((box) => box.look),
+  };
 }
+
+test('in the gate scene the gate stops an unsafe box with a red light while the caption names it', () => {
+  const scene = gateScene();
+  const { start, end } = captionSpan(scene.caption, scene.end - scene.start, false);
+  const times = Array.from({ length: 41 }, (_, step) => scene.start + start + (step / 40) * (end - start));
+  assert.ok(times.some((time) => draw({ scene, progress: (time - scene.start) / (scene.end - scene.start) }).state.gaps.B2
+    && atGate(scene, time).held.includes('unsafe') && atGate(scene, time).signal === 'stop'));
+});
 
 test('in the gate scene a new box waits, a Product developer asks, the IT developer answers, and only then is the gate fitted and passes one', () => {
   const scene = gateScene();

@@ -13,6 +13,8 @@ const IDLE = 0.2;
 // The share of boxes that carry something new the product needs, which a gate cannot
 // check until IT has fitted it for them.
 const NEW = 0.15;
+// The share of boxes after a hand-carried gap that look whole but are unsafe inside.
+const UNSAFE = 0.12;
 // IT lowers the adapter onto a gate over the seconds before the gate is fitted.
 export const FITTING_SECONDS = 2;
 
@@ -54,7 +56,8 @@ export function carriedSpan({ laid }, gap, laneIndex) {
 
 // Boxes on a stretch. Each box is counted from where the lane starts (`origin`), so a
 // box keeps its place when a gap closes. A stretch may miss a share of its boxes; an
-// uneven stretch misses more, and has random timing and quality. Now and then a box is
+// uneven stretch misses more, and has random timing and quality: some boxes are dented,
+// the wrong size or unsafe inside though they look whole. Now and then a box is
 // new. A gate pushes every box it cannot pass off the belt.
 export function boxesOn(stretch, time, { seed = 0, spacing = SPACING, speed = SPEED, origin = stretch.start } = {}) {
   const motion = { stretch, time, speed, origin, period: spacing / speed };
@@ -79,7 +82,9 @@ function boxAt({ stretch, time, speed, origin, period }, index, seed) {
 function lookOf({ uneven }, seed) {
   const chance = noise(seed + 0.25);
   if (noise(seed + 0.95) < NEW) return 'new';
-  if (!uneven || chance > 0.3) return 'good';
+  if (!uneven) return 'good';
+  if (noise(seed + 0.57) < UNSAFE) return 'unsafe';
+  if (chance > 0.3) return 'good';
   return chance < 0.18 ? 'dented' : 'wrong';
 }
 
@@ -96,7 +101,7 @@ function passes({ x, look }, { x: gateX, fittedAt }, { time, speed }) {
   return look === 'good' || (look === 'new' && time - (x - gateX) / speed >= fittedAt);
 }
 
-// A gate shows red while a damaged box it has pushed off lies at it, and amber while a
+// A gate shows red while a damaged or unsafe box it has pushed off lies at it, and amber while a
 // new box it cannot check waits there.
 export function gateSignal(boxes, gateX) {
   const held = boxes.filter(({ x, side }) => x === gateX && side > 0);

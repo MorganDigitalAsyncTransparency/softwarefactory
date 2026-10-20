@@ -28,7 +28,10 @@ IT, wear it with a deep red hat, darker than any warning light; Users wear warm 
 small identical rounded white robots with a single soft blue light. Test stations
 are grey tunnels over the belts with a blue screen and a small light; where a cable
 comes in, a small blue lock plate sits on top with a dot that is green while the
-station has access, red when it is denied and dark while it waits. A firewall is a low
+station has access, red when it is denied and dark while it waits. A gate is a grey
+frame over a belt with a light on top, a faint glowing curtain inside that looks through
+each box, and a bin beside it; a box it stops for what is inside is shown see-through,
+with a red glow at its core. A firewall is a low
 wall of deep red bricks, the red of the security hats. Above the
 factory floats a white cloud carrying tall dark blue server racks, IT developers and AI robots, with long
 blue cables hanging down to stations in the factory. People sometimes talk in white
@@ -62,8 +65,8 @@ speech bubbles that hold a small picture, never words. Flow always goes left to 
 - The cables from the cloud and from the server room always run to the same stations;
   a station that is still being built has its cable pulled in as it is built. While the cloud
   fails in S11 every cable turns red together with a light on the cloud and every
-  station light and lock; the belts stop, but the people keep working, and the Software
-  factory developers run about inspecting.
+  station light and lock; the belts stop, but the people keep working, the Software
+  factory developers run about inspecting, and an IT developer works at the light.
 - Communication is access controlled, and the details are small, spread out and found
   by watching again. IT security developers walk about the hall and work in the cloud.
   Three times, in S03, S08 and S15, one of them changes an access at a lock and it
@@ -199,8 +202,9 @@ do not fit. End each panel with a soft red warning light.
 
 ```text
 Wide view of the whole factory. A red light on the cloud starts to blink and every
-cable from the cloud turns red. All belts and the robots on the floor stop at once, every test station light
-turns red and boxes stand still mid-belt. The people do not know why: they keep
+cable from the cloud turns red. An IT developer in blue works at the red light until it
+goes out. All belts and the robots on the floor stop at once, every test station light
+turns red and boxes stand still mid-belt. The people on the floor do not know why: they keep
 working and hurry about. Every Software factory developer, on the floor, at the
 stations and up on the scaffolding, drops their work and runs about like mad, stops,
 leans forward with a magnifying glass, and runs on. Then
@@ -214,8 +218,9 @@ camera glides down to the middle of the floor.
 ```text
 Software factory developers in yellow install a gate between two conveyor belts; a
 white speech bubble over one of them shows the sign for code, </>. A
-dented box arrives and the gate stops it with a red light; an intact box arrives and
-passes through with a green light. An IT developer in blue connects a long cable from
+box that looks whole reaches the gate's glowing curtain, turns see-through with a red
+glow inside and is pushed off with a red light; an intact box arrives and passes
+through with a green light. An IT developer in blue connects a long cable from
 the cloud into the gate. A Product developer in purple walks over to them. Then a box
 with a pink band arrives and the gate pushes it off with an amber light; a white speech
 bubble over the Product developer shows the banded box, and one over the IT developer shows a small blue
@@ -226,9 +231,10 @@ banded box passes with a green light. Clear, deliberate, satisfying.
 ### S13
 
 ```text
-A gap between two conveyor belts is closed with a new belt section. Nearby, a small
-white robot takes over carrying boxes on a stretch where a Product developer used to
-carry them. The developer walks back toward the office. Positive, matter-of-fact.
+A gap between two conveyor belts is closed with a new belt section. The camera settles
+on the stretch next to it, where a small white robot takes over carrying boxes from a
+Product developer, who walks back toward the office to work on the product. Positive,
+matter-of-fact.
 ```
 
 ### S14
