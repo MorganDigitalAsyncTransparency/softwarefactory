@@ -26,7 +26,8 @@ A software factory is being built while it already produces software. At the lef
 machines test small parts early (*shift left*), and at the right end finished products
 go out to the users. In between, much is manual: parts are carried by hand, some arrive
 late or broken, and where factory, IT and product do not fit, people find workarounds.
-Gates stop broken parts, and step by step automation replaces manual work.
+Gates stop broken and unsafe parts, and step by step automation takes over the carrying,
+so people get back to the product.
 
 ## Analogies
 
@@ -36,6 +37,7 @@ Gates stop broken parts, and step by step automation replaces manual work.
 | Conveyor belts                           | The CI/CD pipeline                             |
 | Carrying boxes by hand between belts     | Manual hand-offs between pipeline stages       |
 | Gates that stop damaged boxes            | Quality gates                                  |
+| A gate that sees inside a box            | Security checks built into the pipeline        |
 | A box with a pink band                   | A change that needs something new              |
 | An adapter or rack with the same band    | IT adapting its services for that change       |
 | Long cables to the stations              | Integrations, tested at every step             |
@@ -78,8 +80,11 @@ Gates stop broken parts, and step by step automation replaces manual work.
 - When a service in the cloud fails, every belt stops while the people, who do not know
   why, keep working and run about to find the fault (the Software factory developers
   most of all, inspecting): the film shows how much the whole
-  line depends on IT.
+  line depends on IT. An IT developer works at the failed service until it is back, so IT
+  is seen putting it right.
 - People work here and there on the floor, not only along the belts.
+- The captions put the cause of trouble on the system, not on people: parts go wrong
+  because they are carried by hand, and automation gives people time for the product.
 - Security is the work of IT security developers, who secure the factory in the
   background: a firewall, locks on the cables, a card reader with a second step at the
   server room and a sealed release. Their work can stop parts of the factory: when they
@@ -87,7 +92,9 @@ Gates stop broken parts, and step by step automation replaces manual work.
   puts it right; when they raise the firewall, the release's stations stop for a while.
   These stops are small and local, unlike the cloud outage that stops every belt. One
   caption introduces them and says so; the details are meant to be found by watching
-  again.
+  again. Security is also built into the line: every gate looks through the boxes and
+  stops one that looks whole but is unsafe inside, so security is not only something
+  that stops the factory.
 - The middle is uneven, not a neat grid: gaps differ from belt to belt, the flow has holes,
   and some builds in the lines crawl while others finish fast, so viewers see both.
 - IT has to adapt when the product needs something new: boxes with a new color band

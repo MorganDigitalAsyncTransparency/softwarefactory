@@ -54,7 +54,8 @@ export function carriedSpan({ laid }, gap, laneIndex) {
 
 // Boxes on a stretch. Each box is counted from where the lane starts (`origin`), so a
 // box keeps its place when a gap closes. A stretch may miss a share of its boxes; an
-// uneven stretch misses more, and has random timing and quality. Now and then a box is
+// uneven stretch misses more, and has random timing and quality: some boxes are dented,
+// the wrong size or unsafe inside though they look whole. Now and then a box is
 // new. A gate pushes every box it cannot pass off the belt.
 export function boxesOn(stretch, time, { seed = 0, spacing = SPACING, speed = SPEED, origin = stretch.start } = {}) {
   const motion = { stretch, time, speed, origin, period: spacing / speed };
@@ -79,7 +80,8 @@ function boxAt({ stretch, time, speed, origin, period }, index, seed) {
 function lookOf({ uneven }, seed) {
   const chance = noise(seed + 0.25);
   if (noise(seed + 0.95) < NEW) return 'new';
-  if (!uneven || chance > 0.3) return 'good';
+  if (!uneven || chance > 0.4) return 'good';
+  if (chance > 0.3) return 'unsafe';
   return chance < 0.18 ? 'dented' : 'wrong';
 }
 

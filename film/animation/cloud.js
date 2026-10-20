@@ -58,10 +58,13 @@ export function itDevelopers(time) {
   }));
 }
 
-// A red light on the cloud, blinking while a service in it has failed. Relative to the cloud.
+// A red light on the cloud, blinking while a service in it has failed, with an IT
+// developer at it, working to bring the service back. Relative to the cloud.
 export function alarm(time) {
   const on = Math.sin(time * 9) > -0.3;
-  return group([block([0.2, 1.6, 0.2], 'steel', [0, TOP + 0.8, 2.6]), sphere(0.8, on ? 'stop' : 'off', [0, TOP + 2.2, 2.6])], {
+  const fixer = group([person('it', { seed: 2, inspecting: true })], { position: [1.1, TOP, 2.6], turn: Math.PI });
+  fixer.scale.setScalar(SEEN_FROM_BELOW);
+  return group([block([0.2, 1.6, 0.2], 'steel', [0, TOP + 0.8, 2.6]), sphere(0.8, on ? 'stop' : 'off', [0, TOP + 2.2, 2.6]), fixer], {
     position: [CLOUD.x, CLOUD.y, CLOUD.z],
   });
 }

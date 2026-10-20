@@ -14,13 +14,15 @@ export function facingTurn(facing) {
 }
 
 // The product. A dented box is darker and squashed; a box of the wrong size is larger; a
-// new box has a band in the color of something new the product needs. A sealed box has a
-// strap round it, so whoever receives it can see it was not opened on the way.
-export function box(look = 'good', { scale = 1, sealed = false } = {}) {
+// new box has a band in the color of something new the product needs. An unsafe box looks
+// whole until a gate looks through it (`seen`) and shows what is wrong inside. A sealed box
+// has a strap round it, so whoever receives it can see it was not opened on the way.
+export function box(look = 'good', { scale = 1, sealed = false, seen = false } = {}) {
   const size = scale * (look === 'wrong' ? 1.45 : 1);
   const surface = look === 'dented' ? 'dented' : 'box';
   const shape = group([
-    block([BOX, BOX, BOX], surface, [0, BOX / 2, 0]),
+    block([BOX, BOX, BOX], seen ? 'seenThrough' : surface, [0, BOX / 2, 0]),
+    seen && sphere(0.17, 'stop', [0, BOX / 2, 0]),
     block([BOX + 0.01, 0.02, 0.14], 'tape', [0, BOX + 0.005, 0]),
     look === 'new' && block([BOX + 0.02, 0.16, BOX + 0.02], 'feature', [0, BOX / 2, 0]),
     sealed && block([0.08, BOX + 0.03, BOX + 0.03], 'steel', [0, BOX / 2, 0]),

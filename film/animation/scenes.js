@@ -17,6 +17,8 @@ const DOCK_VIEW = [[DOCK.end - 2, 8, 17], [DOCK.end - 1, 1.5, OUTPUT.z]];
 const MIDDLE = [[1, 13, 18], [1, 1, -1.5]];
 const MIDDLE_CLOSE = [[0, 10, 14], [0, 1, -1.5]];
 const MIDDLE_HIGH = [[1, 17, 22], [1, 1, -2]];
+// Where a robot takes over a stretch that was carried by hand.
+const HANDOVER = [[-3, 9, 12], [-4.5, 1, -1.5]];
 const OUTAGE_VIEW = [[-2, 40, 52], [-2, 8, -4]];
 const FAREWELL = [[-14, 66, 92], [-6, 9, -3]];
 const GATE = { x: middleOf(GAPS[1].B), z: LANES[1] };
@@ -174,7 +176,8 @@ function stepsAutomated({ scene, progress }) {
   const carrier = { role: 'product', walking: true, ...walkOff(share(progress, 0.55, 1)) };
   const crew = [...(bridged < 1 ? developers : []), handedOver ? carrier : robot];
   const growing = bridged < 1 && { gap: 'A', lane: 1, share: bridged };
-  return shot([GATE_CLOSE, MIDDLE], progress, { ...GATED, gaps, crew, growing, fitted: { B2: scene.start - FITTED } });
+  // The camera holds on the handover while the caption is read.
+  return shot([GATE_CLOSE, HANDOVER, HANDOVER, MIDDLE], progress, { ...GATED, gaps, crew, growing, fitted: { B2: scene.start - FITTED } });
 }
 
 // The Product developer who handed a stretch to a robot walks off toward the office.

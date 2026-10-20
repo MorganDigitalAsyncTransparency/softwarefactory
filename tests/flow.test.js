@@ -63,6 +63,14 @@ test('a gate pushes damaged boxes off the belt with a red light, and new boxes w
   assert.deepEqual([...signals].sort(), ['ok', 'stop', 'wait']);
 });
 
+test('a gate stops unsafe boxes, which look whole on the belt, with a red light', () => {
+  const stretch = { start: 0, end: 30, uneven: true, gates: [{ x: 15, fittedAt: 0 }] };
+  const unsafe = MINUTE.flatMap((time) => boxesOn(stretch, time).filter(({ look }) => look === 'unsafe').map((box) => ({ ...box, time })));
+  assert.ok(unsafe.some(({ side }) => side > 0));
+  assert.ok(unsafe.every(({ x }) => x <= 15));
+  unsafe.filter(({ side }) => side > 0).forEach(({ time }) => assert.equal(gateSignal(boxesOn(stretch, time), 15), 'stop'));
+});
+
 test('a gate fitted for new boxes lets them pass and stops only damaged ones', () => {
   const { looks, signals } = throughGate(0);
   assert.deepEqual([...looks].sort(), ['good', 'new']);

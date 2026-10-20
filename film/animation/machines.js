@@ -26,13 +26,14 @@ function leg(x, z) {
   return cylinder([0.06, 0.72], 'steel', [x, 0.36, z]);
 }
 
-// A quality gate: a frame over the belt with a light, and a bin beside it for the boxes
-// it stops. On top, the adapter IT fits so the gate can check new boxes, `fitted` of the
-// way in.
+// A quality gate: a frame over the belt with a light, a glowing curtain that looks
+// through each box, and a bin beside it for the boxes it stops. On top, the adapter IT
+// fits so the gate can check new boxes, `fitted` of the way in.
 export function gate(x, z, signal, fitted = 0) {
   return group([
     ...gatePosts(x, z, 2.6),
     block([0.5, 0.4, 2.4], 'machine', [x, 2.7, z]),
+    block([0.06, 1.5, 1.9], 'scan', [x, 1.75, z]),
     sphere(0.22, light(signal), [x, 3.1, z]),
     slab([x - 0.6, z + 1.05], [x + 0.6, z + 2.05], [0, 0.5], 'machine'),
     fitted > 0 && group([adapter()], { position: [x, 2.9 + 1.5 * (1 - fitted), z - 0.75] }),
