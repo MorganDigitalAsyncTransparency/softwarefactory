@@ -22,8 +22,8 @@ function added(was = {}, is = {}) {
   return [changed[0][1] === 'robot' ? 'whirr' : 'clank'];
 }
 
-function spoken({ crew = [] }) {
-  return crew.map(({ says }) => says).filter(Boolean);
+function spoken({ crew = [], siteTalk }) {
+  return [...crew.map(({ says }) => says), siteTalk && 'code'].filter(Boolean);
 }
 
 // Fitted gates are listed by the film time from which they pass new boxes.

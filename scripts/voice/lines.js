@@ -2,7 +2,7 @@ import { captionSpan } from '../../film/animation/caption.js';
 
 // What the voice says, as the sound description sets out
 // (film/script/visual-descriptions.md#sound).
-const SPOKEN = [[/\s*\([^)]*\)/g, ''], [/CI\/CD/g, 'CI CD']];
+const SPOKEN = [[/CI\/CD/g, 'CI CD']];
 
 // One line for each scene with a caption: the words to speak and the seconds the
 // caption is on screen, which the voice must not run over (R15).

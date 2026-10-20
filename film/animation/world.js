@@ -1,7 +1,7 @@
 import { hall, site, standingBays } from './building.js';
 import { adapter, assembly, output } from './machines.js';
 import { agents, alarm, cable, cloud, cloudRacks, itDevelopers } from './cloud.js';
-import { box, bubble, facingTurn, person, robot } from './figures.js';
+import { box, bubble, codeSign, facingTurn, person, robot } from './figures.js';
 import { group, slab } from './shapes.js';
 import { boxesOn } from './flow.js';
 import { share } from './timeline.js';
@@ -15,6 +15,8 @@ import { pull, wiring } from './wiring.js';
 import { BELT, GAPS, LANES, OUTPUT, OUTPUT_TESTS, middleOf } from './layout.js';
 import { beltsLaid, gapsLaid, hallBuilt, racksBuilt, racksFitted, roomRacksBuilt } from './schedule.js';
 
+// What a speech bubble shows, by what the crew member talks about.
+const SUBJECTS = { new: () => box('new'), adapter, code: codeSign };
 const RELEASE = { spacing: 7, speed: 1.4 };
 // The release is sealed after its last test station, before it leaves for the dock.
 const SEALED_FROM = OUTPUT_TESTS.at(-1) + 1.5;
@@ -116,9 +118,9 @@ function releases(state, time) {
   ];
 }
 
-// A crew member may be talking, with a bubble that shows a new box or an IT adapter.
+// A crew member may be talking, with a bubble that shows a new box, an IT adapter or code.
 function crewMember({ role, x, z, facing, walking, says }, time, index) {
   const figure = role === 'robot' ? robot({ time }) : person(role, { seed: index, walked: walking ? x : 0 });
-  const talk = says && group([bubble(says === 'new' ? box('new') : adapter())], { position: [x, 0, z] });
+  const talk = says && group([bubble(SUBJECTS[says]())], { position: [x, 0, z] });
   return group([group([figure], { position: [x, 0, z], turn: facingTurn(facing) }), talk]);
 }

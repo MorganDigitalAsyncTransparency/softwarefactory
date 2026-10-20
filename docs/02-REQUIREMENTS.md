@@ -147,3 +147,11 @@ roles and their colors, the captions and the continuity.
   pause or a jump the voice goes on from the same point in the caption, and the
   recordings are made from the script, so a changed caption is read anew. A clone
   served as R6 says plays without the voice until it is made (ADR 0006).
+
+### R16: The Software factory developers build software
+
+- **Given** the Software factory developers, who build with walls, belts and cranes,
+- **when** the film plays,
+- **then** one of them talks in a speech bubble with the sign for code, </>, in the
+  scene that introduces them and while the gate is installed in the gate scene, and
+  each of them holds a laptop while the picture is digital, and only then.
