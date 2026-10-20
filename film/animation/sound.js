@@ -1,13 +1,15 @@
 import { SHORT, gainNode, tone } from './instruments.js';
+import { createVoice } from './voice.js';
 
 // The film's sound, made in the browser with the Web Audio API so that no recording is
-// kept (ADR 0005). It plays what score.js describes; the browser lets it start only
-// after the viewer has clicked or pressed a key on the page.
+// kept (ADR 0005), except the voice's (ADR 0006). It mixes three layers that play side
+// by side: the music and the effects, which score.js describes and which fade with the
+// picture, and the voice. The browser lets it start only after the viewer has clicked or
+// pressed a key on the page.
 const VOLUME = 0.5;
 const GLIDE = 0.05;
-// The music steps back and forward slowly, so the voice does not pump it.
-const MUSIC_GLIDE = 0.3;
-const MIX = { hum: 0.04, music: 0.18, alert: 0.07, reverb: 0.35 };
+// The music stays in the background, under the voice, the whole film.
+const MIX = { music: 0.06, effects: 0.7, voice: 2, hum: 0.04, alert: 0.05, reverb: 0.35 };
 const REVERB_SECONDS = 2.4;
 
 export function createSound() {
@@ -18,6 +20,7 @@ export function createSound() {
       voices.context.resume();
     },
     suspend() {
+      voices?.voice.stop();
       voices?.context.suspend();
     },
     play({ volume, levels, events }) {
@@ -25,33 +28,38 @@ export function createSound() {
       steady(voices, { volume, ...levels });
       events.forEach((event) => SHORT[event.kind](voices, event));
     },
+    // The voice reads the caption `offset` seconds after it appeared.
+    speak(id, offset) {
+      if (voices?.context.state === 'running') voices.voice.follow(id, offset);
+    },
   };
 }
 
-// The music and some cues ring in a hall: they go to the master both dry and through
-// the hall's echo.
+// The layers meet in the master, and a compressor keeps the loudest moments from
+// clipping. The music and some cues also ring in the hall's echo.
 function build(context) {
-  // The compressor keeps the loudest moments, as the last plays of the theme, from clipping.
   const limiter = new DynamicsCompressorNode(context);
   limiter.connect(context.destination);
   const master = gainNode(context, VOLUME, limiter);
+  const scene = gainNode(context, 1, master);
+  const music = gainNode(context, MIX.music, scene);
+  const effects = gainNode(context, MIX.effects, scene);
   const room = new ConvolverNode(context, { buffer: hallEcho(context) });
-  room.connect(gainNode(context, MIX.reverb, master));
-  const music = gainNode(context, MIX.music, master);
-  const ring = gainNode(context, 1, master);
+  room.connect(gainNode(context, MIX.reverb, scene));
+  const ring = gainNode(context, 1, effects);
   [music, ring].forEach((node) => node.connect(room));
-  const hum = gainNode(context, 0, filtered(context, 'lowpass', 160, master));
+  const hum = gainNode(context, 0, filtered(context, 'lowpass', 160, effects));
   [55, 110].forEach((frequency) => tone(context, { type: 'sawtooth', frequency }, hum));
-  const alert = gainNode(context, 0, filtered(context, 'lowpass', 2400, master));
+  const alert = gainNode(context, 0, filtered(context, 'lowpass', 2400, effects));
   const siren = tone(context, { type: 'square', frequency: 880 }, alert);
-  return { context, master, music, ring, hum, alert, siren };
+  const voice = createVoice(context, gainNode(context, MIX.voice, master));
+  return { context, scene, music, effects, ring, hum, alert, siren, voice };
 }
 
-function steady(voices, { volume, hum, music, alert }) {
-  const glide = (param, value, seconds = GLIDE) => param.setTargetAtTime(value, voices.context.currentTime, seconds);
-  glide(voices.master.gain, VOLUME * volume);
+function steady(voices, { volume, hum, alert }) {
+  const glide = (param, value) => param.setTargetAtTime(value, voices.context.currentTime, GLIDE);
+  glide(voices.scene.gain, volume);
   glide(voices.hum.gain, MIX.hum * hum);
-  glide(voices.music.gain, MIX.music * music, MUSIC_GLIDE);
   glide(voices.alert.gain, MIX.alert * alert.level);
   voices.siren.frequency.setValueAtTime(alert.pitch, voices.context.currentTime);
 }

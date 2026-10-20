@@ -22,3 +22,4 @@ re-litigating settled questions.
 | 0005 | [The film's sound is made in the browser from a score in code](0005-sound-made-in-the-browser.md) |
 | 0006 | [A voice reads the captions, made from the script with an open-source model at publishing](0006-voice-made-from-the-script-at-publishing.md) |
 | 0007 | [The music is In the Hall of the Mountain King, played from its notes in the browser](0007-classical-music-played-from-its-notes.md) |
+| 0008 | [The sound is three layers mixed together, and the music never pauses](0008-sound-in-three-layers.md) |

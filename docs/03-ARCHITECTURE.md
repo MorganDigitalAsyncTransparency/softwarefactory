@@ -13,8 +13,7 @@ three.js comes from a CDN through the page's import map (ADR 0004).
 
 ```text
 film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player ─┬─▶ caption (HTML)
-                                                                   ├─▶ score ─▶ sound (Web Audio)
-                                                                   ├─▶ voice (film/voice/*.mp3)
+                                                                   ├─▶ score ─▶ sound (Web Audio) ─▶ voice (film/voice/*.mp3)
                                                                    │
                                           scenes (shot: camera + state)
                                                                    │
@@ -35,12 +34,12 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `player.js`        | Loads the script, runs the clock, wires the controls and shows each frame (R4)      |
 | `caption.js`       | The caption over the picture: when in its scene it shows, and balanced line wrapping (R3) |
 | `score.js`         | Pure: what sounds at a moment of the clocks: the levels of the hum, music and alarms, and the notes, clicks, thuds and cues that start (R11) |
-| `music.js`         | Pure: the Mountain King theme as notes, which start at a moment of the line's clock, how long and how loud (R11, ADR 0007) |
+| `music.js`         | Pure: the Mountain King theme as notes, which start at a moment of the film, how long and how loud (R11, ADR 0007) |
 | `cues.js`          | Pure: the short sounds that mark a moment, from the shot of the frame before and this one (R11) |
-| `sound.js`         | Plays the score with the Web Audio API, in a hall's echo, and stops when the film is paused or the sound is off (ADR 0005) |
+| `sound.js`         | Mixes three layers with the Web Audio API: the music and the effects from the score, in a hall's echo, and the voice; stops when the film is paused or the sound is off (ADR 0005, ADR 0008) |
 | `instruments.js`   | The piano and the short sounds, made of oscillators that swell and die away       |
-| `voice.js`         | Plays each caption's recording from the caption's offset, and keeps it there through pauses and jumps (R15) |
-| `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state, fades and whether the music halts; throws on a missing ID; the line's and the people's clocks; which gates are fitted for new boxes and when, and who talks in S03 and the gate scene (R2, R8, R9, R13, R16) |
+| `voice.js`         | The voice layer: plays each caption's recording in the sound's audio context from the caption's offset, and keeps it there through pauses and jumps (R15) |
+| `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state, fades and where the line halts; throws on a missing ID; the line's and the people's clocks; which gates are fitted for new boxes and when, and who talks in S03 and the gate scene (R2, R8, R9, R13, R16) |
 | `flow.js`          | Pure: where boxes, carriers and robots are at a time, which boxes are new, and what a gate stops or, once IT has fitted it, lets pass (R12, R13) |
 | `wander.js`        | Pure: where a person who works here and there is at a time                          |
 | `troubleshoot.js`  | Pure: where a Software factory developer runs and stops to inspect while the cloud is down (R9) |
@@ -85,11 +84,12 @@ the floor, so they stop and go on from where they were. The people's clock runs 
 while the line stands still, so they hurry about (R9); the Software factory developers
 leave their work and run about near it, stopping to inspect. During the outage the
 scene's state carries `outage: { seconds, length }`, how far into it the frame is. The sound follows the same
-clocks: the music and the station clicks the line's, the hum, the crane and the alarms
+clocks: the station clicks the line's; the music, the hum, the crane and the alarms
 the film's. Each frame the player asks `score.js` for the sound between the frame
 before and this one, given as both frames' shots and clocks, so a jump plays nothing it
 skipped and a cue sounds where the shot changes. The voice follows the captions
-instead: each frame the player tells `voice.js` how far into its caption the scene is.
+instead: each frame the player tells `sound.js`, which hands it to `voice.js`, how far
+into its caption the scene is.
 The digital look blends every material between its two looks instead of
 drawing a second world.
 

@@ -99,8 +99,9 @@ roles and their colors, the captions and the continuity.
   says:
   - the music speeds up and grows towards its closing chord, which lands as the last
     scene begins, wherever the script puts it;
-  - the music and the station clicks stop with the belts while the alarm sounds;
-  - the music steps back while the voice reads;
+  - the music, the factory sounds and the voice play together as three layers: the
+    music plays the whole film without a pause, also while the voice reads and while
+    the station clicks stop with the belts and the alarm sounds;
   - short sounds mark the moments the description names, once each, and none plays
     for what a jump skipped;
   - the sound fades with the picture, and a paused film is silent.

@@ -1,8 +1,8 @@
 // The film's music: the theme of In the Hall of the Mountain King, from Peer Gynt,
 // written out as MIDI notes so the browser can play it (ADR 0007). The piece is in the
 // public domain. As in the original, the theme is played again and again, faster and
-// louder each time; it follows the line's clock, so it stops with the belts, and its
-// closing chord lands at `finale`, the line's time when the last scene begins.
+// louder each time; it plays the whole film, and its closing chord lands at `finale`,
+// when the last scene begins.
 const FIRST_BEATS = 1.2;
 const STATEMENTS = 4;
 const STEPS_PER_BEAT = 2;
@@ -24,7 +24,7 @@ const FINAL_RING_SECONDS = 6;
 const DETACHED = 0.6;
 const OCTAVES = [0, 12, 24];
 
-// The notes that start from `from` up to just before `to` seconds of the line's clock,
+// The notes that start from `from` up to just before `to` seconds of the film,
 // each with its step, how long it rings and how loud it is.
 export function notesBetween(from, to, finale) {
   const tempo = tempoFor(finale);
@@ -40,7 +40,7 @@ function notesAt(step, beatsPerSecond) {
   if (statement === STATEMENTS && place === 0) return FINAL_CHORD.map((midi) => ({ midi, seconds: FINAL_RING_SECONDS, level: 1 }));
   if (statement >= STATEMENTS || !STARTS.has(place)) return [];
   const [midi, length] = STARTS.get(place);
-  const level = 0.4 + (0.6 * step) / (STATEMENTS * STEPS);
+  const level = 0.6 + (0.4 * step) / (STATEMENTS * STEPS);
   const seconds = (DETACHED * length) / STEPS_PER_BEAT / beatsPerSecond;
   return OCTAVES.slice(0, Math.min(statement + 1, OCTAVES.length)).map((octave) => ({ midi: midi + octave, seconds, level }));
 }

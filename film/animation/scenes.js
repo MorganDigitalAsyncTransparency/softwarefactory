@@ -61,7 +61,7 @@ const DRAWINGS = {
   S06: ({ progress }) => shot([SETTLED, LEFT], progress, START),
   S07: ({ progress }) => shot([LEFT, DOOR_VIEW, DOCK_VIEW], progress, START),
   S08: ({ progress }) => shot([DOCK_VIEW, DOOR_VIEW, MIDDLE], progress, START),
-  S09: ({ progress }) => ({ ...shot([MIDDLE, MIDDLE_CLOSE], progress, START), fades: ['out'], uneven: true }),
+  S09: ({ progress }) => ({ ...shot([MIDDLE, MIDDLE_CLOSE], progress, START), fades: ['out'] }),
   S10: ({ progress }) => ({ split: true, progress, fades: ['in', 'out'] }),
   S11: ({ scene, progress }) => ({ ...cloudFails(progress, scene.end - scene.start), fades: ['in'], halts: OUTAGE }),
   S12: gateInstalled,

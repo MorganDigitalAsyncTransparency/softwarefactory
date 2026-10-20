@@ -1,45 +1,52 @@
-// The voice that reads the captions. Each caption has its own recording, made from
-// the script when the film is published (ADR 0006); a film served without them, as
-// from a fresh clone, plays without the voice.
+// The voice that reads the captions, one of the three layers of the film's sound
+// (sound.js). Each caption has its own recording, made from the script when the film is
+// published (ADR 0006). It plays in the same audio context as the music and the effects,
+// so the three are mixed and none of them stops the others.
 const DRIFT_SECONDS = 0.25;
-// Refusals that pass: no click on the page yet, a pause during loading, or no
-// recording; the next frame tries again, or the clip is dropped on its error event.
-const PASSING_REFUSALS = ['NotAllowedError', 'AbortError', 'NotSupportedError'];
 
-export function createVoice() {
-  const clips = new Map();
-  let current;
+export function createVoice(context, destination) {
+  const recordings = new Map();
+  let playing = null;
   return {
-    // Keeps the scene's recording at the caption's offset, so a pause or a jump
-    // takes the voice along; a negative offset is before the caption starts.
+    // Keeps the scene's recording at the caption's offset, so a pause or a jump takes
+    // the voice along; a negative offset is before the caption starts.
     follow(id, offset) {
-      const clip = offset >= 0 ? clipFor(id) : undefined;
-      if (current !== clip) current?.pause();
-      current = clip;
-      // A seek still under way is left to finish, or it would start again each frame.
-      if (!clip || clip.seeking || offset >= clip.duration) return;
-      if (Math.abs(clip.currentTime - offset) > DRIFT_SECONDS) clip.currentTime = offset;
-      if (clip.paused && !clip.ended) clip.play().catch(passRefusal);
+      // The recording is fetched while the scene waits for its caption, so the first
+      // word is not lost.
+      const buffer = recordingFor(id);
+      if (!buffer || offset < 0 || offset >= buffer.duration) return stop();
+      const drift = playing?.id === id ? Math.abs(context.currentTime - playing.startedAt - offset) : Infinity;
+      if (drift > DRIFT_SECONDS) start(id, buffer, offset);
     },
-    speaking() {
-      return Boolean(current && !current.paused);
-    },
-    stop() {
-      current?.pause();
-      current = undefined;
-    },
+    stop,
   };
 
-  function clipFor(id) {
-    if (!clips.has(id)) {
-      const clip = new Audio(`voice/${id}.mp3`);
-      clip.addEventListener('error', () => clips.set(id, undefined));
-      clips.set(id, clip);
-    }
-    return clips.get(id);
+  function start(id, buffer, offset) {
+    stop();
+    const source = new AudioBufferSourceNode(context, { buffer });
+    source.connect(destination);
+    source.start(0, offset);
+    playing = { id, source, startedAt: context.currentTime - offset };
   }
-}
 
-function passRefusal(error) {
-  if (!PASSING_REFUSALS.includes(error.name)) throw error;
+  function stop() {
+    playing?.source.stop();
+    playing = null;
+  }
+
+  // A recording is fetched once, the first time its scene plays. A film served
+  // without them, as from a fresh clone, has none and plays without the voice.
+  function recordingFor(id) {
+    if (!recordings.has(id)) {
+      recordings.set(id, undefined);
+      load(`voice/${id}.mp3`).then((buffer) => recordings.set(id, buffer), () => {});
+    }
+    return recordings.get(id);
+  }
+
+  async function load(url) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`No recording at ${url} (${response.status}).`);
+    return context.decodeAudioData(await response.arrayBuffer());
+  }
 }

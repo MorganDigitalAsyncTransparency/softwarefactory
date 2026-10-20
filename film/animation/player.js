@@ -4,7 +4,6 @@ import { checkDrawings, draw, lineTime, peopleTime } from './scenes.js';
 import { captionSpan, showCaption } from './caption.js';
 import { createStage } from './stage.js';
 import { createSound } from './sound.js';
-import { createVoice } from './voice.js';
 import { events, levels } from './score.js';
 
 const SCRIPT_URL = 'script/script.md';
@@ -17,7 +16,6 @@ const LATE_SECONDS = 1;
 const canvas = document.getElementById('stage');
 const stage = createStage(canvas);
 const sound = createSound();
-const voice = createVoice();
 const caption = document.getElementById('caption');
 const playButton = document.getElementById('play');
 const restartButton = document.getElementById('restart');
@@ -34,7 +32,7 @@ async function start() {
   playback.scenes = parseScript(await response.text());
   checkDrawings(playback.scenes);
   // The music's closing chord lands as the last scene begins.
-  playback.finale = lineTime(playback.scenes, playback.scenes.at(-1).start);
+  playback.finale = playback.scenes.at(-1).start;
   progressBar.max = duration(playback.scenes);
   wireControls();
   const startTime = startTimeFrom(window.location.search);
@@ -49,7 +47,7 @@ function wireControls() {
   soundButton.addEventListener('click', toggleSound);
   // The browser lets sound start only after the viewer has clicked or pressed a key.
   ['pointerdown', 'keydown'].forEach((type) => document.addEventListener(type, listen));
-  document.addEventListener('visibilitychange', () => (document.hidden ? silence() : listen()));
+  document.addEventListener('visibilitychange', () => (document.hidden ? sound.suspend() : listen()));
   window.addEventListener('resize', () => seek(playback.time));
   document.addEventListener('keydown', (event) => {
     if (event.code !== 'Space') return;
@@ -71,7 +69,7 @@ function play() {
 
 function pause() {
   playback.playing = false;
-  silence();
+  sound.suspend();
   playButton.setAttribute('aria-label', 'Play');
   playButton.textContent = '▶';
 }
@@ -83,7 +81,7 @@ function tick(timestamp) {
   if (elapsed > LATE_SECONDS) playback.heard = null;
   const frame = seek(Math.min(playback.time + elapsed, duration(playback.scenes)));
   hear(frame);
-  if (playback.soundOn) voice.follow(frame.spoken.id, frame.spoken.offset);
+  if (playback.soundOn) sound.speak(frame.spoken.id, frame.spoken.offset);
   if (playback.time >= duration(playback.scenes)) pause();
   else requestAnimationFrame(tick);
 }
@@ -106,13 +104,8 @@ function seek(time) {
 function hear({ shot, clock, fade: volume }) {
   const now = { shot, clock };
   const heard = events(playback.heard ?? now, now, playback.finale);
-  sound.play({ volume, levels: levels(shot, clock, voice.speaking()), events: heard });
+  sound.play({ volume, levels: levels(shot, clock), events: heard });
   playback.heard = now;
-}
-
-function silence() {
-  sound.suspend();
-  voice.stop();
 }
 
 function listen() {
@@ -124,7 +117,7 @@ function toggleSound() {
   soundButton.setAttribute('aria-label', playback.soundOn ? 'Sound off' : 'Sound on');
   soundButton.textContent = playback.soundOn ? '🔊' : '🔇';
   if (playback.soundOn) listen();
-  else silence();
+  else sound.suspend();
 }
 
 function render({ scene, progress }) {

@@ -14,13 +14,13 @@ const shotAt = (film) => draw(frameAt(scenes, film));
 const at = (film) => ({ shot: shotAt(film), clock: clockAt(film) });
 const STEP = 0.05;
 const times = Array.from({ length: Math.floor(scenes.at(-1).end / STEP) }, (_, index) => index * STEP);
-const finale = lineTime(scenes, scenes.at(-1).start);
+const finale = scenes.at(-1).start;
 const heard = (from, to) => events(at(from), at(to), finale);
 
 test('the alarm sounds exactly while the cloud is down, and the belts go quiet', () => {
   times.forEach((film) => {
     const shot = shotAt(film);
-    const { alert, hum } = levels(shot, clockAt(film), false);
+    const { alert, hum } = levels(shot, clockAt(film));
     if (shot.state?.outage) assert.ok(alert.level === 1 && hum < 1, `at ${film}`);
     else if (!shot.split) assert.equal(alert.level, 0, `at ${film}`);
   });
@@ -28,30 +28,21 @@ test('the alarm sounds exactly while the cloud is down, and the belts go quiet',
 
 test('the split panels sound a warning once their lights turn red', () => {
   const split = times.filter((film) => shotAt(film).split);
-  assert.ok(split.some((film) => levels(shotAt(film), clockAt(film), false).alert.level > 0));
-  assert.equal(levels(shotAt(split[0]), clockAt(split[0]), false).alert.level, 0);
+  assert.ok(split.some((film) => levels(shotAt(film), clockAt(film)).alert.level > 0));
+  assert.equal(levels(shotAt(split[0]), clockAt(split[0])).alert.level, 0);
 });
 
-test('the music steps back while the voice reads a caption', () => {
-  const music = (speaking) => levels(shotAt(10), clockAt(10), speaking).music;
-  assert.equal(music(false), 1);
-  assert.ok(music(true) < 1);
-});
-
-test('the music and the station clicks stop with the belts while the cloud is down', () => {
+test('the station clicks stop with the belts while the cloud is down, and the music plays on', () => {
   const halted = times.filter((film) => shotAt(film).state?.outage).slice(1);
   assert.ok(halted.length > 10);
-  halted.forEach((film) => {
-    assert.deepEqual(heard(film - STEP, film).filter(({ kind }) => ['note', 'click'].includes(kind)), [], `at ${film}`);
-  });
+  halted.forEach((film) => assert.ok(!heard(film - STEP, film).some(({ kind }) => kind === 'click'), `at ${film}`));
+  const kinds = new Set(halted.flatMap((film) => heard(film - STEP, film).map(({ kind }) => kind)));
+  assert.ok(kinds.has('note'));
 });
 
-test('the music halts in the uneven scene, leaving out notes it would play elsewhere', () => {
-  const scene = scenes.find((candidate) => draw({ scene: candidate, progress: 0.5 }).uneven);
-  const notes = (shot) => events({ shot, clock: clockAt(scene.start) }, { shot, clock: clockAt(scene.end) }, finale)
-    .filter(({ kind }) => kind === 'note').length;
-  const shot = draw({ scene, progress: 0.5 });
-  assert.ok(notes(shot) < 0.8 * notes({ ...shot, uneven: false }));
+test('the music never pauses for more than a held note until its closing chord', () => {
+  const sounding = times.filter((film, index) => index && film <= finale && heard(times[index - 1], film).some(({ kind }) => kind === 'note'));
+  sounding.slice(1).forEach((film, index) => assert.ok(film - sounding[index] < 2, `silent from ${sounding[index]} to ${film}`));
 });
 
 test('the music starts with the film and its closing chord lands as the last scene begins', () => {
@@ -63,7 +54,7 @@ test('the music starts with the film and its closing chord lands as the last sce
 });
 
 test('the theme plays faster towards the end', () => {
-  const steps = (from, to) => new Set(notesBetween(lineTime(scenes, from), lineTime(scenes, to), finale).map(({ step }) => step)).size;
+  const steps = (from, to) => new Set(notesBetween(from, to, finale).map(({ step }) => step)).size;
   assert.ok(steps(125, 135) > 1.5 * steps(5, 15));
 });
 
