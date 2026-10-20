@@ -1,6 +1,6 @@
 # Film: The factory that builds itself while it produces
 
-A short animated silent film that explains a software factory by comparing it with a
+A short animated film that explains a software factory by comparing it with a
 physical factory. This file is the film brief: who the film is for and the decisions
 that shape it. The scenes themselves are in [script/script.md](script/script.md).
 
@@ -14,7 +14,7 @@ it is in the [contributing guide](../docs/01-CONTRIBUTING.md#watching-the-animat
 | Audience         | Employees, with a message from senior management. No IT knowledge assumed; many read English as a second language. |
 | Purpose          | Explain the current state, so that viewers understand it.                                |
 | Length           | 90–150 seconds.                                                                          |
-| Form             | Animated silent film in a modern style. No voices; captions, music and the sounds of the factory. |
+| Form             | Animated film in a modern style. Captions read by a voice, music and the sounds of the factory. |
 | Tone             | Matter-of-fact: "this is how it is". No humor, no selling.                               |
 | Language         | English captions.                                                                        |
 | Where it is seen | On the web, on the viewer's own computer.                                                |
@@ -62,6 +62,9 @@ Gates stop broken parts, and step by step automation replaces manual work.
   some test stations are still being built when it ends.
 - The first version is an animation in code that makes its own sound in the browser
   (ADR 0005); any recording to a video file comes later.
+- A calm voice reads each caption while it is shown, so viewers can listen as well as
+  read. It is made from the script whenever the film is published (ADR 0006), so it
+  follows every change to the captions.
 - The film introduces the people first: Product developers, Software factory developers
   and IT developers each wear their own color, so they are always told apart (see
   [roles](script/script.md#roles)).

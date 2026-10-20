@@ -3,7 +3,7 @@
 Explaining the software factory: how software is built today, and how we are turning
 it into a factory that builds itself while it produces.
 
-The first deliverable is a short animated silent film that compares a software factory
+The first deliverable is a short animated film that compares a software factory
 with a physical one.
 
 ## What is here

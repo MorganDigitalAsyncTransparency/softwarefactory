@@ -4,6 +4,7 @@ import { checkDrawings, draw, lineTime, peopleTime } from './scenes.js';
 import { captionSpan, showCaption } from './caption.js';
 import { createStage } from './stage.js';
 import { createSound } from './sound.js';
+import { createVoice } from './voice.js';
 import { events, levels } from './score.js';
 
 const SCRIPT_URL = 'script/script.md';
@@ -23,6 +24,7 @@ const soundButton = document.getElementById('sound');
 const progressBar = document.getElementById('progress');
 const clock = document.getElementById('clock');
 const playback = { scenes: [], time: 0, playing: false, lastTick: null, soundOn: true, heard: null };
+let voice;
 
 start().catch(showError);
 
@@ -31,6 +33,7 @@ async function start() {
   if (!response.ok) throw new Error(`Could not load ${SCRIPT_URL} (${response.status}).`);
   playback.scenes = parseScript(await response.text());
   checkDrawings(playback.scenes);
+  voice = createVoice(playback.scenes.filter((scene) => scene.caption).map((scene) => scene.id));
   progressBar.max = duration(playback.scenes);
   wireControls();
   const startTime = startTimeFrom(window.location.search);
@@ -45,7 +48,7 @@ function wireControls() {
   soundButton.addEventListener('click', toggleSound);
   // The browser lets sound start only after the viewer has clicked or pressed a key.
   ['pointerdown', 'keydown'].forEach((type) => document.addEventListener(type, listen));
-  document.addEventListener('visibilitychange', () => (document.hidden ? sound.suspend() : listen()));
+  document.addEventListener('visibilitychange', () => (document.hidden ? silence() : listen()));
   window.addEventListener('resize', () => seek(playback.time));
   document.addEventListener('keydown', (event) => {
     if (event.code !== 'Space') return;
@@ -67,7 +70,7 @@ function play() {
 
 function pause() {
   playback.playing = false;
-  sound.suspend();
+  silence();
   playButton.setAttribute('aria-label', 'Play');
   playButton.textContent = '▶';
 }
@@ -79,6 +82,7 @@ function tick(timestamp) {
   if (elapsed > LATE_SECONDS) playback.heard = null;
   const frame = seek(Math.min(playback.time + elapsed, duration(playback.scenes)));
   hear(frame);
+  if (playback.soundOn) voice.follow(frame.spoken.id, frame.spoken.offset);
   if (playback.time >= duration(playback.scenes)) pause();
   else requestAnimationFrame(tick);
 }
@@ -104,6 +108,11 @@ function hear({ shot, clock, fade: volume }) {
   playback.heard = clock;
 }
 
+function silence() {
+  sound.suspend();
+  voice.stop();
+}
+
 function listen() {
   if (playback.playing && playback.soundOn) sound.resume();
 }
@@ -113,7 +122,7 @@ function toggleSound() {
   soundButton.setAttribute('aria-label', playback.soundOn ? 'Sound off' : 'Sound on');
   soundButton.textContent = playback.soundOn ? '🔊' : '🔇';
   if (playback.soundOn) listen();
-  else sound.suspend();
+  else silence();
 }
 
 function render({ scene, progress }) {
@@ -125,19 +134,20 @@ function render({ scene, progress }) {
   const fadeOut = fades.includes('out') ? share(length - seconds, 0, FADE_SECONDS) : 1;
   const picture = Math.min(fadeIn, fadeOut);
   canvas.style.opacity = picture;
-  showSceneCaption(scene, seconds);
+  const spoken = { id: scene.id, offset: seconds - showSceneCaption(scene, seconds).start };
   const { scenes, time } = playback;
   const clock = { film: time, line: lineTime(scenes, time), people: peopleTime(scenes, time) };
   stage.render(shot, { ...clock, buildShare: time / duration(scenes) });
-  return { shot, clock, fade: picture };
+  return { shot, clock, fade: picture, spoken };
 }
 
-// The last scene's caption is the film's closing message.
+// The last scene's caption is the film's closing message. Returns when the caption shows.
 function showSceneCaption(scene, seconds) {
   const closing = scene === playback.scenes.at(-1);
   const span = captionSpan(scene.caption, scene.end - scene.start, closing);
   caption.classList.toggle('closing', closing);
   showCaption(caption, scene.caption, fade(seconds - span.start, span.end - span.start, CAPTION_FADE_SECONDS));
+  return span;
 }
 
 function formatClock(seconds) {

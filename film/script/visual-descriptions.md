@@ -260,5 +260,10 @@ sets a panel while the factory is in view. Two alerts: a two-tone alarm the whol
 in S11, while the belts fall quiet, and a slow warning beep while the panels of S10
 show their red lights. All of it fades with the picture.
 
-The animation makes this sound in the browser (ADR 0005). A video made with other
+Over it all, a voice reads each caption once while it is shown: a calm, friendly,
+modern British English voice that sounds like a person. It says the caption as
+written, except the role colors in parentheses, which are seen, not heard. The voice
+is made from the script when the film is published (ADR 0006).
+
+The animation makes the music and the factory sounds in the browser (ADR 0005). A video made with other
 tools uses royalty-free music and effects licensed for internal and web use.

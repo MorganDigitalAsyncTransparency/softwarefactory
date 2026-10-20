@@ -98,6 +98,16 @@ roles and their colors, the captions and the continuity.
   says: the music and the station clicks stop with the belts while the alarm sounds,
   the sound fades with the picture, and a paused film is silent.
 
+### R15: A voice reads the captions
+
+- **Given** the published film playing with sound on, after the viewer has clicked or
+  pressed a key on the page,
+- **when** a caption is shown,
+- **then** [the voice](../film/script/visual-descriptions.md#sound) reads it from the
+  moment it appears and is done before it leaves; after a pause or a jump the voice
+  goes on from the same point in the caption, and the recordings are made from the
+  script, so a changed caption is read as written.
+
 ### R12: The middle is uneven
 
 - **Given** the five belts in the middle,

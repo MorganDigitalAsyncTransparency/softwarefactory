@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   checks:
-    name: Text-only, English, size, tests and Markdown lint
+    name: Text-only, English, size, tests, voice and Markdown lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -25,6 +25,8 @@ jobs:
         run: scripts/check-file-size.sh
       - name: Unit tests
         run: npm test
+      - name: The voice fits its captions (R15)
+        run: scripts/voice/generate.sh
       - name: Markdown lint
         run: |
           npm install --global markdownlint-cli2@0.23.3
