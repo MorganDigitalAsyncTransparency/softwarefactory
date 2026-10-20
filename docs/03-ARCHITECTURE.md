@@ -34,8 +34,11 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `timeline.js`      | Pure: finds the scene and its progress at a time, fades, and parses `?t=` (R5)      |
 | `player.js`        | Loads the script, runs the clock, wires the controls and shows each frame (R4)      |
 | `caption.js`       | The caption over the picture: when in its scene it shows, and balanced line wrapping (R3) |
-| `score.js`         | Pure: what sounds at a moment of the clocks: the levels of the hum, music and alarms, and the notes, clicks and thuds that start (R11) |
-| `sound.js`         | Plays the score with the Web Audio API, and stops when the film is paused or the sound is off (ADR 0005) |
+| `score.js`         | Pure: what sounds at a moment of the clocks: the levels of the hum, music and alarms, and the notes, clicks, thuds and cues that start (R11) |
+| `music.js`         | Pure: the Mountain King theme as notes, which start at a moment of the line's clock, how long and how loud (R11, ADR 0007) |
+| `cues.js`          | Pure: the short sounds that mark a moment, from the shot of the frame before and this one (R11) |
+| `sound.js`         | Plays the score with the Web Audio API, in a hall's echo, and stops when the film is paused or the sound is off (ADR 0005) |
+| `instruments.js`   | The piano and the short sounds, made of oscillators that swell and die away       |
 | `voice.js`         | Plays each caption's recording from the caption's offset, and keeps it there through pauses and jumps (R15) |
 | `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state, fades and whether the music halts; throws on a missing ID; the line's and the people's clocks; which gates are fitted for new boxes and when, and who talks in the gate scene (R2, R8, R9, R13) |
 | `flow.js`          | Pure: where boxes, carriers and robots are at a time, which boxes are new, and what a gate stops or, once IT has fitted it, lets pass (R12, R13) |
@@ -84,7 +87,8 @@ leave their work and run about near it, stopping to inspect. During the outage t
 scene's state carries `outage: { seconds, length }`, how far into it the frame is. The sound follows the same
 clocks: the music and the station clicks the line's, the hum, the crane and the alarms
 the film's. Each frame the player asks `score.js` for the sound between the frame
-before and this one, so a jump plays nothing it skipped. The voice follows the captions
+before and this one, given as both frames' shots and clocks, so a jump plays nothing it
+skipped and a cue sounds where the shot changes. The voice follows the captions
 instead: each frame the player tells `voice.js` how far into its caption the scene is.
 The digital look blends every material between its two looks instead of
 drawing a second world.

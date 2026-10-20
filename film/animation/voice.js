@@ -21,6 +21,9 @@ export function createVoice() {
       if (Math.abs(clip.currentTime - offset) > DRIFT_SECONDS) clip.currentTime = offset;
       if (clip.paused && !clip.ended) clip.play().catch(passRefusal);
     },
+    speaking() {
+      return Boolean(current && !current.paused);
+    },
     stop() {
       current?.pause();
       current = undefined;

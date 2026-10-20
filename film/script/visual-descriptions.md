@@ -250,15 +250,24 @@ lane in front and some stations are still being built. Fade to black.
 
 ## Sound
 
-Calm, modern instrumental music, such as piano and light synths, with no vocals. In S09
-the rhythm turns uneven and halting, and in S11 it stops with the belts and starts again
-with them; from S12 on it is steady and forward-moving.
+The music is the theme of *In the Hall of the Mountain King*, from *Peer Gynt*, short
+and detached as plucked strings, played on a soft piano in a large hall. As in the
+original, it starts quietly and slowly and is played again and again, faster and louder
+as the factory grows, the first plays each adding the theme an octave higher. In S09 it turns uneven
+and halting, notes missing; in S11 it stops with the belts and starts again with them.
+Its closing chord rings as S16 begins. The music steps back while the voice reads a
+caption.
 
-Under the music, the sounds of the factory: a low hum of the running belts with the
-noise of the hall, a soft click in time with the belts, and a thud each time the crane
-sets a panel while the factory is in view. Two alerts: a two-tone alarm the whole time the cloud is down
-in S11, while the belts fall quiet, and a slow warning beep while the panels of S10
-show their red lights. All of it fades with the picture.
+Under the music, the sounds of the factory: a low, soft hum of the running belts, a
+soft click at the belts' even pace, and a thud each time the crane sets a panel while
+the factory is in view. No hiss or noise. Short sounds mark the moments to notice: the
+power falling as the cloud fails in S11 and rising as it comes back, a clank as a gate
+or a closed stretch is put in place, a whirr as a robot takes over, a soft blip as a
+speech bubble appears, a chime as IT has fitted the gate for new boxes in S12, and a
+shimmer as the picture turns digital in S14 and back in S15. Two alerts: a two-tone
+alarm the whole time the cloud is down in S11, while the belts fall quiet, and a slow
+warning beep while the panels of S10 show their red lights. All of it fades with the
+picture.
 
 Over it all, a voice reads each caption once while it is shown: a calm, friendly,
 modern British English voice that sounds like a person. It says the caption as
@@ -266,5 +275,7 @@ written, with two exceptions: it leaves out the colors in parentheses, which are
 not heard, and it says "CI/CD" as "CI CD". The voice is made from the script when the
 film is published (ADR 0006).
 
-The animation makes the music and the factory sounds in the browser (ADR 0005). A video made with other
-tools uses royalty-free music and effects licensed for internal and web use.
+The animation makes the music and the factory sounds in the browser (ADR 0005), the
+music from the theme's notes (ADR 0007). A video made with other tools uses a
+public-domain recording of the same piece, and effects licensed for internal and web
+use.

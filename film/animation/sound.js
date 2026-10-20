@@ -1,9 +1,14 @@
+import { SHORT, gainNode, tone } from './instruments.js';
+
 // The film's sound, made in the browser with the Web Audio API so that no recording is
 // kept (ADR 0005). It plays what score.js describes; the browser lets it start only
 // after the viewer has clicked or pressed a key on the page.
 const VOLUME = 0.5;
 const GLIDE = 0.05;
-const MIX = { hum: 0.12, room: 0.05, pad: 0.05, alert: 0.07, note: 0.08, click: 0.05, thud: 0.3 };
+// The music steps back and forward slowly, so the voice does not pump it.
+const MUSIC_GLIDE = 0.3;
+const MIX = { hum: 0.04, music: 0.18, alert: 0.07, reverb: 0.35 };
+const REVERB_SECONDS = 2.4;
 
 export function createSound() {
   let voices = null;
@@ -23,65 +28,42 @@ export function createSound() {
   };
 }
 
+// The music and some cues ring in a hall: they go to the master both dry and through
+// the hall's echo.
 function build(context) {
-  const master = gainNode(context, VOLUME, context.destination);
-  const hum = gainNode(context, 0, master);
-  [55, 110].forEach((frequency) => tone(context, { type: 'sawtooth', frequency }, filtered(context, 'lowpass', 180, hum)));
-  // The noise of the hall rises and falls with the hum, so it goes through the hum's gain.
-  noise(context, filtered(context, 'bandpass', 900, gainNode(context, MIX.room / MIX.hum, hum)));
-  const pad = gainNode(context, 0, filtered(context, 'lowpass', 900, master));
-  const chord = [0, 1, 2].map(() => tone(context, { type: 'triangle', frequency: 220 }, pad));
+  // The compressor keeps the loudest moments, as the last plays of the theme, from clipping.
+  const limiter = new DynamicsCompressorNode(context);
+  limiter.connect(context.destination);
+  const master = gainNode(context, VOLUME, limiter);
+  const room = new ConvolverNode(context, { buffer: hallEcho(context) });
+  room.connect(gainNode(context, MIX.reverb, master));
+  const music = gainNode(context, MIX.music, master);
+  const ring = gainNode(context, 1, master);
+  [music, ring].forEach((node) => node.connect(room));
+  const hum = gainNode(context, 0, filtered(context, 'lowpass', 160, master));
+  [55, 110].forEach((frequency) => tone(context, { type: 'sawtooth', frequency }, hum));
   const alert = gainNode(context, 0, filtered(context, 'lowpass', 2400, master));
   const siren = tone(context, { type: 'square', frequency: 880 }, alert);
-  return { context, master, hum, pad, chord, alert, siren };
+  return { context, master, music, ring, hum, alert, siren };
 }
 
-function steady(voices, { volume, hum, pad, chord, alert }) {
-  const glide = (param, value) => param.setTargetAtTime(value, voices.context.currentTime, GLIDE);
+function steady(voices, { volume, hum, music, alert }) {
+  const glide = (param, value, seconds = GLIDE) => param.setTargetAtTime(value, voices.context.currentTime, seconds);
   glide(voices.master.gain, VOLUME * volume);
   glide(voices.hum.gain, MIX.hum * hum);
-  glide(voices.pad.gain, MIX.pad * pad);
-  voices.chord.forEach((oscillator, index) => glide(oscillator.frequency, chord[index]));
+  glide(voices.music.gain, MIX.music * music, MUSIC_GLIDE);
   glide(voices.alert.gain, MIX.alert * alert.level);
   voices.siren.frequency.setValueAtTime(alert.pitch, voices.context.currentTime);
 }
 
-// Sounds that start, swell for a moment and die away.
-const SHORT = {
-  note: (voices, { pitch }) => pluck(voices, { type: 'sine', frequency: pitch, level: MIX.note, seconds: 1.2 }),
-  click: (voices) => pluck(voices, { type: 'square', frequency: 2400, level: MIX.click, seconds: 0.03 }),
-  thud: (voices) => pluck(voices, { type: 'sine', frequency: 60, level: MIX.thud, seconds: 0.4 }),
-};
-
-function pluck({ context, master }, { type, frequency, level, seconds }) {
-  const now = context.currentTime;
-  const envelope = gainNode(context, 0, master);
-  envelope.gain.setValueAtTime(0, now);
-  envelope.gain.linearRampToValueAtTime(level, now + 0.01);
-  envelope.gain.exponentialRampToValueAtTime(0.0001, now + seconds);
-  const oscillator = tone(context, { type, frequency }, envelope);
-  oscillator.stop(now + seconds);
-}
-
-function tone(context, { type, frequency }, destination) {
-  const oscillator = new OscillatorNode(context, { type, frequency });
-  oscillator.connect(destination);
-  oscillator.start();
-  return oscillator;
-}
-
-function noise(context, destination) {
-  const buffer = context.createBuffer(1, context.sampleRate * 2, context.sampleRate);
-  buffer.getChannelData(0).forEach((_, index, samples) => { samples[index] = Math.random() * 2 - 1; });
-  const source = new AudioBufferSourceNode(context, { buffer, loop: true });
-  source.connect(destination);
-  source.start();
-}
-
-function gainNode(context, gain, destination) {
-  const node = new GainNode(context, { gain });
-  node.connect(destination);
-  return node;
+// The echo of a large hall: a burst that dies away, so what it colors rings on softly.
+function hallEcho(context) {
+  const length = context.sampleRate * REVERB_SECONDS;
+  const buffer = context.createBuffer(2, length, context.sampleRate);
+  [0, 1].forEach((channel) => buffer.getChannelData(channel).forEach((_, index, samples) => {
+    samples[index] = (Math.random() * 2 - 1) * (1 - index / length) ** 3;
+  }));
+  return buffer;
 }
 
 function filtered(context, type, frequency, destination) {

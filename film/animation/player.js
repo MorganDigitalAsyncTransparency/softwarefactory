@@ -24,7 +24,7 @@ const restartButton = document.getElementById('restart');
 const soundButton = document.getElementById('sound');
 const progressBar = document.getElementById('progress');
 const clock = document.getElementById('clock');
-const playback = { scenes: [], time: 0, playing: false, lastTick: null, soundOn: true, heard: null };
+const playback = { scenes: [], time: 0, playing: false, lastTick: null, soundOn: true, heard: null, finale: 0 };
 
 start().catch(showError);
 
@@ -33,6 +33,8 @@ async function start() {
   if (!response.ok) throw new Error(`Could not load ${SCRIPT_URL} (${response.status}).`);
   playback.scenes = parseScript(await response.text());
   checkDrawings(playback.scenes);
+  // The music's closing chord lands as the last scene begins.
+  playback.finale = lineTime(playback.scenes, playback.scenes.at(-1).start);
   progressBar.max = duration(playback.scenes);
   wireControls();
   const startTime = startTimeFrom(window.location.search);
@@ -102,9 +104,10 @@ function seek(time) {
 
 // Plays the frame's sound, and the short sounds that started since the frame before.
 function hear({ shot, clock, fade: volume }) {
-  const from = playback.heard ?? clock;
-  sound.play({ volume, levels: levels(shot, clock), events: events(shot, from, clock) });
-  playback.heard = clock;
+  const now = { shot, clock };
+  const heard = events(playback.heard ?? now, now, playback.finale);
+  sound.play({ volume, levels: levels(shot, clock, voice.speaking()), events: heard });
+  playback.heard = now;
 }
 
 function silence() {
