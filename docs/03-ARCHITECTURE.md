@@ -85,7 +85,8 @@ scene's state carries `outage: { seconds, length }`, how far into it the frame i
 clocks: the music and the station clicks the line's, the hum, the crane and the alarms
 the film's. Each frame the player asks `score.js` for the sound between the frame
 before and this one, so a jump plays nothing it skipped. The voice follows the captions
-instead: each frame the player tells `voice.js` how far into its caption the scene is. The digital look blends every material between its two looks instead of
+instead: each frame the player tells `voice.js` how far into its caption the scene is.
+The digital look blends every material between its two looks instead of
 drawing a second world.
 
 ### The voice

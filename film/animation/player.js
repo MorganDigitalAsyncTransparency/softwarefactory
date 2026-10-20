@@ -17,6 +17,7 @@ const LATE_SECONDS = 1;
 const canvas = document.getElementById('stage');
 const stage = createStage(canvas);
 const sound = createSound();
+const voice = createVoice();
 const caption = document.getElementById('caption');
 const playButton = document.getElementById('play');
 const restartButton = document.getElementById('restart');
@@ -24,7 +25,6 @@ const soundButton = document.getElementById('sound');
 const progressBar = document.getElementById('progress');
 const clock = document.getElementById('clock');
 const playback = { scenes: [], time: 0, playing: false, lastTick: null, soundOn: true, heard: null };
-let voice;
 
 start().catch(showError);
 
@@ -33,7 +33,6 @@ async function start() {
   if (!response.ok) throw new Error(`Could not load ${SCRIPT_URL} (${response.status}).`);
   playback.scenes = parseScript(await response.text());
   checkDrawings(playback.scenes);
-  voice = createVoice(playback.scenes.filter((scene) => scene.caption).map((scene) => scene.id));
   progressBar.max = duration(playback.scenes);
   wireControls();
   const startTime = startTimeFrom(window.location.search);
@@ -134,7 +133,9 @@ function render({ scene, progress }) {
   const fadeOut = fades.includes('out') ? share(length - seconds, 0, FADE_SECONDS) : 1;
   const picture = Math.min(fadeIn, fadeOut);
   canvas.style.opacity = picture;
-  const spoken = { id: scene.id, offset: seconds - showSceneCaption(scene, seconds).start };
+  const { start } = showSceneCaption(scene, seconds);
+  // A scene without a caption has no voice, and stops the one before.
+  const spoken = { id: scene.id, offset: scene.caption ? seconds - start : -1 };
   const { scenes, time } = playback;
   const clock = { film: time, line: lineTime(scenes, time), people: peopleTime(scenes, time) };
   stage.render(shot, { ...clock, buildShare: time / duration(scenes) });

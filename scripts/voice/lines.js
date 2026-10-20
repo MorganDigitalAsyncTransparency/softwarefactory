@@ -1,7 +1,7 @@
 import { captionSpan } from '../../film/animation/caption.js';
 
-// What the voice says differs from the caption only where reading the text aloud
-// would sound wrong: the role colors are seen, not heard, and "CI/CD" is not "slash".
+// What the voice says, as the sound description sets out
+// (film/script/visual-descriptions.md#sound).
 const SPOKEN = [[/\s*\([^)]*\)/g, ''], [/CI\/CD/g, 'CI CD']];
 
 // One line for each scene with a caption: the words to speak and the seconds the

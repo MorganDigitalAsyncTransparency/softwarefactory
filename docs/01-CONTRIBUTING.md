@@ -8,7 +8,8 @@ says how to run the checks.
 Nothing to install: the film material is Markdown and the animation is plain HTML and
 JavaScript. The browser loads the one library, three.js, from a CDN when the page opens
 (ADR 0004), so watching needs network access. The checks need `git`, a POSIX shell and
-Node.js 22 or later; the voice also needs Python 3.12 or later and `curl`.
+Node.js 22 or later; the voice also needs Python 3.10 to 3.13, `curl` and `sha256sum`, and a clone
+at a short path, since the speech library cannot load its data from a long one.
 
 ## Watching the animation
 

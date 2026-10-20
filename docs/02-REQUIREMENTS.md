@@ -52,7 +52,8 @@ roles and their colors, the captions and the continuity.
 - **Given** a clone of the repository,
 - **when** the `film/` folder is served by any static web server,
 - **then** the animation plays in a current browser with no install and no build step;
-  its one library, three.js, is loaded by the page at a pinned version.
+  its one library, three.js, is loaded by the page at a pinned version. Only the voice
+  needs a step of its own (R15).
 
 ### R7: The pictures carry no text and no brand
 
@@ -98,16 +99,6 @@ roles and their colors, the captions and the continuity.
   says: the music and the station clicks stop with the belts while the alarm sounds,
   the sound fades with the picture, and a paused film is silent.
 
-### R15: A voice reads the captions
-
-- **Given** the published film playing with sound on, after the viewer has clicked or
-  pressed a key on the page,
-- **when** a caption is shown,
-- **then** [the voice](../film/script/visual-descriptions.md#sound) reads it from the
-  moment it appears and is done before it leaves; after a pause or a jump the voice
-  goes on from the same point in the caption, and the recordings are made from the
-  script, so a changed caption is read as written.
-
 ### R12: The middle is uneven
 
 - **Given** the five belts in the middle,
@@ -139,3 +130,14 @@ roles and their colors, the captions and the continuity.
   Product developer waits at it until an IT developer comes; some stations built during
   the film wait for their first access; a card reader by the server room lets IT
   developers in and no one else; and each release is sealed after its last test station.
+
+### R15: A voice reads the captions
+
+- **Given** the published film playing with sound on, after the viewer has clicked or
+  pressed a key on the page,
+- **when** a caption is shown,
+- **then** [the voice](../film/script/visual-descriptions.md#sound) reads it as that
+  description says, from the moment it appears, and is done before it leaves; after a
+  pause or a jump the voice goes on from the same point in the caption, and the
+  recordings are made from the script, so a changed caption is read anew. A clone
+  served as R6 says plays without the voice until it is made (ADR 0006).

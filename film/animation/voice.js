@@ -2,21 +2,24 @@
 // the script when the film is published (ADR 0006); a film served without them, as
 // from a fresh clone, plays without the voice.
 const DRIFT_SECONDS = 0.25;
+// Refusals that pass: no click on the page yet, a pause during loading, or no
+// recording; the next frame tries again, or the clip is dropped on its error event.
+const PASSING_REFUSALS = ['NotAllowedError', 'AbortError', 'NotSupportedError'];
 
-export function createVoice(sceneIds) {
-  const clips = new Map(sceneIds.map((id) => [id, load(id)]));
+export function createVoice() {
+  const clips = new Map();
   let current;
   return {
     // Keeps the scene's recording at the caption's offset, so a pause or a jump
     // takes the voice along; a negative offset is before the caption starts.
     follow(id, offset) {
-      const clip = offset >= 0 ? clips.get(id) : undefined;
+      const clip = offset >= 0 ? clipFor(id) : undefined;
       if (current !== clip) current?.pause();
       current = clip;
       // A seek still under way is left to finish, or it would start again each frame.
       if (!clip || clip.seeking || offset >= clip.duration) return;
       if (Math.abs(clip.currentTime - offset) > DRIFT_SECONDS) clip.currentTime = offset;
-      if (clip.paused && !clip.ended) clip.play().catch(untilClicked);
+      if (clip.paused && !clip.ended) clip.play().catch(passRefusal);
     },
     stop() {
       current?.pause();
@@ -24,16 +27,16 @@ export function createVoice(sceneIds) {
     },
   };
 
-  function load(id) {
-    const clip = new Audio(`voice/${id}.mp3`);
-    clip.preload = 'auto';
-    clip.addEventListener('error', () => clips.delete(id));
-    return clip;
+  function clipFor(id) {
+    if (!clips.has(id)) {
+      const clip = new Audio(`voice/${id}.mp3`);
+      clip.addEventListener('error', () => clips.set(id, undefined));
+      clips.set(id, clip);
+    }
+    return clips.get(id);
   }
 }
 
-// The browser plays sound only after the viewer has clicked or pressed a key; until
-// then each try is refused, and the next frame tries again.
-function untilClicked(error) {
-  if (error.name !== 'NotAllowedError' && error.name !== 'AbortError') throw error;
+function passRefusal(error) {
+  if (!PASSING_REFUSALS.includes(error.name)) throw error;
 }

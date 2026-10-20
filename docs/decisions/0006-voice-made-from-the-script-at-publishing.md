@@ -39,6 +39,9 @@ owner chose the voice `bm_george` (British English, male) from samples.
 fails when a recording runs longer than its caption is shown (R15). The browser's
 voice (B) differs from browser to browser and often sounds robotic; a service (C)
 needs an account and a key; a person (D) must record again after every change.
+ADR 0005 turned down recordings for the music because of hosting, licenses and
+syncing; here the workflow makes and hosts them, the model's license allows it, and
+each recording starts with its caption, so those costs fall away.
 
 ### Consequences
 
@@ -46,8 +49,8 @@ needs an account and a key; a person (D) must record again after every change.
 * Good, because the repository stays text only: the recordings are made in the
   workflow and never committed.
 * Bad, because the checks and the publish download the model, about 120 MB, from the
-  model's release page, checked against pinned hashes.
+  model's release page, and install its Python packages; both are pinned by hash.
 * Bad, because a film served from a fresh clone has no voice until
-  `scripts/voice/generate.sh` is run; it then plays without one.
+  `scripts/voice/generate.sh` is run, a step R6 otherwise does not need.
 * Neutral, because Kokoro has no English voice with a Swedish accent; changing the
   voice changes only the generator.

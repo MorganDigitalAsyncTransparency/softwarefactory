@@ -1,21 +1,15 @@
-"""Speaks each caption with Kokoro into film/voice/<scene>.mp3 (ADR 0006).
-
-Reads the lines as JSON on standard input and fails when a line takes longer to
-say than its caption is on screen (R15).
-"""
+"""Speaks the lines from print-lines.js with Kokoro (ADR 0006)."""
 import json
 import sys
 from pathlib import Path
 
-import numpy as np
 import soundfile as sf
 from kokoro_onnx import Kokoro
 
 VOICE = "bm_george"
 LANGUAGE = "en-gb"
+# A little slower than Kokoro's own pace, for viewers who listen in a second language.
 SPEED = 0.95
-# Kokoro's output starts and ends with a little silence; it is kept, so the voice
-# does not start abruptly with the caption.
 
 
 def main(model_dir, out_dir):
@@ -29,7 +23,7 @@ def main(model_dir, out_dir):
 
 def speak(kokoro, line, out_dir):
     audio, rate = kokoro.create(line["text"], voice=VOICE, speed=SPEED, lang=LANGUAGE)
-    sf.write(out_dir / f"{line['id']}.mp3", np.asarray(audio), rate, format="MP3")
+    sf.write(out_dir / f"{line['id']}.mp3", audio, rate, format="MP3")
     seconds = len(audio) / rate
     print(f"{line['id']}: {seconds:.1f} s of {line['seconds']:.1f} s")
     return seconds <= line["seconds"]
