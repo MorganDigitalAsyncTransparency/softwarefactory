@@ -35,18 +35,20 @@ export function createVoice(context, destination) {
   }
 
   // A recording is fetched once, the first time its scene plays. A film served
-  // without them, as from a fresh clone, has none and plays without the voice.
+  // without them, as from a fresh clone, has none and plays without the voice; any
+  // other failure is reported, and that caption is not read.
   function recordingFor(id) {
     if (!recordings.has(id)) {
       recordings.set(id, undefined);
-      load(`voice/${id}.mp3`).then((buffer) => recordings.set(id, buffer), () => {});
+      load(`voice/${id}.mp3`).then((buffer) => recordings.set(id, buffer), console.error);
     }
     return recordings.get(id);
   }
 
   async function load(url) {
     const response = await fetch(url);
-    if (!response.ok) throw new Error(`No recording at ${url} (${response.status}).`);
+    if (response.status === 404) return undefined;
+    if (!response.ok) throw new Error(`Could not load ${url} (${response.status}).`);
     return context.decodeAudioData(await response.arrayBuffer());
   }
 }

@@ -13,7 +13,8 @@ three.js comes from a CDN through the page's import map (ADR 0004).
 
 ```text
 film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player ─┬─▶ caption (HTML)
-                                                                   ├─▶ score ─▶ sound (Web Audio) ─▶ voice (film/voice/*.mp3)
+                                                                   ├─▶ score ─▶ sound (Web Audio: music, effects)
+                                                                   ├─▶ sound.speak ─▶ voice (film/voice/*.mp3), mixed in sound
                                                                    │
                                           scenes (shot: camera + state)
                                                                    │

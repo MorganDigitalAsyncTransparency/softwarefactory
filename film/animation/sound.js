@@ -9,7 +9,7 @@ import { createVoice } from './voice.js';
 const VOLUME = 0.5;
 const GLIDE = 0.05;
 // The music stays in the background, under the voice, the whole film.
-const MIX = { music: 0.06, effects: 0.7, voice: 2, hum: 0.04, alert: 0.05, reverb: 0.35 };
+const MIX = { music: 0.1, effects: 1, voice: 1, hum: 0.04, alert: 0.07, reverb: 0.35 };
 const REVERB_SECONDS = 2.4;
 
 export function createSound() {
@@ -28,37 +28,38 @@ export function createSound() {
       steady(voices, { volume, ...levels });
       events.forEach((event) => SHORT[event.kind](voices, event));
     },
-    // The voice reads the caption `offset` seconds after it appeared.
+    // A negative offset is before the scene's caption appears.
     speak(id, offset) {
       if (voices?.context.state === 'running') voices.voice.follow(id, offset);
     },
   };
 }
 
-// The layers meet in the master, and a compressor keeps the loudest moments from
-// clipping. The music and some cues also ring in the hall's echo.
+// The three layers are added together at the speakers. The music and the effects fade
+// with the picture, some of them ring in the hall's echo, and a limiter catches only
+// their loudest peaks; the voice goes past it, so speaking never turns the others down.
 function build(context) {
-  const limiter = new DynamicsCompressorNode(context);
+  const limiter = new DynamicsCompressorNode(context, { threshold: -3, knee: 0, ratio: 20 });
   limiter.connect(context.destination);
   const master = gainNode(context, VOLUME, limiter);
-  const scene = gainNode(context, 1, master);
-  const music = gainNode(context, MIX.music, scene);
-  const effects = gainNode(context, MIX.effects, scene);
+  const fade = gainNode(context, 1, master);
+  const music = gainNode(context, MIX.music, fade);
+  const effects = gainNode(context, MIX.effects, fade);
   const room = new ConvolverNode(context, { buffer: hallEcho(context) });
-  room.connect(gainNode(context, MIX.reverb, scene));
+  room.connect(gainNode(context, MIX.reverb, fade));
   const ring = gainNode(context, 1, effects);
   [music, ring].forEach((node) => node.connect(room));
   const hum = gainNode(context, 0, filtered(context, 'lowpass', 160, effects));
   [55, 110].forEach((frequency) => tone(context, { type: 'sawtooth', frequency }, hum));
   const alert = gainNode(context, 0, filtered(context, 'lowpass', 2400, effects));
   const siren = tone(context, { type: 'square', frequency: 880 }, alert);
-  const voice = createVoice(context, gainNode(context, MIX.voice, master));
-  return { context, scene, music, effects, ring, hum, alert, siren, voice };
+  const voice = createVoice(context, gainNode(context, MIX.voice, context.destination));
+  return { context, fade, music, effects, ring, hum, alert, siren, voice };
 }
 
 function steady(voices, { volume, hum, alert }) {
   const glide = (param, value) => param.setTargetAtTime(value, voices.context.currentTime, GLIDE);
-  glide(voices.scene.gain, volume);
+  glide(voices.fade.gain, volume);
   glide(voices.hum.gain, MIX.hum * hum);
   glide(voices.alert.gain, MIX.alert * alert.level);
   voices.siren.frequency.setValueAtTime(alert.pitch, voices.context.currentTime);

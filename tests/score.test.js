@@ -40,9 +40,12 @@ test('the station clicks stop with the belts while the cloud is down, and the mu
   assert.ok(kinds.has('note'));
 });
 
+// The longest rest between two notes is a held half note at the slowest tempo.
+const LONGEST_REST = 2;
+
 test('the music never pauses for more than a held note until its closing chord', () => {
   const sounding = times.filter((film, index) => index && film <= finale && heard(times[index - 1], film).some(({ kind }) => kind === 'note'));
-  sounding.slice(1).forEach((film, index) => assert.ok(film - sounding[index] < 2, `silent from ${sounding[index]} to ${film}`));
+  sounding.slice(1).forEach((film, index) => assert.ok(film - sounding[index] < LONGEST_REST, `silent from ${sounding[index]} to ${film}`));
 });
 
 test('the music starts with the film and its closing chord lands as the last scene begins', () => {

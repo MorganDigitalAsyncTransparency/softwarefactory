@@ -33,17 +33,21 @@ whole time.
 
 Chosen option: "A: one audio context, three layers", because the layers are then
 mixed by the same engine and nothing outside it can interrupt one of them, and the
-music on the film's clock plays on while the belts stand still. Its tempo is now set
-so that the closing chord lands as the last scene begins on the film's clock. B would
+music on the film's clock plays on while the belts stand still. It no longer halts in
+S09 either, and its tempo is now set so that the closing chord lands as the last scene
+begins on the film's clock. The voice goes past the limiter that catches the music's
+and the effects' loudest peaks, so speaking never turns them down. B would
 leave two players that browsers may treat as rivals, and a background that still
 stops in the outage.
 
 ### Consequences
 
 * Good, because the music, the effects and the voice play together all through.
-* Good, because the voice's recordings are fetched while each scene waits for its
-  caption, so the first word is not cut.
-* Bad, because the music no longer stops with the belts, so the outage is heard
-  through the alarm, the quiet hum and the stopped clicks alone.
+* Good, because a scene's recording is fetched while the scene waits for its caption,
+  so in a film that plays on, the first word is not cut; after a jump into a caption,
+  its first words may be lost while it loads.
+* Bad, because the music no longer stops with the belts or halts in S09, so the outage
+  and the manual middle are heard through the alarm, the quiet hum and the stopped
+  clicks alone.
 * Neutral, because the music is set low enough that the voice stays clear without
   stepping it back.
