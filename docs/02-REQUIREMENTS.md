@@ -152,8 +152,10 @@ roles and their colors, the captions and the continuity.
   pressed a key on the page,
 - **when** a caption is shown,
 - **then** [the voice](../film/script/visual-descriptions.md#sound) reads it as that
-  description says, from the moment it appears, and is done before it leaves; after a
-  pause or a jump the voice goes on from the same point in the caption, and the
+  description says, from the moment it appears, and is done before it leaves; it
+  starts with the first word, also when it can only start up to a second late, as
+  after slow loading; after a jump into a caption the voice goes on from the same
+  point in it, and the
   recordings are made from the script, so a changed caption is read anew. A clone
   served as R6 says plays without the voice until it is made (ADR 0006).
 
