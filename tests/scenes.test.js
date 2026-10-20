@@ -100,3 +100,14 @@ test('while the cloud is down the line stands still and the people hurry, and bo
   assert.ok(Math.abs(at(last).seconds - (last - first)) < 1e-9 && at(first).seconds === 0);
   assert.ok(Math.abs(at(first).length - (last - first)) < 0.11);
 });
+
+test('a Software factory developer talks about code in S03 and while the gate is installed in S12', () => {
+  ['S03', 'S12'].forEach((id) => {
+    const scene = scenes.find((each) => each.id === id);
+    const talks = [0.1, 0.3, 0.5, 0.7].some((progress) => {
+      const { state } = draw({ scene, progress });
+      return state.siteTalk || state.crew.some((member) => member.role === 'factory' && member.says === 'code');
+    });
+    assert.ok(talks, id);
+  });
+});

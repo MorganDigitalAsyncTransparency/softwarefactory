@@ -33,13 +33,16 @@ export function box(look = 'good', { scale = 1, sealed = false } = {}) {
 }
 
 // A person in the color of their role: 'product', 'factory' (with a hard hat), 'it' or
-// 'user'. Someone inspecting a machine leans over it with a magnifying glass.
+// 'user'. Someone inspecting a machine leans over it with a magnifying glass. A Software
+// factory developer holds a laptop that is seen only while the picture is digital, to
+// show that what they build is software.
 export function person(role, { seed = 0, carrying = false, walked = 0, inspecting = false } = {}) {
   const swing = Math.sin((walked / STRIDE) * Math.PI * 2) * 0.45;
   const upper = group([
     capsule([0.24, 0.45], role, [0, 1.12, 0]),
     sphere(0.18, SKIN_TONES[seed % SKIN_TONES.length], [0, 1.62, 0]),
     role === 'factory' && hardHat(),
+    role === 'factory' && laptop(),
     carrying && group([box()], { position: [0.42, 0.95, 0] }),
     inspecting && magnifier(),
   ], { position: [0, -HIP, 0] });
@@ -69,6 +72,13 @@ function leg(z, swing) {
   return result;
 }
 
+function laptop() {
+  return group([
+    block([0.32, 0.03, 0.42], 'laptop', [0, 0, 0]),
+    block([0.03, 0.3, 0.42], 'laptopScreen', [0.16, 0.15, 0]),
+  ], { position: [0.4, 1, 0] });
+}
+
 function hardHat() {
   return group([
     sphere(0.2, 'factory', [0, 0, 0]),
@@ -93,4 +103,21 @@ export function robot({ carrying = false, time = 0 } = {}) {
     sphere(0.09, 'it', [0.22, 1.48 + bob, 0]),
     carrying && group([box()], { position: [0.45, 0.85 + bob, 0] }),
   ]);
+}
+
+// The sign for code, </>, for a speech bubble.
+export function codeSign() {
+  return group([
+    stroke(0.45, [-0.5, 0.13], 0.63),
+    stroke(0.45, [-0.5, -0.13], -0.63),
+    stroke(0.7, [0, 0], 1.15),
+    stroke(0.45, [0.5, 0.13], -0.63),
+    stroke(0.45, [0.5, -0.13], 0.63),
+  ]);
+}
+
+function stroke(length, [x, y], angle) {
+  const result = block([length, 0.1, 0.05], 'screen', [x, y, 0]);
+  result.rotation.z = angle;
+  return result;
 }

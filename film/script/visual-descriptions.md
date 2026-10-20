@@ -106,7 +106,8 @@ developers walk between the desks.
 Camera follows the belts into the hall to the back wall, which is still being built.
 Software factory developers in yellow with hard hats work on scaffolding, a tower crane
 lifts a wall panel, and others lay the frame of a new belt section and raise the walls of a half-built test
-station. On one of the belts a station's lock turns red and its light goes dark; a
+station. On the scaffolding, a Software factory developer talks in a white speech
+bubble that shows the sign for code, </>. On one of the belts a station's lock turns red and its light goes dark; a
 Product developer waits at it until an IT developer arrives.
 ```
 
@@ -199,7 +200,8 @@ camera glides down to the middle of the floor.
 ### S12
 
 ```text
-Software factory developers in yellow install a gate between two conveyor belts. A
+Software factory developers in yellow install a gate between two conveyor belts; a
+white speech bubble over one of them shows the sign for code, </>. A
 dented box arrives and the gate stops it with a red light; an intact box arrives and
 passes through with a green light. An IT developer in blue connects a long cable from
 the cloud into the gate. A Product developer in purple walks over to them. Then a box
@@ -226,7 +228,9 @@ Same composition as the middle of the factory. Everything smoothly morphs into a
 digital version: boxes become plain glowing warm-white cubes without any marks,
 conveyor belts become luminous pipeline lanes, gates become checkpoints with a green
 light, cables from the cloud become glowing cyan integration lines, the large box
-becomes one larger glowing cube. Keep layout identical, only the material changes.
+becomes one larger glowing cube. The Software factory developers in yellow now hold
+open laptops with glowing cyan screens. Keep layout identical: only the material
+changes, and the laptops appear.
 ```
 
 ### S15
@@ -271,8 +275,7 @@ picture.
 
 Over it all, a voice reads each caption once while it is shown: a calm, friendly,
 modern British English voice that sounds like a person. It says the caption as
-written, with two exceptions: it leaves out the colors in parentheses, which are seen,
-not heard, and it says "CI/CD" as "CI CD". The voice is made from the script when the
+written, with one exception: it says "CI/CD" as "CI CD". The voice is made from the script when the
 film is published (ADR 0006).
 
 The animation makes the music and the factory sounds in the browser (ADR 0005), the

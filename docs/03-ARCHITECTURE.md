@@ -40,7 +40,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `sound.js`         | Plays the score with the Web Audio API, in a hall's echo, and stops when the film is paused or the sound is off (ADR 0005) |
 | `instruments.js`   | The piano and the short sounds, made of oscillators that swell and die away       |
 | `voice.js`         | Plays each caption's recording from the caption's offset, and keeps it there through pauses and jumps (R15) |
-| `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state, fades and whether the music halts; throws on a missing ID; the line's and the people's clocks; which gates are fitted for new boxes and when, and who talks in the gate scene (R2, R8, R9, R13) |
+| `scenes.js`        | Pure: maps each scene ID to a shot: a camera path, a world state, fades and whether the music halts; throws on a missing ID; the line's and the people's clocks; which gates are fitted for new boxes and when, and who talks in S03 and the gate scene (R2, R8, R9, R13, R16) |
 | `flow.js`          | Pure: where boxes, carriers and robots are at a time, which boxes are new, and what a gate stops or, once IT has fitted it, lets pass (R12, R13) |
 | `wander.js`        | Pure: where a person who works here and there is at a time                          |
 | `troubleshoot.js`  | Pure: where a Software factory developer runs and stops to inspect while the cloud is down (R9) |
@@ -49,7 +49,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `schedule.js`      | Pure: when each part of the factory is built, and how far it has come, and how many racks are upgraded (R10, R13) |
 | `stage.js`         | The renderer, camera and light; draws the factory or the split panels               |
 | `world.js`         | Puts the factory together, with the crew of a scene and their speech bubbles, and shows its layers one by one in the opening |
-| `building.js`      | The hall: floor, walls, windows and roof, and the site where it is still being built: the rising bay, scaffolding and crane |
+| `building.js`      | The hall: floor, walls, windows and roof, and the site where it is still being built: the rising bay, scaffolding with a developer who may talk about code, and crane |
 | `office.js`        | The open office left of the hall, with a desk at the start of every small belt     |
 | `server-room.js`   | The small server room in the corner of the hall, its racks as they are installed, and the card reader by it |
 | `new-lane.js`      | The sixth lane, laid during the film, with its test stations                        |
@@ -58,10 +58,10 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `lanes.js`         | Each lane: two small belts and their joiner, the belt with its gaps, flowing boxes, carriers, test stations that test only with access and the people waiting at a denied one, gates with the adapter being lowered onto them, the belt still being laid and the builds that crawl |
 | `machines.js`      | Belts, gates with the adapter IT fits them with, test stations and their locks, joiners, the assembly machine and the output to the dock |
 | `cloud.js`         | IT: the cloud with its growing and upgraded server racks, IT developers and AI agents, cables, and the alarm when it fails |
-| `figures.js`       | People by role, a Software factory developer who runs about while the cloud is down, robots, boxes, sealed or not, and wordless speech bubbles |
+| `figures.js`       | People by role, a Software factory developer who runs about while the cloud is down, robots, boxes, sealed or not, the laptops Software factory developers hold while the picture is digital, and wordless speech bubbles, one with the sign for code |
 | `panels.js`        | The three close-ups where factory, IT and product do not fit                        |
 | `shapes.js`        | Meshes from shared geometries                                                       |
-| `materials.js`     | One material per surface, each with a physical and a digital look                   |
+| `materials.js`     | One material per surface, each with a physical and a digital look; some appear only in the digital one |
 
 ### The world and the camera
 

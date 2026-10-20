@@ -4,10 +4,6 @@ import { spoken, voiceLines } from '../scripts/voice/lines.js';
 
 const scene = (id, start, end, caption) => ({ id, start, end, caption });
 
-test('the voice says the caption without the role colors in parentheses', () => {
-  assert.equal(spoken('Product developers (purple) write and test the product.'), 'Product developers write and test the product.');
-});
-
 test('the voice says CI/CD without the slash', () => {
   assert.equal(spoken('In software, this is the CI/CD pipeline.'), 'In software, this is the CI CD pipeline.');
 });

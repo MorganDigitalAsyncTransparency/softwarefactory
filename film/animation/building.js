@@ -1,5 +1,5 @@
 import { block, group, slab } from './shapes.js';
-import { developer } from './figures.js';
+import { bubble, codeSign, developer } from './figures.js';
 import { between } from './flow.js';
 import { ALL_LANES, CRANE, HALL, OUTPUT, PAIR } from './layout.js';
 
@@ -28,14 +28,15 @@ export function hall(standing) {
 }
 
 // The work in progress on the hall: the next bay rising behind scaffolding, and the
-// crane lifting a panel to it.
-export function site({ built, outage }, time) {
+// crane lifting a panel to it. With `siteTalk` a developer on the scaffolding talks
+// about code.
+export function site({ built, outage, siteTalk }, time) {
   const standing = standingBays(built);
   const rising = built * BAYS - standing;
   const x1 = HALL.left + standing * BAY;
   return group([
     slab([x1, HALL.back - 0.2], [x1 + BAY, HALL.back + 0.2], [0, Math.max(0.3, rising * HALL.height)], 'wall'),
-    scaffold(x1, outage),
+    scaffold(x1, outage, siteTalk),
     crane(x1 + BAY / 2, time),
   ]);
 }
@@ -54,7 +55,7 @@ function bay(index) {
 }
 
 // Software factory developers work on the planks, and run along them while the cloud is down.
-function scaffold(x1, outage) {
+function scaffold(x1, outage, talk) {
   const poles = [0, 2, 4, 6, 8].flatMap((dx) => [0.8, 2].map((dz) => (
     block([0.08, HALL.height, 0.08], 'scaffold', [x1 + dx, HALL.height / 2, HALL.back + dz])
   )));
@@ -63,7 +64,8 @@ function scaffold(x1, outage) {
   const developers = [[2.5, 3.1, 1], [5.6, 6.1, 2]].map(([dx, y, seed]) => (
     developer({ x: x1 + dx, y, z: HALL.back + 1.4, turn: Math.PI / 2, seed }, outage, plank)
   ));
-  return group([...poles, ...planks, ...developers]);
+  const said = talk && group([bubble(codeSign())], { position: [x1 + 2.5, 3.1, HALL.back + 1.4] });
+  return group([...poles, ...planks, ...developers, said]);
 }
 
 // A tower crane behind the hall, turned toward the bay that is rising, lifting a wall

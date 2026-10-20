@@ -31,6 +31,8 @@ const LOOKS = {
   desk: { physical: '#F2F0EA', digital: '#16304A' },
   screen: { physical: '#26303B', digital: '#26303B' },
   bubble: { physical: '#FFFFFF', digital: '#FFFFFF' },
+  laptop: { physical: '#C9D3DC', digital: '#C9D3DC', appear: true },
+  laptopScreen: { physical: '#59E3FF', digital: '#59E3FF', glow: 1.2, appear: true },
   product: { physical: '#8E6CC0', digital: '#8E6CC0' },
   factory: { physical: '#E3B23C', digital: '#E3B23C' },
   user: { physical: '#E07A3F', digital: '#E07A3F' },
@@ -62,8 +64,9 @@ export function sky(digital) {
   return SKY.physical.clone().lerp(SKY.digital, digital);
 }
 
-// Blends every surface between its physical and digital look: walls fade away, and the
-// product, belts and cables start to glow.
+// Blends every surface between its physical and digital look: walls fade away, the
+// product, belts and cables start to glow, and what is only digital, such as the
+// Software factory developers' laptops, appears.
 export function setDigital(digital) {
   Object.entries(LOOKS).forEach(([name, look]) => {
     const surface = MATERIALS[name];
@@ -71,7 +74,15 @@ export function setDigital(digital) {
     if (look.glow) surface.emissive.copy(surface.color);
     if (look.glow) surface.emissiveIntensity = look.physical === look.digital ? look.glow : look.glow * digital;
     if (look.fade) fade(surface, digital);
+    if (look.appear) appear(surface, digital);
   });
+}
+
+function appear(surface, digital) {
+  if (surface.transparent !== digital < 1) surface.needsUpdate = true;
+  surface.visible = digital > 0;
+  surface.transparent = digital < 1;
+  surface.opacity = digital;
 }
 
 function fade(surface, digital) {

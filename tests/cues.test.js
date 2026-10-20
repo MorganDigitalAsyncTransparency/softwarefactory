@@ -27,7 +27,7 @@ test('a gate and a closed gap clank into place, but not on a cut, a robot whirs 
 });
 
 test('each speech bubble starts with a blip', () => {
-  assert.deepEqual(when('blip').map(sceneAt), ['S12', 'S12']);
+  assert.deepEqual(when('blip').map(sceneAt), ['S03', 'S12', 'S12', 'S12']);
 });
 
 test('the picture turning digital and back shimmers once each way', () => {

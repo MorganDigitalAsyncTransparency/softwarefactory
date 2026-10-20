@@ -45,13 +45,16 @@ const RUSH = 2.5;
 // over, asks and the IT developer answers, then lowers the adapter until the gate is fitted.
 const FITTED = 0.8;
 const TALK = { walk: [7.3, 4.8], ask: [4.1, 3.4], answer: [3.4, FITTED + FITTING_SECONDS] };
+// A Software factory developer talks about code, </>, in this share of the scene, to
+// show that what they build is software.
+const CODE_TALK = { S03: [0.5, 0.95], S12: [0.08, 0.36] };
 
 // Each drawing returns the shot for one frame: a camera path, the world's state and
 // whether the picture fades from or to black at the scene's edges.
 const DRAWINGS = {
   S01: ({ progress }) => ({ ...shot([HIGH, OVERVIEW], progress, { ...START, reveal: progress / 0.85 }), fades: ['in'] }),
   S02: ({ progress }) => shot([OVERVIEW, OFFICE_VIEW], progress, START),
-  S03: ({ progress }) => shot([OFFICE_VIEW, SITE_VIEW], progress, START),
+  S03: ({ progress }) => shot([OFFICE_VIEW, SITE_VIEW], progress, { ...START, siteTalk: talksCode('S03', progress) }),
   S04: ({ progress }) => shot([SITE_VIEW, CLOUD_VIEW], progress, START),
   S05: ({ progress }) => shot([CLOUD_VIEW, SETTLED], progress, START),
   S06: ({ progress }) => shot([SETTLED, LEFT], progress, START),
@@ -125,7 +128,7 @@ function gateInstalled({ scene, progress }) {
   const installed = progress > 0.4;
   const left = (1 - progress) * (scene.end - scene.start);
   const crew = [
-    { role: 'factory', x: GATE.x - 1.6, z: GATE.z - CREW_SIDE, facing: 1 },
+    { role: 'factory', x: GATE.x - 1.6, z: GATE.z - CREW_SIDE, facing: 1, ...(talksCode('S12', progress) && { says: 'code' }) },
     { role: 'factory', x: GATE.x + 1.6, z: GATE.z - CREW_SIDE, facing: -1 },
     { role: 'it', x: GATE.x - 0.5, z: GATE.z - CREW_SIDE, facing: 0, ...(talking(left, TALK.answer) && { says: 'adapter' }) },
   ];
@@ -139,6 +142,11 @@ function gateInstalled({ scene, progress }) {
 // seconds before it ends.
 function done(left, [from, to]) {
   return share(from - left, 0, from - to);
+}
+
+function talksCode(sceneId, progress) {
+  const [from, to] = CODE_TALK[sceneId];
+  return progress > from && progress < to;
 }
 
 function talking(left, window) {
