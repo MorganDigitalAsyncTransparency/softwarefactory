@@ -22,6 +22,9 @@ const restartButton = document.getElementById('restart');
 const soundButton = document.getElementById('sound');
 const progressBar = document.getElementById('progress');
 const clock = document.getElementById('clock');
+const act = document.getElementById('act');
+const actNumber = document.getElementById('act-number');
+const actTitle = document.getElementById('act-title');
 const playback = { scenes: [], time: 0, playing: false, lastTick: null, soundOn: true, heard: null, finale: 0 };
 
 start().catch(showError);
@@ -129,6 +132,7 @@ function render({ scene, progress }) {
   const fadeOut = fades.includes('out') ? share(length - seconds, 0, FADE_SECONDS) : 1;
   const picture = Math.min(fadeIn, fadeOut);
   canvas.style.opacity = picture;
+  showAct(scene.act, picture);
   const { start } = showSceneCaption(scene, seconds);
   // A scene without a caption has no voice, and stops the one before.
   const spoken = { id: scene.id, offset: scene.caption ? seconds - start : -1 };
@@ -145,6 +149,15 @@ function showSceneCaption(scene, seconds) {
   caption.classList.toggle('closing', closing);
   showCaption(caption, scene.caption, fade(seconds - span.start, span.end - span.start, CAPTION_FADE_SECONDS));
   return span;
+}
+
+// Names the act, so the viewer knows how far into the story they are. Rewritten only
+// when the act changes, like the caption.
+function showAct({ number, title }, opacity) {
+  act.style.opacity = opacity;
+  if (actTitle.textContent === title) return;
+  actNumber.textContent = `${number}/${playback.scenes.at(-1).act.number}`;
+  actTitle.textContent = title;
 }
 
 function formatClock(seconds) {

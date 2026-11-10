@@ -8,8 +8,9 @@ How the code in this repository is built. What it must do is in
 
 A static page, `film/index.html`, loads plain ES modules from `film/animation/` and
 draws a 3D scene with three.js into one canvas with a 16:9 frame. Each scene's caption
-is HTML text over the canvas. There is no framework and no build step;
-three.js comes from a CDN through the page's import map (ADR 0004).
+is HTML text over the canvas, as is the act it belongs to. There is no framework and no
+build step; three.js comes from a CDN through the page's import map (ADR 0004), with
+its own bloom pass from `examples/jsm/`, all pinned with integrity hashes.
 
 ```text
 film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player ─┬─▶ caption (HTML)
@@ -30,7 +31,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 
 | Module             | Responsibility                                                                      |
 | ------------------ | ----------------------------------------------------------------------------------- |
-| `script-parser.js` | Pure: turns the script's scene tables into a list of scenes (R1)                    |
+| `script-parser.js` | Pure: turns the script's scene tables into a list of scenes, each with its act (R1, R3) |
 | `timeline.js`      | Pure: finds the scene and its progress at a time, fades, and parses `?t=` (R5)      |
 | `player.js`        | Loads the script, runs the clock, wires the controls and shows each frame (R4)      |
 | `caption.js`       | The caption over the picture: when in its scene it shows, and balanced line wrapping (R3) |
@@ -47,7 +48,7 @@ film/script/script.md ─fetch─▶ script-parser ─▶ timeline ─▶ player
 | `layout.js`        | Pure: the positions shared by every scene, in metres, and repeatable noise          |
 | `access.js`        | Pure: which stations have a cable, when a station's access is denied or still awaited, who works and waits at it, the firewall by the server room, and who tries the server room's card reader (R14, R17) |
 | `schedule.js`      | Pure: when each part of the factory is built, and how far it has come, and how many racks are upgraded (R10, R13) |
-| `stage.js`         | The renderer, camera and light; draws the factory or the split panels               |
+| `stage.js`         | The renderer, camera and light; draws the factory, with bloom on the lights that glow, or the split panels |
 | `world.js`         | Puts the factory together, with the crew of a scene and their speech bubbles, and shows its layers one by one in the opening |
 | `building.js`      | The hall: floor, walls, windows and roof, and the site where it is still being built: the rising bay, scaffolding with a developer who may talk about code, and crane |
 | `office.js`        | The open office left of the hall, with a desk at the start of every small belt     |

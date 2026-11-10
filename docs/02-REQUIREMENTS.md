@@ -24,13 +24,15 @@ roles and their colors, the captions and the continuity.
 - **then** it draws that scene, and a scene ID with no drawing stops the animation with
   an error that names the ID.
 
-### R3: Captions are readable
+### R3: Captions and acts are readable
 
-- **Given** a scene with a caption,
+- **Given** a scene,
 - **when** it is shown,
-- **then** it follows the [captions](../film/script/visual-descriptions.md#captions)
-  rules: when it appears and leaves, how the closing caption looks, and long text
-  wrapped onto balanced lines.
+- **then** its caption, if it has one, follows the
+  [captions](../film/script/visual-descriptions.md#captions) rules: when it appears and
+  leaves, how the closing caption looks, and long text wrapped onto balanced lines; and
+  the corner of the picture names the act the scene belongs to, by its number and the
+  title of the script's act heading.
 
 ### R4: The viewer controls playback
 
