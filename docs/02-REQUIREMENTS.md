@@ -183,3 +183,61 @@ roles and their colors, the captions and the continuity.
 - **then** the gate looks through it and pushes it off with a red light, showing it
   see-through with a red core, and in the gate scene this happens while the caption that
   names unsafe parts is shown.
+
+## The showpiece
+
+The showpiece is a page of its own, `ship/index.html`, that the viewer plays. Its brief
+is [ship/README.md](../ship/README.md).
+
+### R19: It moves before it asks
+
+- **Given** the showpiece opens,
+- **when** it has loaded,
+- **then** a factory is already running behind the call to tap, and the story starts on
+  the first tap or key, or by itself after six seconds.
+
+### R20: Every change plays a note
+
+- **Given** the sound is on,
+- **when** a change ships, a gate stops one, or the viewer drops one in,
+- **then** a sound plays on the next free sixteenth note: a shipped change plays a tone
+  of the chord that sounds, a broken change that reaches users plays a note just off
+  it, and a stopped one a low thud. When changes come faster than the beat, only the
+  latest few wait for a note, so the music never lags behind the picture.
+
+### R21: The count tells the story
+
+- **Given** the stages in `ship/src/story.js`,
+- **when** the number of shipped changes reaches a stage,
+- **then** the factory, the caption, the camera and the music change to that stage:
+  gates, robots, more lanes, the hall, and at the last the camera rises over many
+  factories while the music swells to a closing chord.
+
+### R22: The ending says what it is made of
+
+- **Given** the last stage has run for nine seconds,
+- **when** the closing card shows,
+- **then** it gives the number of lines of text that the page loaded from its own
+  address, counted when it runs, and offers the code view, the film and a new start.
+
+### R23: The code can be watched running
+
+- **Given** the code view is open,
+- **when** a change is dropped in, ships or is stopped, or the music plays it,
+- **then** the view shows every source file the page loaded and lights up the function
+  doing that work.
+
+### R24: A stage and the preview can be opened directly
+
+- **Given** the address with `?at=<shipped>` or `?card`,
+- **when** it loads,
+- **then** it opens running as if that many changes had shipped and stays at that
+  stage, or draws the link preview, which publishing saves as `card.png` and which
+  fails the publish when the page does not start.
+
+### R25: It works on a phone
+
+- **Given** a tall screen,
+- **when** the showpiece plays,
+- **then** the camera looks along the belts so the factory fills the screen, a held
+  touch drops changes, and the code view opens below the picture.

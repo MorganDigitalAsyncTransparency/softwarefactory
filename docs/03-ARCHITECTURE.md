@@ -112,3 +112,56 @@ stations, one of them working from the start, that the schedule spreads the buil
 the whole film and never finishes it (R10), what the voice says for each caption (R15), that an access change stops one station at a time outside the outage and the firewall stops the server room's stations together (R14), and that the script itself keeps its timing rules.
 None of them needs three.js. The drawings are checked by eye: open a frame with `?t=`
 per scene.
+
+## The showpiece
+
+A second static page, `ship/index.html`, loads plain ES modules from `ship/src/` and
+draws with three.js from the same CDN and version as the film, plus three.js's own
+bloom pass from its `examples/jsm/` folder, all pinned with integrity hashes in the
+page's import map (ADR 0009). It shares no code with the film: the two are told
+differently and change for different reasons.
+
+Unlike the film, the showpiece is played, not seeked: boxes keep their own state and
+move by the frame's elapsed time. The count of shipped changes picks the stage
+(`story.js`), which says what the factory shows and how often changes are dropped in.
+The camera's shots, the fog and the drum patterns are kept by stage number in the
+modules that use them (`camera.js`, `scene.js`, `harmony.js`), next to the look and
+sound they belong to.
+
+```text
+main ─▶ game ─┬─▶ boxes ─▶ route         (what ships, what a gate stops)
+  │           ├─▶ factory ─▶ lane, hall  (what the stage shows)
+  │           ├─▶ city, sparks
+  │           └─▶ band ─▶ harmony, synth (a note for every change, on the beat)
+  ├─▶ camera, scene                     (the shot, then bloom and fog)
+  ├─▶ ui                                 (count, captions, opening and ending)
+  └─▶ source ◀─ trace                    (the code view, lit by what runs)
+```
+
+| Module       | Responsibility                                                                           |
+| ------------ | ---------------------------------------------------------------------------------------- |
+| `story.js`   | Pure: the stages, the count at which each starts, how often changes are dropped in (R21) |
+| `route.js`   | Pure: a change's way along its belt, the hand-over, the gate and the dock                |
+| `harmony.js` | Pure: the beat, the chords, the drum patterns per stage and the note a change plays (R20) |
+| `camera.js`  | Pure: the shot of each stage and of the code view, turned for tall screens (R25)         |
+| `main.js`    | Starts everything, runs the frame loop and handles taps, holds, keys and buttons (R19, R24) |
+| `game.js`    | Drops changes onto running lanes, moves them, counts them and moves the story on         |
+| `boxes.js`   | The changes as one instanced mesh, coloured by what a gate saw                           |
+| `factory.js` | The lanes and the hall, shown as the stage asks, with belts that move                    |
+| `lane.js`    | One lane: belts, gap, gate, dock, the person who carries and the robot that takes over   |
+| `hall.js`    | The hall's frame, drawn line by line, and the crane                                      |
+| `city.js`    | The finale's many factories, lit in a wave from the middle                               |
+| `sparks.js`  | Bursts of light where a change ships or is stopped                                       |
+| `look.js`    | The shared colours and materials, and how a part grows into place                        |
+| `scene.js`   | The renderer, bloom, fog and the eased camera                                            |
+| `band.js`    | The sequencer: plays the stage's patterns and each change's sound on the grid (R20)      |
+| `synth.js`   | The instruments, made of oscillators and noise                                           |
+| `ui.js`      | The words over the picture (R22)                                                         |
+| `source.js`  | The code view: reads the page's own files and lights the running function (R23)          |
+| `trace.js`   | Tells the code view which function is at work                                            |
+
+The link preview is not in the repository (ADR 0003): `scripts/ship/card.sh` opens
+`?card` in headless Chrome, fails if the page did not start, and saves `card.png` into
+the site that the `Publish the film` workflow uploads; the `Checks` workflow draws it
+on every pull request too. The tests cover the pure modules; the picture is checked by eye
+with `?at=`.
