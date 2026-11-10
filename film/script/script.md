@@ -80,14 +80,14 @@ Each role wears its own color, defined in the
 | S04 | 0:25–0:33 | The camera rises to the cloud, where a new rack rises among the servers, IT developers and AI robots. Below, IT developers pull new cables to stations that are still being built, and in the server room in the corner, which talks to the stations and the cloud, a second rack is installed. | IT developers, dressed in blue, run the cloud and the server room. |
 | S05 | 0:33–0:42 | The camera glides down past the server room, where an IT security developer raises a firewall on its link to the cloud and the release's test stations stop for a moment, until IT opens the way. Then it settles over the whole factory. Ten belts become five and five become one; a large box leaves at the dock. | IT security developers, in red hats, protect the factory, and sometimes stop parts of it. |
 
-## Act 2: The ends work (0:42–1:02), level 2
+## Act 2: What runs well (0:42–1:02), level 2
 
 | ID  | Time      | Scene                                                                                                                                   | Caption                                                 |
 | --- | --------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| S06 | 0:42–0:53 | Zoom to the left. Small boxes arrive at an even pace on ten belts. Each passes test stations, a robot watches, and a green light glows. | Shift left: machines test the small parts early. |
+| S06 | 0:42–0:53 | Zoom to the left. Small boxes arrive at an even pace on ten belts. Each passes test stations, a robot watches, and a green light glows. | Machines test the small parts early. We call it shift left. |
 | S07 | 0:53–1:02 | Pan to the right. A large box passes a test station and one still being built, is loaded out and received by Users.                     | On the right, finished products go out to Users, dressed in orange. |
 
-## Act 3: The middle (1:02–1:41), levels 1 to 3
+## Act 3: Where it is hard (1:02–1:41), levels 1 to 3
 
 | ID  | Time      | Scene                                                                                                                                                                                                     | Caption                                                            |
 | --- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
@@ -102,7 +102,7 @@ Each role wears its own color, defined in the
 | --- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
 | S12 | 1:41–1:53 | Software factory developers install a gate between two belts, one of them talking about code in a speech bubble. A box that looks whole is seen through by the gate, shows something wrong inside and is stopped, and an intact one passes. An IT developer connects a cable from the cloud to the gate. A Product developer walks over to the IT developer, a box with a pink band waits at the new gate with an amber light, and the Product developer shows the IT developer the new box in a speech bubble; the IT developer answers with an adapter in one, lowers it onto the gate, and the next banded box passes. | Gates stop broken and unsafe parts. New needs, marked in pink, wait for IT. |
 | S13 | 1:53–2:05 | A gap between two belts is closed. The camera stays while an AI robot takes over a stretch that was carried by hand, and the Product developer who carried it walks off toward the office, back to the product.          | Step by step, automation takes over. People get back to the product. |
-| S14 | 2:05–2:15 | The picture turns digital: boxes become code changes, belts become pipeline stages, gates become quality gates, cables become integrations, the large box becomes a release, and the Software factory developers hold glowing laptops. | This is the CI/CD pipeline that Software factory developers build. |
+| S14 | 2:05–2:15 | The picture turns digital: boxes become code changes, belts become pipeline stages, gates become quality gates, cables become integrations, the large box becomes a release, and the Software factory developers hold glowing laptops. | In software, the boxes are code changes and the belts are the CI/CD pipeline. |
 
 ## Act 5: Today (2:15–2:30), level 1
 

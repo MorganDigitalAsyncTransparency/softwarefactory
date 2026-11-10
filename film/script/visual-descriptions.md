@@ -19,7 +19,9 @@ Clean modern 3D animation, simple solid shapes with soft daylight and shadows, c
 muted palette, no text, no logos, no brand colors, no flags, neutral global setting.
 Smooth, steady camera. Four layers that never share a color: the building has
 sand-colored walls with windows; the machines are steel grey with black belts; the
-product is plain cardboard boxes; IT is blue. The one shared color is a pink band
+product is plain cardboard boxes, and a broken box is dented and red; IT is blue. The
+small signal lights glow brightly, green, amber or red, with a soft halo, so a change of
+light is seen at once from far away. The one shared color is a pink band
 for something new the product needs: on some boxes, and on the IT parts made for it.
 Simple stylised characters with minimal facial detail, diverse, gender-neutral silhouettes. Each role wears its own
 color: Product developers wear purple; Software factory developers wear yellow with
@@ -40,16 +42,21 @@ speech bubbles that hold a small picture, never words. Flow always goes left to 
 
 ## Captions
 
-- White text in a clean sans-serif, centered at the bottom of the picture over a soft
-  dark gradient, never on a black card.
+- Bold white text in a clean sans-serif, centered at the bottom of the picture on a
+  rounded plate of dark, see-through glass with a thin cyan edge, as in the
+  [showpiece](../../ship/README.md), so it reads over the daylit picture. Never on a
+  black card.
 - Large enough to read in a small browser window: about 4–5 % of the frame height.
 - Fades in about a second after its scene starts, when the camera has settled, stays as
   long as it takes to read (two seconds plus a third of a second per word, fades
   included) and fades out, over about half a second each way, so the rest of the scene is picture only. No
   decoration.
 - The closing caption, in the last scene, is the film's key message: at the bottom
-  like the others, but bold, about twice the size and light cyan like the digital lines,
-  and it stays until it fades out with the picture.
+  like the others, but about twice the size and light cyan like the digital lines,
+  glowing softly and with no plate, and it stays until it fades out with the picture.
+- In the top left corner, on the same glass, the act the scene belongs to, as a step of
+  the story: its number out of all, in amber, and its title from
+  [the script](script.md), such as "3/5 Where it is hard". It changes only between acts.
 
 ## Continuity
 
@@ -181,7 +188,7 @@ a Product developer waits at it until an IT developer arrives.
 ```text
 Close on the middle of the factory floor. Product developers in purple carry boxes by
 hand between belts, hurrying. Boxes arrive at irregular times: one too early, one too
-late. One box is dented, one is the wrong size. Small piles build up, one developer
+late. One box is dented and red, one is the wrong size. Small piles build up, one developer
 stands waiting. Uneven, stop-start rhythm, slightly chaotic but not comic.
 ```
 

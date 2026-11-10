@@ -13,7 +13,7 @@ export function facingTurn(facing) {
   return TURNS[facing];
 }
 
-// The product. A dented box is darker and squashed; a box of the wrong size is larger; a
+// The product. A dented box is red and squashed; a box of the wrong size is larger; a
 // new box has a band in the color of something new the product needs. An unsafe box looks
 // whole until a gate looks through it (`seen`) and shows what is wrong inside. A sealed box
 // has a strap round it, so whoever receives it can see it was not opened on the way.

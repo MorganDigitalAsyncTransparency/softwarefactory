@@ -1,4 +1,8 @@
 import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { world } from './world.js';
 import { panels } from './panels.js';
 import { setDigital, sky } from './materials.js';
@@ -7,6 +11,9 @@ import { slab } from './shapes.js';
 const ASPECT = 16 / 9;
 const PANEL_GAP = 0.012;
 const FOG = new THREE.Fog('#000000', 120, 320);
+// Bloom only on what is brighter than the daylit sky: the signal lights and what glows,
+// so a light that turns green or red is seen at once, as in the showpiece.
+const BLOOM = { strength: 0.9, radius: 0.4, threshold: 1.2 };
 
 // The 3D stage: one renderer and one camera, drawing either the factory or the three
 // close-up panels where factory, IT and product do not fit together.
@@ -17,16 +24,27 @@ export function createStage(canvas) {
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   const camera = new THREE.PerspectiveCamera(32, ASPECT, 0.5, 600);
+  const glow = bloom(renderer, camera);
   return {
     render(shot, clock) {
-      fit(renderer, canvas);
+      fit(renderer, canvas, glow.composer);
       if (shot.split) drawPanels({ renderer, camera }, shot.progress, clock.line);
-      else drawFactory({ renderer, camera }, shot, clock);
+      else drawFactory({ renderer, camera, glow }, shot, clock);
     },
   };
 }
 
-function drawFactory({ renderer, camera }, { camera: [position, target], state }, clock) {
+function bloom(renderer, camera) {
+  const composer = new EffectComposer(renderer);
+  const pass = new RenderPass(new THREE.Scene(), camera);
+  const { strength, radius, threshold } = BLOOM;
+  composer.addPass(pass);
+  composer.addPass(new UnrealBloomPass(new THREE.Vector2(256, 256), strength, radius, threshold));
+  composer.addPass(new OutputPass());
+  return { composer, pass };
+}
+
+function drawFactory({ renderer, camera, glow }, { camera: [position, target], state }, clock) {
   setDigital(state.digital);
   const scene = lit(world(state, clock), 70);
   scene.background = sky(state.digital);
@@ -35,7 +53,8 @@ function drawFactory({ renderer, camera }, { camera: [position, target], state }
   aim(camera, position, target, ASPECT);
   renderer.setScissorTest(false);
   renderer.setViewport(0, 0, ...size(renderer));
-  renderer.render(scene, camera);
+  glow.pass.scene = scene;
+  glow.composer.render();
 }
 
 function drawPanels({ renderer, camera }, progress, time) {
@@ -56,9 +75,11 @@ function drawPanels({ renderer, camera }, progress, time) {
   });
 }
 
-function fit(renderer, canvas) {
+function fit(renderer, canvas, composer) {
   const [width, height] = size(renderer);
-  if (width !== canvas.clientWidth || height !== canvas.clientHeight) renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+  if (width === canvas.clientWidth && height === canvas.clientHeight) return;
+  renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+  composer.setSize(canvas.clientWidth, canvas.clientHeight);
 }
 
 function size(renderer) {

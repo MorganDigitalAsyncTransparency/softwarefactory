@@ -1,7 +1,12 @@
 :root {
-  --page: #1A1A1A;
-  --control: #F4F1EC;
-  --control-muted: #9A9A9A;
+  --page: #04060C;
+  --ink: #E9F1FF;
+  --soft: #8EA3C4;
+  --cyan: #5FD8FF;
+  --amber: #FFBF5E;
+  --glass: rgb(6 10 20 / 0.62);
+  --edge: rgb(95 216 255 / 0.22);
+  color-scheme: dark;
 }
 
 body {
@@ -10,8 +15,9 @@ body {
   display: grid;
   place-items: center;
   background: var(--page);
-  color: var(--control);
-  font-family: Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 main {
@@ -22,6 +28,8 @@ main {
   position: relative;
   aspect-ratio: 16 / 9;
   container-type: size;
+  overflow: hidden;
+  border-radius: 12px;
   background: #000000;
 }
 
@@ -31,35 +39,73 @@ main {
   height: 100%;
 }
 
-#caption {
+/* The captions and the chapter sit on dark glass, as in the showpiece, so they read
+   over the daylit picture. */
+#caption,
+#chapter {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
   margin: 0;
-  padding: 6cqh 4cqw 4cqh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: linear-gradient(to top, rgb(0 0 0 / 0.55), rgb(0 0 0 / 0));
-  color: #FFFFFF;
-  font-size: 4.6cqh;
-  line-height: 1.3;
-  text-align: center;
-  text-shadow: 0 0.2cqh 0.8cqh rgb(0 0 0 / 0.6);
+  background: var(--glass);
+  border: 1px solid var(--edge);
+  backdrop-filter: blur(8px);
   pointer-events: none;
 }
 
-#caption:empty {
-  background: none;
+#caption {
+  left: 50%;
+  bottom: 4cqh;
+  max-width: 88cqw;
+  transform: translateX(-50%);
+  padding: 1.4cqh 3cqw;
+  border-radius: 3cqh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  white-space: nowrap;
+  color: var(--ink);
+  font-size: 4.4cqh;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  text-align: center;
 }
 
-/* The closing message: larger, in the cyan of the digital lines. */
+#caption:empty {
+  display: none;
+}
+
+/* The closing message: larger, in the cyan of the digital lines, glowing, with no glass. */
 #caption.closing {
-  color: #59E3FF;
+  background: none;
+  border: none;
+  backdrop-filter: none;
+  color: var(--cyan);
   font-size: 8cqh;
-  font-weight: bold;
-  text-shadow: 0 0 1.5cqh rgb(0 0 0 / 0.9), 0 0.3cqh 0.6cqh rgb(0 0 0 / 0.8);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-shadow: 0 0 3cqh rgb(95 216 255 / 0.45), 0 0.3cqh 1cqh rgb(0 0 0 / 0.85);
+}
+
+#chapter {
+  top: 3cqh;
+  left: 2.5cqw;
+  padding: 0.8cqh 1.6cqw;
+  border-radius: 999px;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8cqw;
+  color: var(--soft);
+  font-size: 2.6cqh;
+}
+
+#act-number {
+  color: var(--amber);
+  font-variant-numeric: tabular-nums;
+}
+
+#act-title {
+  color: var(--ink);
+  font-weight: 600;
 }
 
 .controls {
@@ -72,22 +118,26 @@ main {
 .controls button {
   width: 40px;
   height: 40px;
-  border: 1px solid var(--control-muted);
-  border-radius: 8px;
-  background: transparent;
-  color: var(--control);
+  border: 1px solid var(--edge);
+  border-radius: 999px;
+  background: var(--glass);
+  color: var(--ink);
   font-size: 16px;
   cursor: pointer;
 }
 
+.controls button:hover {
+  border-color: var(--cyan);
+}
+
 #progress {
   flex: 1;
-  accent-color: var(--control);
+  accent-color: var(--cyan);
 }
 
 #clock {
   font-variant-numeric: tabular-nums;
-  color: var(--control-muted);
+  color: var(--soft);
 }
 
 #error:empty {

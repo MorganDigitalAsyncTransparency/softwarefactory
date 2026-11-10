@@ -30,7 +30,8 @@ roles and their colors, the captions and the continuity.
 - **when** it is shown,
 - **then** it follows the [captions](../film/script/visual-descriptions.md#captions)
   rules: when it appears and leaves, how the closing caption looks, and long text
-  wrapped onto balanced lines.
+  wrapped onto balanced lines; and the corner of the picture names the act the scene
+  belongs to, as one of the story's numbered steps, taken from the script's act heading.
 
 ### R4: The viewer controls playback
 

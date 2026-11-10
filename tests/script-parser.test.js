@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { parseScript } from '../film/animation/script-parser.js';
 
 const table = `
-## Act 1
+## Act 1: Who is here (0:00–1:12), level 1
 
 | ID  | Time      | Scene                | Caption     |
 | --- | --------- | -------------------- | ----------- |
@@ -11,10 +11,11 @@ const table = `
 | S02 | 0:04–1:12 | The camera settles.  |             |
 `;
 
-test('reads every scene row with its ID, times in seconds and caption', () => {
+test('reads every scene row with its ID, times in seconds, caption and act', () => {
+  const act = { number: 1, title: 'Who is here' };
   assert.deepEqual(parseScript(table), [
-    { id: 'S01', start: 0, end: 4, caption: 'A factory.' },
-    { id: 'S02', start: 4, end: 72, caption: '' },
+    { id: 'S01', start: 0, end: 4, caption: 'A factory.', act },
+    { id: 'S02', start: 4, end: 72, caption: '', act },
   ]);
 });
 
