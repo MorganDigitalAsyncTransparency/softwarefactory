@@ -200,9 +200,10 @@ is [ship/README.md](../ship/README.md).
 
 - **Given** the sound is on,
 - **when** a change ships, a gate stops one, or the viewer drops one in,
-- **then** a sound plays on the next sixteenth note: a shipped change plays a tone of
-  the chord that sounds, a broken change that reaches users plays a note just off it,
-  and a stopped one a low thud.
+- **then** a sound plays on the next free sixteenth note: a shipped change plays a tone
+  of the chord that sounds, a broken change that reaches users plays a note just off
+  it, and a stopped one a low thud. When changes come faster than the beat, only the
+  latest few wait for a note, so the music never lags behind the picture.
 
 ### R21: The count tells the story
 
@@ -230,8 +231,9 @@ is [ship/README.md](../ship/README.md).
 
 - **Given** the address with `?at=<shipped>` or `?card`,
 - **when** it loads,
-- **then** it opens running as if that many changes had shipped, or draws the link
-  preview, which publishing saves as `card.png`.
+- **then** it opens running as if that many changes had shipped and stays at that
+  stage, or draws the link preview, which publishing saves as `card.png` and which
+  fails the publish when the page does not start.
 
 ### R25: It works on a phone
 

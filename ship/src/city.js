@@ -6,6 +6,7 @@ const SPACING = [96, 52];
 const LANES = [-7.2, 0, 7.2];
 const WAVE_SPEED = 160;
 const BELT = 48;
+const PLACE = new THREE.Matrix4();
 
 // The finale: the factory is one of many. Halls light up in a wave from the middle,
 // and changes run along each of their belts.
@@ -18,12 +19,15 @@ export function createCity(scene) {
   group.add(halls, belts, boxes);
   for (const mesh of [halls, belts, boxes]) mesh.frustumCulled = false;
   scene.add(group);
-  return { group, sites, halls, belts, boxes, matrix: new THREE.Matrix4() };
+  return { group, sites, halls, belts, boxes };
 }
 
 export function updateCity(city, on, time) {
   city.group.visible = on;
-  if (!on) return void (city.since = null);
+  if (!on) {
+    city.since = null;
+    return;
+  }
   city.since ??= time;
   const reach = (time - city.since) * WAVE_SPEED;
   city.sites.forEach((site, index) => placeSite(city, site, index, { reach, time }));
@@ -32,17 +36,17 @@ export function updateCity(city, on, time) {
 
 function placeSite(city, site, index, { reach, time }) {
   const grown = THREE.MathUtils.clamp((reach - site.distance) / 40, 0.001, 1);
-  put(city.halls, index, [site.x, 0.5 * grown, site.z], grown, city.matrix);
+  put(city.halls, index, [site.x, 0.5 * grown, site.z], grown);
   LANES.forEach((z, lane) => {
     const slot = index * LANES.length + lane;
     const run = ((time * 9 + site.phase + lane * 13) % BELT) - BELT / 2;
-    put(city.belts, slot, [site.x, 1.2, site.z + z], grown, city.matrix);
-    put(city.boxes, slot, [site.x + run, 2.1, site.z + z], grown, city.matrix);
+    put(city.belts, slot, [site.x, 1.2, site.z + z], grown);
+    put(city.boxes, slot, [site.x + run, 2.1, site.z + z], grown);
   });
 }
 
-function put(mesh, index, [x, y, z], scale, matrix) {
-  matrix.makeScale(scale, scale, scale).setPosition(x, y, z);
+function put(mesh, index, [x, y, z], scale) {
+  const matrix = PLACE.makeScale(scale, scale, scale).setPosition(x, y, z);
   mesh.setMatrixAt(index, matrix);
 }
 

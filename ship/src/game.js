@@ -1,4 +1,4 @@
-import { STAGES, isBroken, spawnSeconds, stageAt } from './story.js';
+import { STAGES, isBroken, stageAt } from './story.js';
 import { ROUTE } from './route.js';
 import { LANE_Z, glow } from './look.js';
 import { carriedBy, clearBoxes, drawBoxes, moveBoxes, spawnBox } from './boxes.js';
@@ -10,11 +10,11 @@ import { trace } from './trace.js';
 // The running factory: it drops changes onto the lanes, moves them, counts what ships
 // and what the gates stop, and moves the story on by the count.
 export function createGame() {
-  return { clock: 0, shipped: 0, stopped: 0, stage: 0, started: false, stagedAt: 0, timers: LANE_Z.map((_, i) => i * 0.31) };
+  return { clock: 0, shipped: 0, stopped: 0, stage: 0, held: null, started: false, stagedAt: 0, timers: LANE_Z.map((_, i) => i * 0.31) };
 }
 
 export function restart(game, world) {
-  Object.assign(game, createGame(), { started: true, clock: game.clock, stagedAt: game.clock });
+  Object.assign(game, createGame(), { started: true, clock: game.clock });
   clearBoxes(world.boxes);
   world.band.setStage(0);
 }
@@ -24,7 +24,7 @@ export function stepGame(game, world, dt) {
   const stage = STAGES[game.stage];
   dropDue(game, world.boxes, stage, dt);
   for (const { event, box } of moveBoxes(world.boxes, dt, stage)) react(game, world, event, box);
-  const next = game.started ? stageAt(game.shipped) : 0;
+  const next = game.started ? game.held ?? stageAt(game.shipped) : 0;
   if (next !== game.stage) Object.assign(game, { stage: next, stagedAt: game.clock });
   world.band.setStage(game.stage);
   updateFactory(world.factory, { stage, time: game.clock, carriedBy: (lane) => carriedBy(world.boxes, lane) });
@@ -44,7 +44,7 @@ function dropDue(game, boxes, stage, dt) {
   for (let lane = 0; lane < stage.lanes; lane += 1) {
     game.timers[lane] -= dt;
     if (game.timers[lane] > 0) continue;
-    game.timers[lane] += spawnSeconds(game.stage) * (0.8 + Math.random() * 0.4);
+    game.timers[lane] += stage.spawn * (0.8 + Math.random() * 0.4);
     spawnBox(boxes, lane, isBroken(Math.random()));
   }
 }

@@ -21,7 +21,10 @@ export function createHall() {
 
 export function updateHall(hall, on, time) {
   hall.group.visible = on;
-  if (!on) return void (hall.since = null);
+  if (!on) {
+    hall.since = null;
+    return;
+  }
   hall.since ??= time;
   const built = Math.min(1, (time - hall.since) / BUILD_SECONDS);
   const count = 2 * Math.floor((hall.total / 2) * built);

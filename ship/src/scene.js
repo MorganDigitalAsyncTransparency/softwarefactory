@@ -12,7 +12,7 @@ const EASE = 2;
 // picture widens, and bloom so that everything lit glows.
 export function createScene(canvas) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(BACKGROUND);
   scene.fog = new THREE.FogExp2(BACKGROUND, FOG[0]);

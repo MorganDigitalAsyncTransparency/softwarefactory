@@ -42,6 +42,10 @@ package, with every file's integrity hash in the import map. Its music is genera
 the browser like the film's sound (ADR 0005), but is a short original loop in a minor
 key, so that any rhythm of taps fits it.
 
+The page names Claude as the AI agent that wrote it, in its text and its preview.
+That is the one exception to the repository's neutrality, and it holds for the
+showpiece only: the film stays without any brand.
+
 ### Consequences
 
 * Good, because the page, its music and its preview are all made from text in the

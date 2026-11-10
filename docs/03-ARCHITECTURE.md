@@ -123,15 +123,17 @@ differently and change for different reasons.
 
 Unlike the film, the showpiece is played, not seeked: boxes keep their own state and
 move by the frame's elapsed time. The count of shipped changes picks the stage
-(`story.js`), and the stage says what the factory shows, how often changes are
-dropped in, what the camera frames and which instruments play.
+(`story.js`), which says what the factory shows and how often changes are dropped in.
+The camera's shots, the fog and the drum patterns are kept by stage number in the
+modules that use them (`camera.js`, `scene.js`, `harmony.js`), next to the look and
+sound they belong to.
 
 ```text
 main ─▶ game ─┬─▶ boxes ─▶ route         (what ships, what a gate stops)
   │           ├─▶ factory ─▶ lane, hall  (what the stage shows)
   │           ├─▶ city, sparks
   │           └─▶ band ─▶ harmony, synth (a note for every change, on the beat)
-  ├─▶ scene ◀─ camera                   (bloom, fog and the shot)
+  ├─▶ camera, scene                     (the shot, then bloom and fog)
   ├─▶ ui                                 (count, captions, opening and ending)
   └─▶ source ◀─ trace                    (the code view, lit by what runs)
 ```
@@ -159,6 +161,7 @@ main ─▶ game ─┬─▶ boxes ─▶ route         (what ships, what a gat
 | `trace.js`   | Tells the code view which function is at work                                            |
 
 The link preview is not in the repository (ADR 0003): `scripts/ship/card.sh` opens
-`?card` in headless Chrome and saves `card.png` into the site that the `Publish the
-film` workflow uploads. The tests cover the pure modules; the picture is checked by eye
+`?card` in headless Chrome, fails if the page did not start, and saves `card.png` into
+the site that the `Publish the film` workflow uploads; the `Checks` workflow draws it
+on every pull request too. The tests cover the pure modules; the picture is checked by eye
 with `?at=`.

@@ -27,6 +27,11 @@ jobs:
         run: npm test
       - name: The voice fits its captions (R15)
         run: scripts/voice/generate.sh
+      - name: The showpiece draws its link preview (ADR 0009)
+        run: |
+          mkdir -p _site
+          cp -r ship _site/ship
+          scripts/ship/card.sh _site
       - name: Markdown lint
         run: |
           npm install --global markdownlint-cli2@0.23.3

@@ -17,7 +17,7 @@ It is published at <https://morgandigitalasynctransparency.github.io/softwarefac
 | Form             | One page: a 3D factory the viewer plays by tapping, music made in the browser, short captions. |
 | Tone             | Bold and playful, but every caption is true to the [film](../film/README.md#core-message). |
 | Where it is seen | A phone or a computer, opened from a post; the link shows a preview card.                 |
-| Brand            | None. The ending says it was written by Claude, because showing that is the purpose.      |
+| Brand            | No logo or company colours. The page names Claude as its author, because showing what an AI agent built is its purpose (ADR 0009). |
 
 ## Decisions
 

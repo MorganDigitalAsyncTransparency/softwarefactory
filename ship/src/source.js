@@ -7,10 +7,15 @@ const KEYWORDS = /\b(import|export|from|const|let|function|return|if|else|for|of
 // function that is drawing or playing at this moment.
 export async function loadSource(panel) {
   const files = sourceFiles();
-  const texts = await Promise.all(files.map((file) => fetch(file).then((response) => response.text())));
+  const texts = await Promise.all(files.map((file) => fetch(file).then(text)));
   const rows = texts.map((text, index) => fileView(panel, files[index], text));
   onTrace(follow(rows));
   return texts.reduce((sum, text) => sum + text.split('\n').length - 1, 0);
+}
+
+function text(response) {
+  if (!response.ok) throw new Error(`Could not read ${response.url}`);
+  return response.text();
 }
 
 // Every text file the page loaded from its own address: the page, its style and its

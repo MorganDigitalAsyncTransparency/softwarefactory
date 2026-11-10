@@ -14,7 +14,7 @@ export function kick({ ctx, out }, t, level = 1) {
   const osc = ctx.createOscillator();
   osc.frequency.setValueAtTime(150, t);
   osc.frequency.exponentialRampToValueAtTime(42, t + 0.12);
-  play(osc, envelope(ctx, out, t, 0.9 * level, 0.35), t, 0.4);
+  play(osc, envelope(ctx, out, { t, level: 0.9 * level, length: 0.35 }), t, 0.4);
 }
 
 export function hat(synth, t) {
@@ -30,7 +30,7 @@ export function bass({ ctx, out }, t, midi) {
   osc.type = 'sawtooth';
   osc.frequency.value = frequency(midi);
   const filter = lowpass(ctx, 420);
-  filter.connect(envelope(ctx, out, t, 0.32, 0.22));
+  filter.connect(envelope(ctx, out, { t, level: 0.32, length: 0.22 }));
   play(osc, filter, t, 0.25);
 }
 
@@ -38,7 +38,7 @@ export function pluck({ ctx, out, wet }, t, midi, level = 0.3) {
   const osc = ctx.createOscillator();
   osc.type = 'triangle';
   osc.frequency.value = frequency(midi);
-  const gain = envelope(ctx, out, t, level, 0.6);
+  const gain = envelope(ctx, out, { t, level, length: 0.6 });
   gain.connect(wet);
   play(osc, gain, t, 0.7);
 }
@@ -50,7 +50,7 @@ export function pad({ ctx, out, wet }, t, chord, length) {
     osc.frequency.value = frequency(midi - 12);
     osc.detune.value = (midi % 3 - 1) * 8;
     const filter = lowpass(ctx, 700);
-    const gain = swell(ctx, wet, t, 0.05, length);
+    const gain = swell(ctx, wet, { t, level: 0.05, length });
     filter.connect(gain);
     gain.connect(out);
     play(osc, filter, t, length);
@@ -63,7 +63,7 @@ export function thud({ ctx, out }, t) {
   osc.frequency.setValueAtTime(70, t);
   osc.frequency.exponentialRampToValueAtTime(35, t + 0.3);
   const filter = lowpass(ctx, 300);
-  filter.connect(envelope(ctx, out, t, 0.5, 0.3));
+  filter.connect(envelope(ctx, out, { t, level: 0.5, length: 0.3 }));
   play(osc, filter, t, 0.35);
 }
 
@@ -76,7 +76,7 @@ export function riser(synth, t, length) {
   filter.type = 'bandpass';
   filter.frequency.setValueAtTime(300, t);
   filter.frequency.exponentialRampToValueAtTime(9000, t + length);
-  filter.connect(swell(ctx, out, t, 0.25, length, 'up'));
+  filter.connect(swell(ctx, out, { t, level: 0.25, length, rising: true }));
   play(source, filter, t, length);
 }
 
@@ -86,11 +86,11 @@ function burst({ ctx, out, noise }, t, { cutoff, level, length }) {
   const filter = ctx.createBiquadFilter();
   filter.type = 'highpass';
   filter.frequency.value = cutoff;
-  filter.connect(envelope(ctx, out, t, level, length));
+  filter.connect(envelope(ctx, out, { t, level, length }));
   play(source, filter, t, length + 0.05);
 }
 
-function envelope(ctx, out, t, level, length) {
+function envelope(ctx, out, { t, level, length }) {
   const gain = ctx.createGain();
   gain.gain.setValueAtTime(level, t);
   gain.gain.exponentialRampToValueAtTime(0.001, t + length);
@@ -98,17 +98,18 @@ function envelope(ctx, out, t, level, length) {
   return gain;
 }
 
-function swell(ctx, out, t, level, length, shape = 'arch') {
+// Fades in and out over the length, or only in, for a riser that ends on the beat.
+function swell(ctx, out, { t, level, length, rising = false }) {
   const gain = ctx.createGain();
   gain.gain.setValueAtTime(0.0001, t);
-  gain.gain.linearRampToValueAtTime(level, t + (shape === 'up' ? length : length * 0.3));
-  gain.gain.linearRampToValueAtTime(0.0001, t + length + (shape === 'up' ? 0.05 : 0));
+  gain.gain.linearRampToValueAtTime(level, t + (rising ? length : length * 0.3));
+  gain.gain.linearRampToValueAtTime(0.0001, t + length + (rising ? 0.05 : 0));
   gain.connect(out);
   return gain;
 }
 
 function play(source, first, t, length) {
-  if (source !== first) source.connect(first);
+  source.connect(first);
   source.start(t);
   source.stop(t + length);
 }

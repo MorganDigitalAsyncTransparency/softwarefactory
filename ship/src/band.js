@@ -1,12 +1,13 @@
 import { STEP, STEPS_PER_BAR, chordAt, hitsAt, shipNote } from './harmony.js';
 import { createSynth, kick, hat, clap, bass, pluck, pad, thud, riser } from './synth.js';
 import { trace } from './trace.js';
+import { FINALE } from './story.js';
 
 const LOOKAHEAD = 0.12;
 const MAX_WAITING = 6;
-const FINALE_STAGE = 5;
 
 const HITS = {
+  // The grid passes the bar as a third argument, which kick would read as its level.
   kick: (synth, t) => kick(synth, t),
   clap,
   hat,
@@ -18,10 +19,10 @@ const SOUNDS = { shipped: playShipped, broken: playBroken, stopped: playStopped,
 // The band: a sequencer on a sixteenth-note grid. The drums and the bass join as the
 // factory grows, and every change that ships, stops or is dropped in plays on the grid.
 export function createBand() {
-  const band = { synth: null, step: 0, stage: 0, notes: 0, waiting: [], finale: -Infinity };
+  const band = { muted: false, synth: null, step: 0, stage: 0, notes: 0, waiting: [], finale: -Infinity };
   return {
     start: () => band.synth || begin(band),
-    toggle: () => band.synth && toggle(band.synth.ctx),
+    toggle: () => toggle(band),
     setStage: (stage) => changeStage(band, stage),
     play: (kind) => band.synth && band.waiting.push(kind),
     tick: () => band.synth && schedule(band),
@@ -32,15 +33,21 @@ function begin(band) {
   const ctx = new AudioContext();
   band.synth = createSynth(ctx);
   band.origin = ctx.currentTime + 0.05;
+  silence(band);
 }
 
-function toggle(ctx) {
-  if (ctx.state === 'running') ctx.suspend();
-  else ctx.resume();
+function toggle(band) {
+  band.muted = !band.muted;
+  if (band.synth) silence(band);
+}
+
+function silence(band) {
+  if (band.muted) band.synth.ctx.suspend();
+  else band.synth.ctx.resume();
 }
 
 function changeStage(band, stage) {
-  if (stage === FINALE_STAGE && band.stage !== stage) band.finale = Math.floor(band.step / STEPS_PER_BAR) + 1;
+  if (stage === FINALE && band.stage !== stage) band.finale = Math.floor(band.step / STEPS_PER_BAR) + 1;
   band.stage = stage;
 }
 

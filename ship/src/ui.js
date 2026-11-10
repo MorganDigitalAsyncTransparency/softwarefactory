@@ -1,4 +1,4 @@
-import { STAGES } from './story.js';
+import { FINALE, STAGES } from './story.js';
 
 const ENDING_AFTER = 9;
 
@@ -11,7 +11,7 @@ export function createUi(document) {
 
 export function showUi(ui, game, coding) {
   ui.root.dataset.started = game.started;
-  ui.root.dataset.ended = !coding && game.stage === STAGES.length - 1 && game.clock - game.stagedAt > ENDING_AFTER;
+  ui.root.dataset.ended = !coding && game.stage === FINALE && game.clock - game.stagedAt > ENDING_AFTER;
   ui.shipped.textContent = game.shipped.toLocaleString('en');
   ui.stopped.textContent = game.stopped.toLocaleString('en');
   const caption = STAGES[game.stage].caption;
@@ -20,11 +20,13 @@ export function showUi(ui, game, coding) {
 
 export function showLineCount(ui, lines) {
   ui.lines.textContent = lines.toLocaleString('en');
+  ui.root.dataset.counted = true;
 }
 
 function swapCaption(element, text) {
   element.textContent = text;
   element.classList.remove('fresh');
+  // Reading the layout makes the browser see the class go, so the animation restarts.
   void element.offsetWidth;
   element.classList.add('fresh');
 }

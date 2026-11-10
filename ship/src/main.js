@@ -5,6 +5,7 @@ import { createSparks } from './sparks.js';
 import { createCity } from './city.js';
 import { createBand } from './band.js';
 import { createGame, dropIn, restart, stepGame } from './game.js';
+import { stageAt } from './story.js';
 import { createUi, showLineCount, showUi } from './ui.js';
 import { loadSource } from './source.js';
 import { shotFor } from './camera.js';
@@ -30,14 +31,14 @@ const input = { holding: false, wait: 0, coding: false };
 
 const params = new URLSearchParams(location.search);
 if (params.has('card')) document.body.dataset.card = true;
-if (params.has('card') || params.has('at')) warmUp(Number(params.get('at') ?? CARD_SHIPPED));
+if (params.has('card') || params.has('at')) warmUp(Math.max(0, Number(params.get('at') ?? CARD_SHIPPED) || 0));
 listen();
 requestAnimationFrame(frame);
 loadSource(document.getElementById('code')).then((lines) => showLineCount(ui, lines));
 
 function frame(now) {
-  const dt = Math.min(MAX_DT, (now - (frame.last ?? now)) / 1000);
-  frame.last = now;
+  const dt = Math.min(MAX_DT, (now - (input.lastFrame ?? now)) / 1000);
+  input.lastFrame = now;
   if (!game.started && game.clock > AUTO_START_SECONDS) game.started = true;
   holdToDrop(dt);
   stepGame(game, world, dt);
@@ -60,10 +61,7 @@ function holdToDrop(dt) {
 
 function press() {
   world.band.start();
-  if (!game.started) {
-    game.started = true;
-    game.stagedAt = game.clock;
-  }
+  game.started = true;
   input.holding = true;
   input.wait = 0;
 }
@@ -72,7 +70,7 @@ function listen() {
   canvas.addEventListener('pointerdown', press);
   window.addEventListener('pointerup', () => (input.holding = false));
   window.addEventListener('pointercancel', () => (input.holding = false));
-  window.addEventListener('keydown', (event) => event.code === 'Space' && !event.repeat && press());
+  window.addEventListener('keydown', pressSpace);
   window.addEventListener('keyup', (event) => event.code === 'Space' && (input.holding = false));
   document.getElementById('sound').addEventListener('click', () => world.band.toggle());
   document.getElementById('again').addEventListener('click', () => restart(game, world));
@@ -80,15 +78,22 @@ function listen() {
   document.getElementById('hide-code').addEventListener('click', () => toggleCode(false));
 }
 
+// Space ships, unless it is pressing a focused button.
+function pressSpace(event) {
+  if (event.code !== 'Space' || event.repeat || event.target.closest('button, a')) return;
+  event.preventDefault();
+  press();
+}
+
 function toggleCode(on) {
   input.coding = on;
   document.body.dataset.coding = on;
 }
 
-// Opens the factory as if that many changes had shipped, already running: for the
-// link preview and for a reviewer who checks one stage.
+// Opens the factory as if that many changes had shipped, already running and held at
+// that stage: for the link preview and for a reviewer who checks one stage.
 function warmUp(shipped) {
-  Object.assign(game, { started: true, shipped });
+  Object.assign(game, { started: true, shipped, held: stageAt(shipped) });
   for (let i = 0; i < WARM_UP_FRAMES; i += 1) stepGame(game, world, 1 / 30);
   jump(view, currentShot(), game.stage);
 }
