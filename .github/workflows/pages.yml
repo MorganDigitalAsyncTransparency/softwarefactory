@@ -28,6 +28,10 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
+      # The voice's speech library supports Python 3.10 to 3.13 (docs/01-CONTRIBUTING.md).
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
       - name: Make the voice from the script (ADR 0006)
         run: scripts/voice/generate.sh
       - name: Put the film and the showpiece together
