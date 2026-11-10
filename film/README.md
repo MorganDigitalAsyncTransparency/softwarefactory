@@ -52,12 +52,12 @@ so people get back to the product.
   carries the film.
 - *Shift left* gets its own caption, which says what it means before it names it.
 - A word from software is named only once the picture or the caption has said what it
-  is: the reveal says in plain words that the boxes are code changes and the belts the
-  CI/CD pipeline.
-- The film takes the clarity of the [showpiece](../ship/README.md) and keeps its own
-  daylight: captions in bold on dark glass, the story's five acts shown as numbered
-  steps in the corner, signal lights that glow and broken boxes that are red, so a
-  viewer who knows nothing of software sees at once what goes well and what does not.
+  is, as in the reveal of the digital picture.
+- The film takes the clarity of the [showpiece](../ship/README.md) but keeps its own
+  daylight: bold captions, the act named in the corner and signal lights that glow
+  (see [captions](script/visual-descriptions.md#captions) and the
+  [style block](script/visual-descriptions.md#style-block)), so a viewer who knows
+  nothing of software can follow the story and see at once where a light changes.
 - The film is one continuous picture with captions at the bottom, not cut by black title
   cards, which broke its flow. The last caption is the film's closing message, so it
   stands out (see [captions](script/visual-descriptions.md#captions)).

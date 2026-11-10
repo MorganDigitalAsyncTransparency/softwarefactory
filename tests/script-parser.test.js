@@ -26,3 +26,8 @@ test('ignores header, divider and prose lines', () => {
 test('fails when the script has no scene rows', () => {
   assert.throws(() => parseScript('# Script\n'), /no scene rows/);
 });
+
+test('gives each scene the act whose heading comes before it', () => {
+  const acts = `${table}\n## Act 2: Today (1:12–1:20), level 1\n\n| S03 | 1:12–1:20 | The camera rises. | |\n`;
+  assert.deepEqual(parseScript(acts).map((scene) => scene.act.title), ['Who is here', 'Who is here', 'Today']);
+});

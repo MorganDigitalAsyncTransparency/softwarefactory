@@ -1,5 +1,5 @@
 // The script's scene tables are the only source of scene times and captions, and its
-// act headings name the chapter each scene belongs to
+// act headings name the act each scene belongs to
 // (docs/02-REQUIREMENTS.md R1, ADR 0004).
 const SCENE_ROW = /^\|\s*(S\d+)\s*\|\s*(\d+:\d{2})\s*–\s*(\d+:\d{2})\s*\|(.*)\|(.*)\|\s*$/;
 const ACT_HEADING = /^## Act (\d+): (.+?) \(/;

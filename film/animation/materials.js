@@ -17,7 +17,7 @@ const LOOKS = {
   hatch: { physical: '#1F2328', digital: '#03080F' },
   box: { physical: '#C99A64', digital: '#FFD58A', glow: 0.9 },
   tape: { physical: '#EEDDB5', digital: '#FFF1D1', glow: 0.9 },
-  dented: { physical: '#E0503F', digital: '#FF6B5E', glow: 0.9 },
+  dented: { physical: '#8F6A45', digital: '#FF6B5E', glow: 0.9 },
   // See-through surfaces: the curtain in a gate that looks through each box, and a box
   // the gate has stopped for what is inside. The curtain glows the same in both looks.
   seenThrough: { physical: '#E6CFAE', digital: '#FFD58A', glow: 0.4, seeThrough: true },
@@ -28,7 +28,7 @@ const LOOKS = {
   it: { physical: '#2F7BD0', digital: '#59E3FF', glow: 0.6 },
   robot: { physical: '#F3F3F0', digital: '#DDF7FF' },
   ok: { physical: '#36D27A', digital: '#36D27A', glow: 3 },
-  stop: { physical: '#E8261A', digital: '#E8261A', glow: 3 },
+  stop: { physical: '#E8261A', digital: '#E8261A', glow: 1.2 },
   wait: { physical: '#F29A16', digital: '#F29A16', glow: 3 },
   off: { physical: '#3A3F45', digital: '#1B2B3A' },
   officeFloor: { physical: '#D3CABB', digital: '#0B1C2E' },

@@ -17,7 +17,6 @@ body {
   background: var(--page);
   color: var(--ink);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
 }
 
 main {
@@ -39,10 +38,10 @@ main {
   height: 100%;
 }
 
-/* The captions and the chapter sit on dark glass, as in the showpiece, so they read
+/* The captions and the act sit on dark glass, as in the showpiece, so they read
    over the daylit picture. */
 #caption,
-#chapter {
+#act {
   position: absolute;
   margin: 0;
   background: var(--glass);
@@ -61,7 +60,6 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  white-space: nowrap;
   color: var(--ink);
   font-size: 4.4cqh;
   font-weight: 700;
@@ -86,7 +84,11 @@ main {
   text-shadow: 0 0 3cqh rgb(95 216 255 / 0.45), 0 0.3cqh 1cqh rgb(0 0 0 / 0.85);
 }
 
-#chapter {
+#act:has(#act-number:empty) {
+  display: none;
+}
+
+#act {
   top: 3cqh;
   left: 2.5cqw;
   padding: 0.8cqh 1.6cqw;
@@ -124,10 +126,6 @@ main {
   color: var(--ink);
   font-size: 16px;
   cursor: pointer;
-}
-
-.controls button:hover {
-  border-color: var(--cyan);
 }
 
 #progress {
