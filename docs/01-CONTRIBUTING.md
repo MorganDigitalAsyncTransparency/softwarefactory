@@ -39,6 +39,21 @@ Add `?t=<seconds>` to open a single frame, paused, for example
 `http://localhost:8000/?t=10`. Space plays and pauses. The sound starts after the first
 click or key press on the page; the speaker button turns it off and on.
 
+## Playing the showpiece
+
+The showpiece on `main` is published at
+<https://morgandigitalasynctransparency.github.io/softwarefactory/ship/>. To play a
+branch, serve the repository root and open the `ship/` folder:
+
+```sh
+python3 -m http.server 8000
+# then open http://localhost:8000/ship/
+```
+
+Add `?at=<shipped>` to open a stage as if that many changes had shipped, for example
+`?at=44` for the hall, and `?card` to see the link preview. Tap, hold or press space to
+ship changes; the sound starts with the first tap.
+
 ## Checks
 
 CI runs these on every pull request and on `main` (`.github/workflows/checks.yml`).

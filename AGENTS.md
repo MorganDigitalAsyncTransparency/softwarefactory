@@ -27,6 +27,7 @@ solve a real problem.
 | What the film is for: audience, form, decisions | [`film/README.md`](film/README.md)                               |
 | The film's scenes, timing and caption text      | [`film/script/script.md`](film/script/script.md)                 |
 | How the film looks and sounds: style, prompts, continuity, sound | [`film/script/visual-descriptions.md`](film/script/visual-descriptions.md) |
+| What the showpiece is for, and its decisions    | [`ship/README.md`](ship/README.md)                               |
 | What the code must do (Given/When/Then)         | [`docs/02-REQUIREMENTS.md`](docs/02-REQUIREMENTS.md)             |
 | How the code is built                           | [`docs/03-ARCHITECTURE.md`](docs/03-ARCHITECTURE.md)             |
 | Why the repository works the way it does        | [`docs/decisions/`](docs/decisions/README.md) (MADR)             |

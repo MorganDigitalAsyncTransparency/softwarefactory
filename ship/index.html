@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Tap to ship</title>
+    <meta name="description" content="A software factory that builds itself while you play it. Every change you ship plays a note. No images, no video, no sound files: only text, written by Claude.">
+    <meta property="og:title" content="Tap to ship">
+    <meta property="og:description" content="A software factory that builds itself while you play it. Every change you ship plays a note. No images, no video, no sound files: only text, written by Claude.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://morgandigitalasynctransparency.github.io/softwarefactory/ship/">
+    <meta property="og:image" content="https://morgandigitalasynctransparency.github.io/softwarefactory/ship/card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#04060c">
+    <link rel="stylesheet" href="style.css">
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+        },
+        "integrity": {
+          "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js": "sha384-GY5FqjttLCFRt/McQbyaVdCk2O1IQtOeX8Py6NfD89BIAsIyJFRl4UgSXrk2vXAk",
+          "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/EffectComposer.js": "sha384-L+Ns9skCAqjab7aG8LH5VLknBCoENW7p37sOj39jnITwlWZFabWc29JwzgYf6ygy",
+          "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/RenderPass.js": "sha384-JBzMcXwTgF2e9tw3AU4+jg+nVDdl7hTHlT0C5qZVa/1DUUe/KIm4L3e2jorIH28/",
+          "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/UnrealBloomPass.js": "sha384-NLbvCtTvm5zjFCKW1mFWUjcnFLVOn258z3hKOAoYCXJ1DtQO54I+x5LPquFbIig+",
+          "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/OutputPass.js": "sha384-pAQ55aG4oXjA92n2goVLMWU14Ik/bNUs29MfxOM6meGyGzTJoFm7WxEU0D0SqsNI",
+          "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/ShaderPass.js": "sha384-zetU6HhR/vTtgSvnS9DE+GQPZhVT/ZOSLa/1+DSM6rkM9hvBgQWr9bCEosZt93ch",
+          "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/MaskPass.js": "sha384-SDM80tiGflO8UDV/QzR/mASjcc/+wF7KfRVFNHJUIPcTctwoPI8GoWVTlccZw7V4",
+          "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/postprocessing/Pass.js": "sha384-gSqIFh8vMmp1veyOysIS3KPVUl/A5JPefYvW4b89OeYeW0bwkrjN7qcC1h0XJK/K",
+          "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/shaders/CopyShader.js": "sha384-kzVlcj2amFaRNIWZ5zE0PmIN+QTNWWvrgKk31S8N/7w0nf7Qq3xqxHRLbD2UPPSl",
+          "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/shaders/LuminosityHighPassShader.js": "sha384-a6qrIDfNt1Ss7Z4VtgMalz9gq8H/Up3lSSf1Agc4HRaDMvNd9eP9k7DckAv5JxQF",
+          "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/shaders/OutputShader.js": "sha384-CdpJL3xlIkjJQAbzgyazSoOx+/oBcwUCsBVSU25SKy8/PEdYEn24U+4mnmx3R4YX"
+        }
+      }
+    </script>
+  </head>
+  <body data-started="false">
+    <canvas id="stage" aria-label="A software factory that ships changes; tap to ship one"></canvas>
+
+    <header class="count">
+      <span><b id="shipped">0</b> shipped</span>
+      <span><b id="stopped">0</b> stopped at the gates</span>
+    </header>
+    <nav class="corner">
+      <button id="show-code" type="button">&lt;/&gt; Code</button>
+      <button id="sound" type="button" aria-label="Sound on or off">♪</button>
+    </nav>
+
+    <section class="opening" aria-live="polite">
+      <h1>Tap to ship.</h1>
+      <p>Every change you ship plays a note.<br>Hold to ship many. Sound on.</p>
+    </section>
+
+    <p id="caption" aria-live="polite"></p>
+
+    <section class="ending">
+      <h2>No images. No video. No sound files.</h2>
+      <p>Only <b id="lines">a few thousand</b> lines of text, written by Claude.</p>
+      <div class="actions">
+        <button class="show-code" type="button">See the code run</button>
+        <a href="../">Watch the film</a>
+        <button id="again" type="button">Ship again</button>
+      </div>
+    </section>
+
+    <aside class="code-panel" aria-label="The source code of this page">
+      <header>
+        <p>The code drawing and playing what you see. The lit lines are running now.</p>
+        <button id="hide-code" type="button" aria-label="Close the code">×</button>
+      </header>
+      <div id="code"></div>
+    </aside>
+
+    <section class="card-title">
+      <h1>Tap to ship.</h1>
+      <p>A software factory that builds itself while you play it.<br>Every change plays a note. Only text, written by Claude.</p>
+    </section>
+
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
